@@ -8,6 +8,8 @@ using UnityEngine.UI;
 public class NetWorkManager : MonoBehaviourPunCallbacks
 {
     public InputField NickName;
+    public GameObject uis;
+
 
     private void Awake()
     {
@@ -21,13 +23,17 @@ public class NetWorkManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.LocalPlayer.NickName = NickName.text;
         PhotonNetwork.JoinOrCreateRoom("Room", new RoomOptions { MaxPlayers = 6 }, null);
+
         Debug.Log("들어가는중");
     }
+
     public override void OnJoinedRoom()
     {
+        uis.SetActive(true);
+        Spawn();
         
     }
-    //https://www.youtube.com/watch?v=9Bn1C9O0hzY&t=236s;
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape) && PhotonNetwork.IsConnected)
@@ -38,4 +44,16 @@ public class NetWorkManager : MonoBehaviourPunCallbacks
 
     }
 
+    public void Spawn()
+    {
+        PhotonNetwork.Instantiate("Player", Vector3.zero, Quaternion.identity);
+
+    }
+
+
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        Debug.Log("끊어짐");
+        uis.SetActive(false);
+    }
 }
