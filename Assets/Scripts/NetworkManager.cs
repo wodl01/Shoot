@@ -29,14 +29,18 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         disconnectPanel.SetActive(false);
+        StartCoroutine(DestroyBullet());
         Spawn();
     }
 
-    private void Update()
+    
+
+    IEnumerator DestroyBullet()
     {
-        if(Input.GetKeyDown(KeyCode.Escape)&& PhotonNetwork.IsConnected)
+        yield return new WaitForSeconds(0.2f);
+        foreach(GameObject GO in GameObject.FindGameObjectsWithTag("Bullet"))
         {
-            PhotonNetwork.Disconnect();
+            GO.GetComponent<PhotonView>().RPC("DestroyRPC", RpcTarget.All);
         }
     }
 
@@ -44,6 +48,15 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.Instantiate("Player", Vector3.zero, Quaternion.identity);
         respawnPanel.SetActive(false);
+    }
+
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) && PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.Disconnect();
+        }
     }
 
     public override void OnDisconnected(DisconnectCause cause)

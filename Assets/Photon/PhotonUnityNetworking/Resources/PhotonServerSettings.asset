@@ -42,6 +42,10 @@ MonoBehaviour:
   - JumpRPC
   - BulletDirRPC
   - DestroyRPC
+  - GetItemRPC
+  - DestroyItemRPC
+  - ChangeWeaponSpriteRPC
+  - DropWeapon
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

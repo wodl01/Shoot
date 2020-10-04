@@ -159,18 +159,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.4292453, b: 0.4292453, a: 1}
+  m_Color: {r: 1, g: 0.28773582, b: 0.28773582, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 8776ef76824ca394296d4a84062c4391, type: 3}
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 0
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
@@ -187,7 +187,7 @@ GameObject:
   m_Layer: 0
   m_Name: ShotPoint
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 2800000, guid: 8776ef76824ca394296d4a84062c4391, type: 3}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -199,7 +199,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5540588587113956563}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.391, y: -0.106, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8718485723460494866}
@@ -215,6 +215,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6808406832714034391}
   - component: {fileID: 6233064764733165331}
+  - component: {fileID: 448166734707772901}
   m_Layer: 0
   m_Name: Weapon1
   m_TagString: Untagged
@@ -230,7 +231,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6283619966136588253}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.404, y: 0.073, z: 0}
+  m_LocalPosition: {x: -0.4031, y: 0.0749, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8718485723460494866}
@@ -272,18 +273,40 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
-  m_Sprite: {fileID: 21300000, guid: c80027f0dad677c42adcc4ee28ea07b3, type: 3}
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.32, y: 0.32}
+  m_Size: {x: 2.56, y: 1.28}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &448166734707772901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6283619966136588253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  observableSearch: 2
+  Synchronization: 3
+  OwnershipTransfer: 0
+  ObservedComponents: []
+  viewIdField: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &7206531575970990398
 GameObject:
   m_ObjectHideFlags: 0
@@ -311,7 +334,7 @@ RectTransform:
   m_GameObject: {fileID: 7206531575970990398}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.0014211413, y: 0.0014211413, z: 0.0014211413}
+  m_LocalScale: {x: 0.001421141, y: 0.0014211413, z: 0.0014211413}
   m_Children: []
   m_Father: {fileID: 8657459832041966879}
   m_RootOrder: 0
@@ -342,7 +365,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -630,7 +653,7 @@ MonoBehaviour:
     SynchronizeType: 1
     Name: IsGround
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: IsFalling
   m_SynchronizeLayers:
   - SynchronizeType: 0
@@ -669,10 +692,25 @@ MonoBehaviour:
   pv: {fileID: 7692282945783129204}
   nickNameText: {fileID: 1021918189707896180}
   health: {fileID: 1972586464137781081}
-  maxHpValue: 0
-  hp: 0
+  damage: 10
+  canvas: {fileID: 3338719847829250164}
+  maxHpValue: 100
+  hp: 100
+  takedDamage: 0
   shotPos: {fileID: 5540588587113956563}
-  jumpPow: 500
-  isGround: 0
-  bulletName: Bullet
+  jumpPow: 300
+  isGround: 1
+  weaponNum: 0
+  bullet:
+  - {fileID: 8075715940360838214, guid: 22d8839269ea03142a9d36d8704c3fe0, type: 3}
+  - {fileID: 8075715940360838214, guid: 899c30488fc4b67448c8fc2c68cf5199, type: 3}
+  weaponSprite: {fileID: 6233064764733165331}
+  maximumAmmo_P: 0
+  ammo_P: 0
+  IsFullAuto_P: 0
+  delay_P: 0
+  delayTime: 0
+  reLoadTime_P: 0
+  isReload: 0
   left: 0
+  cooltime: 0
