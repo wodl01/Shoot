@@ -12,6 +12,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     public Animator ani;
     public SpriteRenderer sprite;
     public PhotonView pv;
+    public PhotonView weapon;
     public Text nickNameText;
     public Image health;
     [SerializeField] int damage;
@@ -45,7 +46,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] float delayTime;
     [SerializeField] float reLoadTime_P;
     [SerializeField] bool isReload;
-
+    [SerializeField] string itemname1; 
     itemScript item;
 
 
@@ -58,6 +59,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
     void Awake()
     {
+
         nickNameText.text = pv.IsMine ? PhotonNetwork.NickName : pv.Owner.NickName;
         nickNameText.color = pv.IsMine ? Color.green : Color.red;
 
@@ -96,7 +98,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 }
                 else IsFullAuto_P = false;
 
-                pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered);
+                itemname1 = other.name;
+                pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered, itemname1);
 
                 delay_P = item.delayTime;
                 reLoadTime_P = item.reLoadTime;
@@ -188,9 +191,10 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 delayTime = delay_P;
             }
 
-            if (Input.GetKeyDown(KeyCode.R) && weaponNum > 0 || ammo_P <= 0)//총장전
+            if (Input.GetKeyDown(KeyCode.R)|| ammo_P <= 0)
             {
-                if(ammo_P != maximumAmmo_P && isReload == false)
+                //총장전
+                if (ammo_P != maximumAmmo_P && isReload == false && weaponNum > 0)
                 {
                     isReload = true;
                     StartCoroutine(reLoad());
@@ -203,12 +207,17 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
 
 
-            if (Input.GetKeyDown(KeyCode.Q) && !isReload)//자신기 가지고있는 "무기" 버림
+            if (Input.GetKeyDown(KeyCode.Q) && !isReload)
             {
-                pv.RPC("DropWeapon", RpcTarget.AllBuffered);
+                //자신이 가지고있는 "무기" 버림
+                if (weaponNum > 0)
+                {
+                    pv.RPC("DropWeapon", RpcTarget.AllBuffered);
+
+                    weaponSprite.sprite = null;
+                    weaponNum = 0;
+                }
                 
-                weaponSprite.sprite = null;
-                weaponNum = 0;
 
                 
             }
@@ -219,8 +228,9 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         else transform.position = Vector3.Lerp(transform.position, curPos, Time.deltaTime * 10);
     }
 
-    IEnumerator reLoad()//재장전
+    IEnumerator reLoad()
     {
+        //재장전
         yield return new WaitForSeconds(reLoadTime_P);
         ammo_P = maximumAmmo_P;
         isReload = false;
@@ -249,9 +259,9 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     }
     
     [PunRPC]
-    void ChangeWeaponSpriteRPC()
+    void ChangeWeaponSpriteRPC(string itemname)
     {
-        weaponSprite.sprite = item.weaponSprite;
+        weaponSprite.sprite = Resources.Load(itemname, typeof(Sprite)) as Sprite;
     }
 
     [PunRPC]
@@ -283,7 +293,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
-    [PunRPC]
+    [PunRPC]//오브젝트 파괴
     void DestroyRPC() => Destroy(gameObject);
 
 
@@ -295,11 +305,13 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         {
             stream.SendNext(transform.position);
             stream.SendNext(health.fillAmount);
+            stream.SendNext(weaponSprite.name);
         }
         else
         {
             curPos = (Vector3)stream.ReceiveNext();
             health.fillAmount = (float)stream.ReceiveNext();
+            weaponSprite.name = (string)stream.ReceiveNext();
         }
     }
 

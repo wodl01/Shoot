@@ -690,6 +690,7 @@ MonoBehaviour:
   ani: {fileID: 2899828837297106475}
   sprite: {fileID: 8718485723460494867}
   pv: {fileID: 7692282945783129204}
+  weapon: {fileID: 448166734707772901}
   nickNameText: {fileID: 1021918189707896180}
   health: {fileID: 1972586464137781081}
   damage: 10
@@ -712,5 +713,6 @@ MonoBehaviour:
   delayTime: 0
   reLoadTime_P: 0
   isReload: 0
+  itemname1: 
   left: 0
   cooltime: 0

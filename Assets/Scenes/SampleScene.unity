@@ -1083,7 +1083,7 @@ PrefabInstance:
     - target: {fileID: 8420504736554935636, guid: 73bac382e66f9b84ab6f0f05914789c9,
         type: 3}
       propertyPath: m_Name
-      value: 1weapon
+      value: Weapon1
       objectReference: {fileID: 0}
     - target: {fileID: 8420504736554935662, guid: 73bac382e66f9b84ab6f0f05914789c9,
         type: 3}
@@ -1202,7 +1202,7 @@ PrefabInstance:
     - target: {fileID: 8420504736554935636, guid: 4375e4dddfe209b4daebe8f7109ef532,
         type: 3}
       propertyPath: m_Name
-      value: 2weapon
+      value: Weapon2-sheet
       objectReference: {fileID: 0}
     - target: {fileID: 8420504736554935662, guid: 4375e4dddfe209b4daebe8f7109ef532,
         type: 3}
