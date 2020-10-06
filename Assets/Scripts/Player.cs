@@ -19,6 +19,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
 
     [SerializeField] Canvas canvas;
+    [SerializeField] Text bulletText;
 
 
 
@@ -46,7 +47,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] float delayTime;
     [SerializeField] float reLoadTime_P;
     [SerializeField] bool isReload;
-    [SerializeField] string itemname1; 
+    [SerializeField] string itemSpriteName; 
     itemScript item;
 
 
@@ -66,6 +67,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         if (pv.IsMine)
         {
             var Cm = GameObject.Find("CMcamera").GetComponent<CinemachineVirtualCamera>();
+            bulletText = GameObject.FindGameObjectWithTag("BulletText").GetComponent<Text>();
             Cm.Follow = transform;
             Cm.LookAt = transform;
         }
@@ -98,14 +100,15 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 }
                 else IsFullAuto_P = false;
 
-                itemname1 = other.name;
-                pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered, itemname1);
+                itemSpriteName = other.name;
+
+                pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered, itemSpriteName);
 
                 delay_P = item.delayTime;
                 reLoadTime_P = item.reLoadTime;
                 Debug.Log("1");
 
-
+                bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
 
 
                 //자신이 획득한"무기"삭제
@@ -174,6 +177,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, left ? -1 : 1);
                 ammo_P -= 1;
 
+                bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
+
                 delayTime = delay_P;
             }
             else if (Input.GetMouseButton(0) && weaponNum > 0 && ammo_P > 0 && delayTime < 0 && !isReload && IsFullAuto_P)
@@ -187,6 +192,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 PhotonNetwork.Instantiate(weaponNum.ToString()/*이름 중요*/, shotPos.transform.position, Quaternion.identity)
                     .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, left ? -1 : 1);
                 ammo_P -= 1;
+
+                bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
 
                 delayTime = delay_P;
             }
@@ -212,17 +219,20 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 //자신이 가지고있는 "무기" 버림
                 if (weaponNum > 0)
                 {
-                    pv.RPC("DropWeapon", RpcTarget.AllBuffered);
+                    PhotonNetwork.Instantiate(weaponNum.ToString() + "weapon", gameObject.transform.position, Quaternion.identity).GetComponent<itemScript>().ammo = ammo_P;
 
                     weaponSprite.sprite = null;
                     weaponNum = 0;
+                    itemSpriteName = "Null";
+
+                    pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered, itemSpriteName);
+
+                    ammo_P = 0;
+                    maximumAmmo_P = 0;
+
+                    bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
                 }
-                
-
-                
             }
-
-
         }
         else if ((transform.position = curPos).sqrMagnitude >= 100) transform.position = curPos;
         else transform.position = Vector3.Lerp(transform.position, curPos, Time.deltaTime * 10);
@@ -233,6 +243,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         //재장전
         yield return new WaitForSeconds(reLoadTime_P);
         ammo_P = maximumAmmo_P;
+        bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
         isReload = false;
     }
 
@@ -259,16 +270,18 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     }
     
     [PunRPC]
-    void ChangeWeaponSpriteRPC(string itemname)
+    void ChangeWeaponSpriteRPC(string itemSpriteName)
     {
-        weaponSprite.sprite = Resources.Load(itemname, typeof(Sprite)) as Sprite;
+        if(weaponNum > 0)
+        {
+            weaponSprite.sprite = Resources.Load(itemSpriteName, typeof(Sprite)) as Sprite;
+        }
+        else
+        {
+        weaponSprite.sprite = Resources.Load(itemSpriteName, typeof(Sprite)) as Sprite;
+        }
     }
 
-    [PunRPC]
-    void DropWeapon()
-    {
-        PhotonNetwork.Instantiate(weaponNum.ToString() + "weapon", gameObject.transform.position, Quaternion.identity).GetComponent<itemScript>().ammo = ammo_P;
-    }
 
     [PunRPC]
     void JumpRPC()

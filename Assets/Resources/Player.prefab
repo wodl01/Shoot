@@ -537,7 +537,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_Sprite: {fileID: -6199720543617963891, guid: 2dec2d6c5c18df94b90cf29ebbaf3631,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -695,6 +695,7 @@ MonoBehaviour:
   health: {fileID: 1972586464137781081}
   damage: 10
   canvas: {fileID: 3338719847829250164}
+  bulletText: {fileID: 0}
   maxHpValue: 100
   hp: 100
   takedDamage: 0
@@ -713,6 +714,6 @@ MonoBehaviour:
   delayTime: 0
   reLoadTime_P: 0
   isReload: 0
-  itemname1: 
+  itemSpriteName: 
   left: 0
   cooltime: 0

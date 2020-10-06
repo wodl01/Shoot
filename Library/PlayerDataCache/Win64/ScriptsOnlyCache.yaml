@@ -2015,7 +2015,7 @@ ScriptsOnlyBuild:
     className: CountOfRoomsProperty
   - hash:
       serializedVersion: 2
-      Hash: 9e66e4361cbd511ddb8f17f53f3118a0
+      Hash: 964ac8e94e0d759ae7fae27c12bae380
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player
