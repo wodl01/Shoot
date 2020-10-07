@@ -21,6 +21,10 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] Canvas canvas;
     [SerializeField] Text bulletText;
 
+    [SerializeField] GameObject reLoadOB;
+    [SerializeField] GameObject reLoadBarOB;
+    [SerializeField] Slider reLoadBar;
+
 
 
     public float maxHpValue;
@@ -46,16 +50,19 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] float delay_P;
     [SerializeField] float delayTime;
     [SerializeField] float reLoadTime_P;
+    [SerializeField] float reLoadingTime;
+    [SerializeField] Animator reLoadAni;
     [SerializeField] bool isReload;
     [SerializeField] string itemSpriteName; 
     itemScript item;
-
+    bool Once = true;
 
 
     [SerializeField] bool left;
     Vector3 curPos;
 
     [SerializeField]float cooltime;
+
 
 
     void Awake()
@@ -106,6 +113,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
                 delay_P = item.delayTime;
                 reLoadTime_P = item.reLoadTime;
+                reLoadingTime = reLoadTime_P;
                 Debug.Log("1");
 
                 bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
@@ -198,21 +206,42 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 delayTime = delay_P;
             }
 
-            if (Input.GetKeyDown(KeyCode.R)|| ammo_P <= 0)
+            if (Input.GetKeyDown(KeyCode.R)|| ammo_P == 0)
             {
                 //총장전
-                if (ammo_P != maximumAmmo_P && isReload == false && weaponNum > 0)
+                if (ammo_P != maximumAmmo_P && isReload == false && weaponNum > 0 && delayTime < 0)
                 {
                     isReload = true;
-                    StartCoroutine(reLoad());
+                    reLoadOB.SetActive(true);
+                    reLoadBarOB.SetActive(true);
+                    
                 }
                 
                 
 
 
             }
+            
+            if (reLoadingTime >= 0 && isReload)
+            {
+                reLoadingTime -= Time.deltaTime;
+            }
 
+            reLoadBar.value = reLoadingTime / reLoadTime_P;
 
+            if(reLoadingTime < 0 && isReload)
+            {
+                isReload = false;
+                reLoadingTime = reLoadTime_P;
+                reLoadBarOB.SetActive(false);
+
+                ammo_P = maximumAmmo_P;
+                bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
+                reLoadAni.SetTrigger("Ready");
+                StartCoroutine(reLoad());
+                
+                
+            }
 
             if (Input.GetKeyDown(KeyCode.Q) && !isReload)
             {
@@ -241,10 +270,11 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     IEnumerator reLoad()
     {
         //재장전
-        yield return new WaitForSeconds(reLoadTime_P);
-        ammo_P = maximumAmmo_P;
-        bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
-        isReload = false;
+        yield return new WaitForSeconds(0.4f);
+
+
+        reLoadOB.SetActive(false);
+
     }
 
 
