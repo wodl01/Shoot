@@ -3,6 +3,7 @@ ScriptsOnlyBuild:
     Assembly-CSharp.dll:
     - BulletScript
     - NetworkManager
+    - OneWayScript
     - Player
     - itemScript
     Cinemachine.dll:
@@ -97,6 +98,10 @@ ScriptsOnlyBuild:
     - Class: 104
       Script: {instanceID: 0}
     - Class: 114
+      Script: {instanceID: -570}
+    - Class: 114
+      Script: {instanceID: 616}
+    - Class: 114
       Script: {instanceID: 9378}
     - Class: 114
       Script: {instanceID: 9394}
@@ -112,6 +117,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 9490}
     - Class: 114
       Script: {instanceID: 9492}
+    - Class: 114
+      Script: {instanceID: 9524}
     - Class: 114
       Script: {instanceID: 9526}
     - Class: 114
@@ -170,6 +177,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 11208}
     - Class: 114
       Script: {instanceID: 11222}
+    - Class: 114
+      Script: {instanceID: 25040}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -199,6 +208,16 @@ ScriptsOnlyBuild:
     - Class: 224
       Script: {instanceID: 0}
     - Class: 225
+      Script: {instanceID: 0}
+    - Class: 251
+      Script: {instanceID: 0}
+    - Class: 19719996
+      Script: {instanceID: 0}
+    - Class: 156049354
+      Script: {instanceID: 0}
+    - Class: 483693784
+      Script: {instanceID: 0}
+    - Class: 1839735485
       Script: {instanceID: 0}
   scriptHashData:
   - hash:
@@ -591,18 +610,6 @@ ScriptsOnlyBuild:
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TMP_InputField
-  - hash:
-      serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
-    assemblyName: UnityEngine.Advertisements.dll
-    namespaceName: UnityEngine.Advertisements
-    className: CallbackExecutor
-  - hash:
-      serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
-    assemblyName: UnityEngine.Advertisements.dll
-    namespaceName: UnityEngine.Advertisements.Editor
-    className: Placeholder
   - hash:
       serializedVersion: 2
       Hash: b1f26da3046d8b188758169a9d6b1078
@@ -2027,7 +2034,7 @@ ScriptsOnlyBuild:
     className: CountOfRoomsProperty
   - hash:
       serializedVersion: 2
-      Hash: 964ac8e94e0d759ae7fae27c12bae380
+      Hash: 36944c482bfd12d06059f037a90c91aa
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player
@@ -2043,7 +2050,13 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
+  - hash:
+      serializedVersion: 2
+      Hash: f17175482758a1c5e10e7ca9c03c588a
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: OneWayScript
   platform: 19
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
-  playerPath: D:/Tset/Shoot.exe
+  playerPath: C:/Users/Administrator/Desktop/Hi/Shoot.exe

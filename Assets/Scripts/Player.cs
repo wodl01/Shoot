@@ -8,11 +8,12 @@ using Cinemachine;
 
 public class Player : MonoBehaviourPunCallbacks, IPunObservable
 {
+    public bool isMine = false;
     public Rigidbody2D rigid;
     public Animator ani;
     public SpriteRenderer sprite;
     public PhotonView pv;
-    public PhotonView weapon;
+
     public Text nickNameText;
     public Image health;
     [SerializeField] int damage;
@@ -62,12 +63,13 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     Vector3 curPos;
 
     [SerializeField]float cooltime;
+    public float passWaitTime;
 
 
 
     void Awake()
     {
-
+        
         nickNameText.text = pv.IsMine ? PhotonNetwork.NickName : pv.Owner.NickName;
         nickNameText.color = pv.IsMine ? Color.green : Color.red;
 
@@ -77,6 +79,10 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             bulletText = GameObject.FindGameObjectWithTag("BulletText").GetComponent<Text>();
             Cm.Follow = transform;
             Cm.LookAt = transform;
+
+
+            gameObject.name = "MyPlayer";
+            isMine = true;
         }
     }
 
@@ -87,7 +93,6 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             if (Input.GetKeyDown(KeyCode.F) && other.tag == "Item" && cooltime < 0 && !isReload)
             {
                 //무기교체
-
                 item = other.GetComponent<itemScript>();
                 //자신이 가지고있던"무기"생성
                 if (weaponNum > 0)
@@ -131,6 +136,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
     void Update()
     {
+        
         if(cooltime >= 0)
         {
             cooltime -= Time.deltaTime;
@@ -139,6 +145,11 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         {
             delayTime -= Time.deltaTime;
         }
+        if (passWaitTime >= 0)
+        {
+            passWaitTime -= Time.deltaTime;
+        }
+
 
 
         if (pv.IsMine)
@@ -167,10 +178,14 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 ani.SetBool("IsFalling", false);
             }
 
-            isGround = Physics2D.OverlapCircle((Vector2)transform.position + new Vector2(0, -0.6f), 0.07f, 1 << LayerMask.NameToLayer("Ground"));
+            isGround = Physics2D.OverlapCircle((Vector2)transform.position + new Vector2(0, -0.25f), 0.07f, 1 << LayerMask.NameToLayer("Ground"));
             ani.SetBool("IsGround", isGround);
-            if (Input.GetKeyDown(KeyCode.Space) && isGround) pv.RPC("JumpRPC", RpcTarget.All);
+            
+            if (Input.GetKeyDown(KeyCode.Space) && isGround && !Input.GetKey(KeyCode.S)) pv.RPC("JumpRPC", RpcTarget.All);
             //점프
+
+
+            
 
 
             if (Input.GetMouseButtonDown(0) && weaponNum > 0 && ammo_P > 0 && delayTime < 0 && !isReload &&!IsFullAuto_P)
