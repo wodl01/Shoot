@@ -62,6 +62,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\FloorCheck.cs" />
     <Compile Include="Assets\itemScript.cs" />
     <Compile Include="Assets\OneWayScript.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\Common\EventSystemSpawner.cs" />

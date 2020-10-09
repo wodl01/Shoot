@@ -2,6 +2,7 @@ ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
     - BulletScript
+    - FloorCheck
     - NetworkManager
     - OneWayScript
     - Player
@@ -35,8 +36,10 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.TestListCacheData
@@ -132,53 +135,55 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 9662}
     - Class: 114
-      Script: {instanceID: 9756}
+      Script: {instanceID: 9752}
     - Class: 114
-      Script: {instanceID: 9876}
+      Script: {instanceID: 9758}
     - Class: 114
-      Script: {instanceID: 9992}
+      Script: {instanceID: 9878}
     - Class: 114
-      Script: {instanceID: 10004}
+      Script: {instanceID: 9994}
     - Class: 114
-      Script: {instanceID: 10148}
+      Script: {instanceID: 10006}
     - Class: 114
-      Script: {instanceID: 10208}
+      Script: {instanceID: 10150}
     - Class: 114
-      Script: {instanceID: 10220}
+      Script: {instanceID: 10210}
     - Class: 114
-      Script: {instanceID: 10228}
+      Script: {instanceID: 10222}
     - Class: 114
-      Script: {instanceID: 10348}
+      Script: {instanceID: 10230}
     - Class: 114
-      Script: {instanceID: 10400}
+      Script: {instanceID: 10350}
     - Class: 114
       Script: {instanceID: 10402}
     - Class: 114
-      Script: {instanceID: 10462}
+      Script: {instanceID: 10404}
     - Class: 114
-      Script: {instanceID: 10472}
+      Script: {instanceID: 10464}
     - Class: 114
-      Script: {instanceID: 10522}
+      Script: {instanceID: 10474}
     - Class: 114
-      Script: {instanceID: 10584}
+      Script: {instanceID: 10524}
     - Class: 114
-      Script: {instanceID: 10618}
+      Script: {instanceID: 10586}
     - Class: 114
-      Script: {instanceID: 10664}
+      Script: {instanceID: 10620}
     - Class: 114
-      Script: {instanceID: 10672}
+      Script: {instanceID: 10666}
     - Class: 114
-      Script: {instanceID: 10684}
+      Script: {instanceID: 10674}
     - Class: 114
-      Script: {instanceID: 11118}
+      Script: {instanceID: 10686}
     - Class: 114
-      Script: {instanceID: 11156}
+      Script: {instanceID: 11120}
     - Class: 114
-      Script: {instanceID: 11208}
+      Script: {instanceID: 11158}
     - Class: 114
-      Script: {instanceID: 11222}
+      Script: {instanceID: 11210}
     - Class: 114
-      Script: {instanceID: 25040}
+      Script: {instanceID: 11224}
+    - Class: 114
+      Script: {instanceID: 43412}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -886,6 +891,12 @@ ScriptsOnlyBuild:
     assemblyName: PhotonUnityNetworking.Demos.dll
     namespaceName: Photon.Pun.Demo.Hub
     className: ToDemoHubButton
+  - hash:
+      serializedVersion: 2
+      Hash: 79e8f15347f4032361bfaf0d89d64c35
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: OneWayScript
   - hash:
       serializedVersion: 2
       Hash: 5e8a01a14cef8c5fb6866e39e13545df
@@ -2034,7 +2045,7 @@ ScriptsOnlyBuild:
     className: CountOfRoomsProperty
   - hash:
       serializedVersion: 2
-      Hash: 36944c482bfd12d06059f037a90c91aa
+      Hash: a8e8e287f2dcbf0bbac7ef112cdecd3f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player
@@ -2052,10 +2063,10 @@ ScriptsOnlyBuild:
     className: PlayableTrack
   - hash:
       serializedVersion: 2
-      Hash: f17175482758a1c5e10e7ca9c03c588a
+      Hash: aef9386513e10c2b58b4c2172faf4e3c
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: OneWayScript
+    className: FloorCheck
   platform: 19
   scenePathNames:
   - Assets/Scenes/SampleScene.unity

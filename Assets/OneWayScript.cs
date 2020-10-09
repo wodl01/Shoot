@@ -5,36 +5,45 @@ using UnityEngine;
 public class OneWayScript : MonoBehaviour
 {
     [SerializeField] PlatformEffector2D platformEffector;
-    [SerializeField] Player player;
-    [SerializeField] Rigidbody2D playerRigid;
 
+
+    public float passWaitTime;
 
 
 
     private void Update()
     {
-        player = GameObject.Find("MyPlayer").GetComponent<Player>();
-        playerRigid = player.GetComponent<Rigidbody2D>();
 
         
 
-        if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.Space))
+        if (passWaitTime >= 0)
         {
-            if (player.passWaitTime <= 0)
+            passWaitTime -= Time.deltaTime;
+        }
+
+        if (Input.GetKey(KeyCode.S) && Input.GetKeyDown(KeyCode.Space))
+        {
+            if (passWaitTime <= 0)
             {
-                platformEffector.rotationalOffset = 180f;
-                player.passWaitTime = 0.3f;
-                Debug.Log("222");
+                platformEffector.rotationalOffset = 180f;//밑으로
+                passWaitTime = 0.1f;
+                
             }
 
         }
-        if (playerRigid.velocity.y > 0)
+        
+        if (!Input.GetKey(KeyCode.S) && Input.GetKeyDown(KeyCode.Space) && passWaitTime < 0)
         {
-            platformEffector.rotationalOffset = 0f;
-            Debug.Log("111");
+            platformEffector.rotationalOffset = 0f;//위
+            passWaitTime = 0.1f;
+
         }
-
-
+        /*
+        if(passWaitTime < 0)
+        {
+            platformEffector.rotationalOffset = 0f;//위
+        }
+        */
 
     }
 }

@@ -38,8 +38,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
 
     [SerializeField] float jumpPow;
-    [SerializeField] bool isGround;
-
+    public bool isGround;
+    [SerializeField] float speed;
 
     
     [SerializeField] int weaponNum;
@@ -66,6 +66,9 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     public float passWaitTime;
 
 
+    [SerializeField] float didi;
+    [SerializeField] float didix;
+    [SerializeField] float didiy;
 
     void Awake()
     {
@@ -129,6 +132,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 Debug.Log("2");
                 cooltime = 2;
             }
+            
         }
         
         
@@ -155,7 +159,9 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         if (pv.IsMine)
         {
             float axis = Input.GetAxisRaw("Horizontal");
-            rigid.velocity = new Vector2(4 * axis, rigid.velocity.y);
+            Vector3 move = new Vector3(axis, 0, 0);
+            rigid.velocity = new Vector2(speed * axis, rigid.velocity.y);
+
 
             health.fillAmount = hp / maxHpValue;
 
@@ -169,7 +175,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 ani.SetBool("IsMove", false);
             }
 
-            if (rigid.velocity.y < 0)
+            if (rigid.velocity.y < 6)
             {
                 ani.SetBool("IsFalling", true);
             }
@@ -178,9 +184,10 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 ani.SetBool("IsFalling", false);
             }
 
-            isGround = Physics2D.OverlapCircle((Vector2)transform.position + new Vector2(0, -0.25f), 0.07f, 1 << LayerMask.NameToLayer("Ground"));
-            ani.SetBool("IsGround", isGround);
+            //isGround = Physics2D.OverlapCircle((Vector2)transform.position + new Vector2(0, -0.25f), didi, 1 << LayerMask.NameToLayer("Ground"));
+            //ani.SetBool("IsGround", isGround);
             
+            ani.SetBool("IsGround", isGround);
             if (Input.GetKeyDown(KeyCode.Space) && isGround && !Input.GetKey(KeyCode.S)) pv.RPC("JumpRPC", RpcTarget.All);
             //점프
 
