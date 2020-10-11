@@ -5,17 +5,34 @@ using UnityEngine;
 public class FloorCheck : MonoBehaviour
 {
     [SerializeField] Player player;
+    [SerializeField] bool isUp;
 
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.tag == "Ground")
+        if (!isUp)
         {
-            player.isGround = true;
+            if (collision.tag == "Ground")
+            {
+                player.isGround = true;
+            }
+            else
+            {
+                player.isGround = false;
+            }
+
         }
-        else
+        if (isUp)
         {
-            player.isGround = false;
+            if (collision.tag == "Ground")
+            {
+                player.isFallen = true;
+            }
+            else
+            {
+                player.isFallen = false;
+            }
         }
+        
     }
 }

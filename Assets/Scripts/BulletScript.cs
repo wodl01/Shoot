@@ -7,19 +7,44 @@ using Photon.Realtime;
 public class BulletScript : MonoBehaviour
 {
     public PhotonView pv;
-    int dir;//방향
+    int dirNum;//방향
     public float bulletSpeed;
     public int bulletDamege;
     public string bulletNum;
+    [SerializeField] Rigidbody2D bulletRigid;
 
+    int dirX;
+    int dirY;
     private void Start()
     {
+        if(dirNum == 1)
+        {
+            dirX = 1;
+            dirY = 0;
+        }
+        if (dirNum == 2)
+        {
+            dirX = -1;
+            dirY = 0;
+        }
+        if (dirNum == 3)
+        {
+            dirX = 0;
+            dirY = 1;
+        }
+        if (dirNum == 4)
+        {
+            dirX = 0;
+            dirY = -1;
+        }
+
         Destroy(gameObject, 3f);
     }
 
     private void Update()
     {
-        transform.Translate(Vector3.right * bulletSpeed * Time.deltaTime * dir);
+        //transform.Translate(new Vector3(dirX,dirY,0) * bulletSpeed * Time.deltaTime);
+        bulletRigid.velocity = new Vector3(dirX, dirY, 0) * bulletSpeed;
     }
 
     
@@ -44,7 +69,7 @@ public class BulletScript : MonoBehaviour
     [PunRPC]
     void BulletDirRPC(int dir)
     {
-        this.dir = dir;
+        this.dirNum = dir;
     }
 
 

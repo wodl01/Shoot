@@ -26,13 +26,19 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] GameObject reLoadBarOB;
     [SerializeField] Slider reLoadBar;
 
-
-
+    [SerializeField] GameObject bodyUp;
+    [SerializeField] Animator bodyUpAni;
+    [SerializeField] GameObject upPosOB;
+    [SerializeField] GameObject downPosOB;
+    /// <summary>
+    /// ////////////////////////////////////////
+    /// </summary>
     public float maxHpValue;
     public float hp;
 
     public int takedDamage;
 
+    [SerializeField] bool isLookUp;
 
     [SerializeField] GameObject shotPos;
 
@@ -41,10 +47,10 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     public bool isGround;
     [SerializeField] float speed;
 
-    
+    [SerializeField] SpriteRenderer weaponSprite;
+    [SerializeField] GameObject weaponOB;
     [SerializeField] int weaponNum;
     [SerializeField] GameObject[] bullet;
-    [SerializeField] SpriteRenderer weaponSprite;
     [SerializeField] int maximumAmmo_P;
     [SerializeField] int ammo_P;
     [SerializeField] bool IsFullAuto_P;
@@ -56,19 +62,24 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] bool isReload;
     [SerializeField] string itemSpriteName; 
     itemScript item;
+
+    [SerializeField] int attackDir;
+    /// <summary>
+    /// ////////////////////////////////////////////
+    /// </summary>
     bool Once = true;
 
 
     [SerializeField] bool left;
+    public bool isBodySetUp;
     Vector3 curPos;
 
     [SerializeField]float cooltime;
     public float passWaitTime;
 
 
-    [SerializeField] float didi;
-    [SerializeField] float didix;
-    [SerializeField] float didiy;
+    [SerializeField] OneWayScript oneWay;
+    public bool isFallen;
 
     void Awake()
     {
@@ -83,8 +94,9 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             Cm.Follow = transform;
             Cm.LookAt = transform;
 
-
-            gameObject.name = "MyPlayer";
+            oneWay = GameObject.Find("OneWayTile").GetComponent<OneWayScript>();
+            oneWay.player = this;
+            //gameObject.name = "MyPlayer";
             isMine = true;
         }
     }
@@ -158,6 +170,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
         if (pv.IsMine)
         {
+            //움직임
             float axis = Input.GetAxisRaw("Horizontal");
             Vector3 move = new Vector3(axis, 0, 0);
             rigid.velocity = new Vector2(speed * axis, rigid.velocity.y);
@@ -175,7 +188,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 ani.SetBool("IsMove", false);
             }
 
-            if (rigid.velocity.y < 6)
+            if (rigid.velocity.y < 0)
             {
                 ani.SetBool("IsFalling", true);
             }
@@ -191,9 +204,39 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             if (Input.GetKeyDown(KeyCode.Space) && isGround && !Input.GetKey(KeyCode.S)) pv.RPC("JumpRPC", RpcTarget.All);
             //점프
 
+            if (Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
+            {
+                //위를봄
+                attackDir = 3;
+                isLookUp = true;
+                bodyUpAni.SetBool("IsLookUp", true);
+                bodyUpAni.SetBool("IsLookInfront", false);
+            }
+            else if(!Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S))
+            {
+                //아래를봄
+                attackDir = 4;
+                isLookUp = false;
+                bodyUpAni.SetBool("IsLookUp", false);
+                bodyUpAni.SetBool("IsLookInfront", false);
+            }
+            else
+            {
+                bodyUpAni.SetBool("IsLookInfront", true);
+            }
 
-            
-
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
+            {
+                
+            }
+            else if (Input.GetKey(KeyCode.D))
+            {
+                attackDir = 1;
+            }
+            else if (Input.GetKey(KeyCode.A))
+            {
+                attackDir = 2;
+            }
 
             if (Input.GetMouseButtonDown(0) && weaponNum > 0 && ammo_P > 0 && delayTime < 0 && !isReload &&!IsFullAuto_P)
             {
@@ -204,7 +247,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
 
                 PhotonNetwork.Instantiate(weaponNum.ToString()/*이름 중요*/, shotPos.transform.position, Quaternion.identity)
-                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, left ? -1 : 1);
+                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir);
                 ammo_P -= 1;
 
                 bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
@@ -220,7 +263,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
 
                 PhotonNetwork.Instantiate(weaponNum.ToString()/*이름 중요*/, shotPos.transform.position, Quaternion.identity)
-                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, left ? -1 : 1);
+                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir);
                 ammo_P -= 1;
 
                 bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
@@ -289,6 +332,17 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         else transform.position = Vector3.Lerp(transform.position, curPos, Time.deltaTime * 10);
     }
 
+    public void BodySetUp()
+    {
+        isBodySetUp = true;
+        bodyUp.transform.position = upPosOB.transform.position;
+    }
+    public void BodySetDown()
+    {
+        isBodySetUp = false;
+        bodyUp.transform.position = downPosOB.transform.position;
+    }
+
     IEnumerator reLoad()
     {
         //재장전
@@ -304,10 +358,12 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     void FlipXRPC(float axis)
     {
+        //방향전환
         
         if(axis == -1)
         {
             left = true;
+            
             canvas.transform.localScale = new Vector3(1, 1, 1);
             gameObject.transform.localScale = new Vector3(1, 1, 1);
 
@@ -315,6 +371,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         else
         {
             left = false;
+            
             canvas.transform.localScale = new Vector3(-1, 1, 1);
             gameObject.transform.localScale = new Vector3(-1, 1, 1);
         }
@@ -326,6 +383,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     {
         if(weaponNum > 0)
         {
+            //무기Sprite바꿈
             weaponSprite.sprite = Resources.Load(itemSpriteName, typeof(Sprite)) as Sprite;
         }
         else
@@ -333,6 +391,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         weaponSprite.sprite = Resources.Load(itemSpriteName, typeof(Sprite)) as Sprite;
         }
     }
+
 
 
     [PunRPC]

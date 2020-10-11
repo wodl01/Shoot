@@ -86,7 +86,7 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 65
       Script: {instanceID: 0}
-    - Class: 70
+    - Class: 66
       Script: {instanceID: 0}
     - Class: 74
       Script: {instanceID: 0}
@@ -175,15 +175,15 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10686}
     - Class: 114
-      Script: {instanceID: 11120}
+      Script: {instanceID: 11118}
     - Class: 114
-      Script: {instanceID: 11158}
+      Script: {instanceID: 11122}
     - Class: 114
-      Script: {instanceID: 11210}
+      Script: {instanceID: 11160}
     - Class: 114
-      Script: {instanceID: 11224}
+      Script: {instanceID: 11212}
     - Class: 114
-      Script: {instanceID: 43412}
+      Script: {instanceID: 11226}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -893,7 +893,7 @@ ScriptsOnlyBuild:
     className: ToDemoHubButton
   - hash:
       serializedVersion: 2
-      Hash: 79e8f15347f4032361bfaf0d89d64c35
+      Hash: dcb5868d6341f67d143d378a48f101a8
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: OneWayScript
@@ -1919,6 +1919,12 @@ ScriptsOnlyBuild:
     className: CurrentRoomPlayerCountProperty
   - hash:
       serializedVersion: 2
+      Hash: ef5d13977f9d76ae23bf1fadb38b6a35
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: FloorCheck
+  - hash:
+      serializedVersion: 2
       Hash: 6e94ae6dce9add4548d5e152eccb22ea
     assemblyName: PhotonUnityNetworking.dll
     namespaceName: Photon.Pun
@@ -2045,7 +2051,7 @@ ScriptsOnlyBuild:
     className: CountOfRoomsProperty
   - hash:
       serializedVersion: 2
-      Hash: a8e8e287f2dcbf0bbac7ef112cdecd3f
+      Hash: c5cf19f7f0180ff2664c787ddde5311b
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player
@@ -2061,13 +2067,7 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
-  - hash:
-      serializedVersion: 2
-      Hash: aef9386513e10c2b58b4c2172faf4e3c
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: FloorCheck
   platform: 19
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
-  playerPath: C:/Users/Administrator/Desktop/Hi/Shoot.exe
+  playerPath: D:/Tset/Shoot.exe
