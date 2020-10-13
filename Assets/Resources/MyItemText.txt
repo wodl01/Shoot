@@ -1,0 +1,1 @@
+[{"Type":"Weapon","Name":"피스톨","Explain":"반자동","Number":"1","isUsing":false},{"Type":"Weapon","Name":"자동소총","Explain":"자동.","Number":"1","isUsing":true}]

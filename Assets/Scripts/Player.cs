@@ -30,6 +30,13 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] Animator bodyUpAni;
     [SerializeField] GameObject upPosOB;
     [SerializeField] GameObject downPosOB;
+
+    [SerializeField] GameObject weaponOB;
+    [SerializeField] GameObject weaponOB2;
+    [SerializeField] GameObject weaponUpPos;
+    [SerializeField] GameObject weaponUpPos2;
+    [SerializeField] GameObject weaponMidPos;
+    [SerializeField] GameObject weaponMidPos2;
     /// <summary>
     /// ////////////////////////////////////////
     /// </summary>
@@ -48,7 +55,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] float speed;
 
     [SerializeField] SpriteRenderer weaponSprite;
-    [SerializeField] GameObject weaponOB;
+    
     [SerializeField] int weaponNum;
     [SerializeField] GameObject[] bullet;
     [SerializeField] int maximumAmmo_P;
@@ -207,36 +214,62 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             if (Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
             {
                 //위를봄
-                attackDir = 3;
-                isLookUp = true;
-                bodyUpAni.SetBool("IsLookUp", true);
-                bodyUpAni.SetBool("IsLookInfront", false);
+                if (!left)
+                {
+                    attackDir = 3;
+                    weaponOB.transform.position = weaponUpPos.transform.position;
+                    weaponOB.transform.rotation = Quaternion.Euler(0, 0, 90);
+                    weaponOB2.transform.position = weaponUpPos2.transform.position;
+                    weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 90);
+                    bodyUpAni.SetBool("IsLookUp", true);
+                    bodyUpAni.SetBool("IsLookInfront", false);
+                }
+                
+
+                if (left)
+                {
+                    attackDir = 3;
+                    weaponOB.transform.position = weaponUpPos.transform.position;
+                    weaponOB.transform.rotation = Quaternion.Euler(0, 0, -90);
+                    weaponOB2.transform.position = weaponUpPos2.transform.position;
+                    weaponOB2.transform.rotation = Quaternion.Euler(0, 0, -90);
+                    bodyUpAni.SetBool("IsLookUp", true);
+                    bodyUpAni.SetBool("IsLookInfront", false);
+                }
             }
-            else if(!Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S))
+            else if (!Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S))
             {
                 //아래를봄
                 attackDir = 4;
-                isLookUp = false;
                 bodyUpAni.SetBool("IsLookUp", false);
                 bodyUpAni.SetBool("IsLookInfront", false);
             }
             else
             {
-                bodyUpAni.SetBool("IsLookInfront", true);
+                if (left)
+                {
+                    //왼쪽
+                    weaponOB.transform.position = weaponMidPos.transform.position;
+                    weaponOB.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    weaponOB2.transform.position = weaponMidPos2.transform.position;
+                    weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    attackDir = 2;
+                    bodyUpAni.SetBool("IsLookInfront", true);
+                }
+                else
+                {
+                    //오른쪽
+                    weaponOB.transform.position = weaponMidPos.transform.position;
+                    weaponOB.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    weaponOB2.transform.position = weaponMidPos2.transform.position;
+                    weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    attackDir = 1;
+                    bodyUpAni.SetBool("IsLookInfront", true);
+                }
             }
 
-            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
-            {
-                
-            }
-            else if (Input.GetKey(KeyCode.D))
-            {
-                attackDir = 1;
-            }
-            else if (Input.GetKey(KeyCode.A))
-            {
-                attackDir = 2;
-            }
+
+
 
             if (Input.GetMouseButtonDown(0) && weaponNum > 0 && ammo_P > 0 && delayTime < 0 && !isReload &&!IsFullAuto_P)
             {
@@ -343,6 +376,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         bodyUp.transform.position = downPosOB.transform.position;
     }
 
+
+
     IEnumerator reLoad()
     {
         //재장전
@@ -363,7 +398,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         if(axis == -1)
         {
             left = true;
-            
+
             canvas.transform.localScale = new Vector3(1, 1, 1);
             gameObject.transform.localScale = new Vector3(1, 1, 1);
 
@@ -371,7 +406,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         else
         {
             left = false;
-            
+
             canvas.transform.localScale = new Vector3(-1, 1, 1);
             gameObject.transform.localScale = new Vector3(-1, 1, 1);
         }

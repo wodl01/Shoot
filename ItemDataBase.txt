@@ -1,0 +1,2 @@
+﻿Weapon	피스톨	반자동	1	FALSE
+Weapon	자동소총	자동.	1	FALSE
