@@ -21,19 +21,19 @@ public class Item
 public class GameManager : MonoBehaviour
 {
     [SerializeField] TextAsset itemDataBase;
-    [SerializeField] List<Item> allItemList, MyItemList, curItemList;
+    public  List<Item> allItemList, MyItemList, curItemList;
     [SerializeField] string curType = "Weapon";
     [SerializeField] GameObject[] slot, usingImage;
     [SerializeField] Image[] tabImage, itemImage;
     [SerializeField] Sprite tapUnClickedSprite, tapOnClickedSprite;
-    [SerializeField] Sprite[] itemSprite;
+    public Sprite[] itemSprite;
     [SerializeField] GameObject explainPanel;
     [SerializeField] RectTransform[] slotPos;
     [SerializeField] RectTransform canvasRect;
     [SerializeField] InputField itemName, minus;
     RectTransform explainRect;
 
-    void Start()
+    void Awake()
     {
         //전체 아이템 리스트 불러오기
         string[] line = itemDataBase.text.Substring(0, itemDataBase.text.Length - 1).Split('\n');
@@ -45,28 +45,31 @@ public class GameManager : MonoBehaviour
         }
         Load();
         explainRect = explainPanel.GetComponent<RectTransform>();
+       
     }
 
     private void Update()
     {
         RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, Input.mousePosition, Camera.main, out Vector2 anchoredPos);
         explainRect.anchoredPosition = anchoredPos + new Vector2(204,-155);
+
     }
 
-    public void GetItem()
+
+    public void GetItem(string itemname)
     {
-        Item curitem = MyItemList.Find(x => x.Name == itemName.text);
+        Item curitem = MyItemList.Find(x => x.Name == itemname);
         if(curitem != null)
         {
-            curitem.Number = (int.Parse(curitem.Number) + int.Parse(itemName.text)).ToString();
+            curitem.Number = (int.Parse(curitem.Number) + int.Parse(itemname)).ToString();
 
         }
         else
         {
-            Item curAllItem = allItemList.Find(x => x.Name == itemName.text);
+            Item curAllItem = allItemList.Find(x => x.Name == itemname);
             if (curAllItem != null)
             {
-                curAllItem.Number = itemName.text;
+                curAllItem.Number = itemname;
                 MyItemList.Add(curAllItem);
             }
                 
@@ -94,6 +97,7 @@ public class GameManager : MonoBehaviour
         if(curType == "Food")
         {
             if (UsingItem != null) UsingItem.isUsing = false;//사용중인것을 false시킨다
+
             CurItem.isUsing = true;//그리고 현제 사용된것을 true시킨다
         }   
         else

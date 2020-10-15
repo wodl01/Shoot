@@ -1,1 +1,1 @@
-[{"Type":"Weapon","Name":"피스톨","Explain":"반자동","Number":"1","isUsing":false},{"Type":"Weapon","Name":"자동소총","Explain":"자동.","Number":"1","isUsing":true}]
+[{"Type":"Weapon","Name":"no1","Explain":"반자동","Number":"no1","isUsing":false},{"Type":"Food","Name":"no3","Explain":"Hp.25를 회복시켜준다","Number":"no3","isUsing":false},{"Type":"Weapon","Name":"no2","Explain":"자동.","Number":"no2","isUsing":false}]

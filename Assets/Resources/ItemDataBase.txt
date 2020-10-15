@@ -1,2 +1,3 @@
-﻿Weapon	피스톨	반자동	1	FALSE
-Weapon	자동소총	자동.	1	FALSE
+﻿Weapon	no1	반자동	1	FALSE
+Weapon	no2	자동.	1	FALSE
+Food	no3	Hp.25를 회복시켜준다	1	FALSE
