@@ -30,7 +30,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject explainPanel;
     [SerializeField] RectTransform[] slotPos;
     [SerializeField] RectTransform canvasRect;
-    IEnumerator PointerCornutin;
+    [SerializeField] InputField itemName, minus;
+    RectTransform explainRect;
+
     void Start()
     {
         //전체 아이템 리스트 불러오기
@@ -42,6 +44,46 @@ public class GameManager : MonoBehaviour
             allItemList.Add(new Item(row[0], row[1], row[2], row[3], row[4] == "TRUE"));
         }
         Load();
+        explainRect = explainPanel.GetComponent<RectTransform>();
+    }
+
+    private void Update()
+    {
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, Input.mousePosition, Camera.main, out Vector2 anchoredPos);
+        explainRect.anchoredPosition = anchoredPos + new Vector2(204,-155);
+    }
+
+    public void GetItem()
+    {
+        Item curitem = MyItemList.Find(x => x.Name == itemName.text);
+        if(curitem != null)
+        {
+            curitem.Number = (int.Parse(curitem.Number) + int.Parse(itemName.text)).ToString();
+
+        }
+        else
+        {
+            Item curAllItem = allItemList.Find(x => x.Name == itemName.text);
+            if (curAllItem != null)
+            {
+                curAllItem.Number = itemName.text;
+                MyItemList.Add(curAllItem);
+            }
+                
+        }
+        Save();
+    }
+    public void RemoveItem()
+    {
+    Item curitem = MyItemList.Find(x => x.Name == itemName.text);
+        if (curitem != null)//있다면
+        {
+            int curNum = int.Parse(curitem.Number) - int.Parse(itemName.text);//문자를 숫자로만들어 뺀다
+
+            if (curNum <= 0) MyItemList.Remove(curitem);
+            else curitem.Number = curNum.ToString();
+        }
+        Save();
     }
 
     public void SlotClick(int slotNum)//아이템을 클릭했을때 정보를 가저옴
@@ -97,22 +139,22 @@ public class GameManager : MonoBehaviour
     
     public void PointerEnter(int slotNum)
     {
-        PointerCornutin = PointerEnterDelay(slotNum);
-        StartCoroutine(PointerCornutin);
-
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, Input.mousePosition, Camera.main, out Vector2 anchoredPos);
-        explainPanel.GetComponent<RectTransform>().anchoredPosition = anchoredPos;
-    }
-    IEnumerator PointerEnterDelay(int slotNum)
-    {
-        yield return new WaitForSeconds(0.5f);
         explainPanel.SetActive(true);
-        explainPanel.GetComponent<RectTransform>().anchoredPosition = Input.mousePosition;
+
         Debug.Log(slotNum + "들어옴");
+
+        explainPanel.GetComponentInChildren<Text>().text = curItemList[slotNum].Name;
+        explainPanel.transform.GetChild(2).GetComponent<Image>().sprite = slot[slotNum].transform.GetChild(1).GetComponent<Image>().sprite;
+        explainPanel.transform.GetChild(3).GetComponent<Text>().text = curItemList[slotNum].Number + "개";
+        explainPanel.transform.GetChild(4).GetComponent<Text>().text = curItemList[slotNum].Explain;
+
+
+
     }
+
     public void PointerExit(int slotNum)
     {
-        StopCoroutine(PointerCornutin);
+
         explainPanel.SetActive(false);
         Debug.Log(slotNum + "나감");
     }
