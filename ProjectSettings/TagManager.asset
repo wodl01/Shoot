@@ -9,6 +9,7 @@ TagManager:
   - Item
   - BulletText
   - HitBox
+  - BulletText2
   layers:
   - Default
   - TransparentFX

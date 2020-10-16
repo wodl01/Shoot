@@ -362,6 +362,36 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &2320627683909967439
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3041823890682254502}
+  m_Layer: 0
+  m_Name: ShotPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 2800000, guid: 8776ef76824ca394296d4a84062c4391, type: 3}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3041823890682254502
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2320627683909967439}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.5316, y: 0.09899999, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8502247737546304865}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2624998644922675008
 GameObject:
   m_ObjectHideFlags: 0
@@ -720,7 +750,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8502247737546304865
 Transform:
   m_ObjectHideFlags: 0
@@ -731,7 +761,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.1406, y: -0.189, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 3041823890682254502}
   m_Father: {fileID: 8718485723460494866}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1177,7 +1208,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 9
-  m_Sprite: {fileID: 21300000, guid: 3c509b85d95b79848836bc741ff0e710, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1185,7 +1216,7 @@ SpriteRenderer:
   m_Size: {x: 1.5, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &448166734707772901
@@ -1828,11 +1859,13 @@ MonoBehaviour:
   ani: {fileID: 2899828837297106475}
   sprite: {fileID: 8718485723460494867}
   pv: {fileID: 7692282945783129204}
+  gm: {fileID: 0}
   nickNameText: {fileID: 1021918189707896180}
   health: {fileID: 1972586464137781081}
   damage: 10
   canvas: {fileID: 3338719847829250164}
   bulletText: {fileID: 0}
+  bulletText2: {fileID: 0}
   reLoadOB: {fileID: 2908275431963921973}
   reLoadBarOB: {fileID: 4527915272866417660}
   reLoadBar: {fileID: 8850396356264317717}
@@ -1851,29 +1884,40 @@ MonoBehaviour:
   takedDamage: 0
   isLookUp: 0
   shotPos: {fileID: 5540588587113956563}
+  shotPos2: {fileID: 2320627683909967439}
   jumpPow: 300
   isGround: 1
   speed: 4
   weaponSprite: {fileID: 6233064764733165331}
   weaponNum: 0
+  weaponNum2: 0
   bullet:
   - {fileID: 8075715940360838214, guid: 22d8839269ea03142a9d36d8704c3fe0, type: 3}
   - {fileID: 8075715940360838214, guid: 899c30488fc4b67448c8fc2c68cf5199, type: 3}
   maximumAmmo_P: 0
+  maximumAmmo_P2: 0
   ammo_P: 0
+  ammo_P2: 0
   IsFullAuto_P: 0
+  IsFullAuto_P2: 0
   delay_P: 0
+  delay_P2: 0
   delayTime: 0
+  delayTime2: 0
   reLoadTime_P: 0
+  reLoadTime_P2: 0
   reLoadingTime: 0
+  reLoadingTime2: 0
   reLoadAni: {fileID: 2947318627049548447}
   isReload: 0
+  isReload2: 0
   itemSpriteName: 
+  skillCode: 0
   attackDir: 0
   left: 0
   isBodySetUp: 0
   cooltime: 0
-  passWaitTime: 0
+  cooltime2: 0
   oneWay: {fileID: 0}
   isFallen: 0
 --- !u!61 &2861500382264977899

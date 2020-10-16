@@ -33,8 +33,10 @@ public class getitem : MonoBehaviour
     {
         if (collision.tag == "Player" && Input.GetKeyDown(KeyCode.F))
         {
+            Debug.Log("asdasd");
             gm.GetItem(weapon_number);
             pv.RPC("destroy", RpcTarget.AllBuffered);
+            
         }
     }
 

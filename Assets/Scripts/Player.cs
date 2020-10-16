@@ -13,7 +13,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     public Animator ani;
     public SpriteRenderer sprite;
     public PhotonView pv;
-
+    public GameManager gm;
     public Text nickNameText;
     public Image health;
     [SerializeField] int damage;
@@ -21,6 +21,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
     [SerializeField] Canvas canvas;
     [SerializeField] Text bulletText;
+    [SerializeField] Text bulletText2;
 
     [SerializeField] GameObject reLoadOB;
     [SerializeField] GameObject reLoadBarOB;
@@ -31,7 +32,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] GameObject upPosOB;
     [SerializeField] GameObject downPosOB;
 
-    [SerializeField] GameObject weaponOB;
+    public GameObject weaponOB;
     [SerializeField] GameObject weaponOB2;
     [SerializeField] GameObject weaponUpPos;
     [SerializeField] GameObject weaponUpPos2;
@@ -48,6 +49,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] bool isLookUp;
 
     [SerializeField] GameObject shotPos;
+    [SerializeField] GameObject shotPos2;
 
 
     [SerializeField] float jumpPow;
@@ -57,18 +59,29 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] SpriteRenderer weaponSprite;
     
     [SerializeField] int weaponNum;
+    [SerializeField] int weaponNum2;
     [SerializeField] GameObject[] bullet;
     [SerializeField] int maximumAmmo_P;
+    [SerializeField] int maximumAmmo_P2;
     [SerializeField] int ammo_P;
+    [SerializeField] int ammo_P2;
     [SerializeField] bool IsFullAuto_P;
+    [SerializeField] bool IsFullAuto_P2;
     [SerializeField] float delay_P;
+    [SerializeField] float delay_P2;
     [SerializeField] float delayTime;
+    [SerializeField] float delayTime2;
     [SerializeField] float reLoadTime_P;
+    [SerializeField] float reLoadTime_P2;
     [SerializeField] float reLoadingTime;
+    [SerializeField] float reLoadingTime2;
     [SerializeField] Animator reLoadAni;
     [SerializeField] bool isReload;
+    [SerializeField] bool isReload2;
     [SerializeField] string itemSpriteName; 
     itemScript item;
+
+    public int skillCode;
 
     [SerializeField] int attackDir;
     /// <summary>
@@ -81,8 +94,9 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     public bool isBodySetUp;
     Vector3 curPos;
 
-    [SerializeField]float cooltime;
-    public float passWaitTime;
+    [SerializeField] float cooltime;
+    [SerializeField] float cooltime2;
+
 
 
     [SerializeField] OneWayScript oneWay;
@@ -90,7 +104,9 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
     void Awake()
     {
-        
+        gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+        gm.player = this;
+
         nickNameText.text = pv.IsMine ? PhotonNetwork.NickName : pv.Owner.NickName;
         nickNameText.color = pv.IsMine ? Color.green : Color.red;
 
@@ -98,12 +114,13 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         {
             var Cm = GameObject.Find("CMcamera").GetComponent<CinemachineVirtualCamera>();
             bulletText = GameObject.FindGameObjectWithTag("BulletText").GetComponent<Text>();
+            bulletText2 = GameObject.FindGameObjectWithTag("BulletText2").GetComponent<Text>();
             Cm.Follow = transform;
             Cm.LookAt = transform;
 
             oneWay = GameObject.Find("OneWayTile").GetComponent<OneWayScript>();
             oneWay.player = this;
-            //gameObject.name = "MyPlayer";
+            gameObject.name = "MyPlayer";
             isMine = true;
         }
     }
@@ -168,10 +185,13 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         {
             delayTime -= Time.deltaTime;
         }
-        if (passWaitTime >= 0)
+
+
+        if (delayTime2 >= 0)
         {
-            passWaitTime -= Time.deltaTime;
+            delayTime2 -= Time.deltaTime;
         }
+
 
 
 
@@ -304,6 +324,39 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 delayTime = delay_P;
             }
 
+            if (Input.GetMouseButtonDown(1) && weaponNum2 > 0 && ammo_P2 > 0 && delayTime2 < 0 && !isReload2 && !IsFullAuto_P2)
+            {
+                //반대쪽총발사
+                bullet[weaponNum2 - 1].GetComponent<BulletScript>().bulletDamege = damage;
+
+
+
+
+                PhotonNetwork.Instantiate(weaponNum2.ToString()/*이름 중요*/, shotPos2.transform.position, Quaternion.identity)
+                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir);
+                ammo_P2 -= 1;
+
+                bulletText2.text = ammo_P2.ToString() + "/" + maximumAmmo_P2.ToString();
+
+                delayTime2 = delay_P2;
+            }
+            else if (Input.GetMouseButton(1) && weaponNum2 > 0 && ammo_P2 > 0 && delayTime2 < 0 && !isReload2 && IsFullAuto_P2)
+            {
+                //반대쪽총발사
+                bullet[weaponNum2 - 1].GetComponent<BulletScript>().bulletDamege = damage;
+
+
+
+
+                PhotonNetwork.Instantiate(weaponNum2.ToString()/*이름 중요*/, shotPos2.transform.position, Quaternion.identity)
+                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir);
+                ammo_P2 -= 1;
+
+                bulletText2.text = ammo_P2.ToString() + "/" + maximumAmmo_P2.ToString();
+
+                delayTime2 = delay_P2;
+            }
+
             if (Input.GetKeyDown(KeyCode.R)|| ammo_P == 0)
             {
                 //총장전
@@ -314,15 +367,26 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     reLoadBarOB.SetActive(true);
                     
                 }
-                
-                
-
-
             }
-            
+            if (Input.GetKeyDown(KeyCode.R) || ammo_P2 == 0)
+            {
+                //총장전
+                if (ammo_P2 != maximumAmmo_P2 && isReload2 == false && weaponNum2 > 0 && delayTime2 < 0)
+                {
+                    isReload2 = true;
+                    reLoadOB.SetActive(true);
+                    reLoadBarOB.SetActive(true);
+
+                }
+            }
+
             if (reLoadingTime >= 0 && isReload)
             {
                 reLoadingTime -= Time.deltaTime;
+            }
+            if (reLoadingTime2 >= 0 && isReload2)
+            {
+                reLoadingTime2 -= Time.deltaTime;
             }
 
             reLoadBar.value = reLoadingTime / reLoadTime_P;
@@ -337,8 +401,17 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
                 reLoadAni.SetTrigger("Ready");
                 StartCoroutine(reLoad());
-                
-                
+            }
+            if (reLoadingTime2 < 0 && isReload2)
+            {
+                isReload2 = false;
+                reLoadingTime2 = reLoadTime_P2;
+                reLoadBarOB.SetActive(false);
+
+                ammo_P2 = maximumAmmo_P2;
+                bulletText2.text = ammo_P2.ToString() + "/" + maximumAmmo_P2.ToString();
+                reLoadAni.SetTrigger("Ready");
+                StartCoroutine(reLoad());
             }
 
             if (Input.GetKeyDown(KeyCode.Q) && !isReload)
@@ -359,6 +432,10 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
                     bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
                 }
+            }
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+
             }
         }
         else if ((transform.position = curPos).sqrMagnitude >= 100) transform.position = curPos;

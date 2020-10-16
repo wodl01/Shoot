@@ -1,3 +1,3 @@
-﻿Weapon	no1	반자동	1	FALSE
-Weapon	no2	자동.	1	FALSE
-Food	no3	Hp.25를 회복시켜준다	1	FALSE
+﻿Weapon	no1	반자동	1	FALSE	1Gun	AutoGun	TRUE	0	7	20	0	0	0	0	2	17	0.1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Weapon	no2	자동.	1	FALSE	2Gun	Gun	TRUE	0	20	5	0	0	0	0	4	17	0.5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Food	no3	Hp.25를 회복시켜준다	1	FALSE	Food	Food	TRUE	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
