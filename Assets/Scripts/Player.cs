@@ -23,6 +23,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] Text bulletText;
     [SerializeField] Text bulletText2;
 
+    public BuffScript buffScript;
+
     [SerializeField] GameObject reLoadOB;
     [SerializeField] GameObject reLoadBarOB;
     [SerializeField] Slider reLoadBar;
@@ -38,6 +40,9 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] GameObject weaponUpPos2;
     [SerializeField] GameObject weaponMidPos;
     [SerializeField] GameObject weaponMidPos2;
+
+    [SerializeField] GameObject weaponReloadSpawn;
+    [SerializeField] GameObject weaponReloadSpawn2;
     /// <summary>
     /// ////////////////////////////////////////
     /// </summary>
@@ -51,6 +56,17 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] GameObject shotPos;
     [SerializeField] GameObject shotPos2;
 
+    public string spawnAttackObName;
+    public string spawnAttackObName2;
+
+    public string spawnSkillObName;
+    public string spawnSkillObName2;
+
+    public float duringAbility;
+
+    public float blood;
+
+    public float DecreaseTakedDamage;
 
     [SerializeField] float jumpPow;
     public bool isGround;
@@ -60,6 +76,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     
     [SerializeField] int weaponNum;
     [SerializeField] int weaponNum2;
+    public int attackCode;
+    public int attackCode2;
     [SerializeField] GameObject[] bullet;
     [SerializeField] int maximumAmmo_P;
     [SerializeField] int maximumAmmo_P2;
@@ -115,6 +133,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             var Cm = GameObject.Find("CMcamera").GetComponent<CinemachineVirtualCamera>();
             bulletText = GameObject.FindGameObjectWithTag("BulletText").GetComponent<Text>();
             bulletText2 = GameObject.FindGameObjectWithTag("BulletText2").GetComponent<Text>();
+            buffScript = GameObject.FindGameObjectWithTag("BuffPanel").GetComponent<BuffScript>();
             Cm.Follow = transform;
             Cm.LookAt = transform;
 
@@ -294,7 +313,10 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             if (Input.GetMouseButtonDown(0) && weaponNum > 0 && ammo_P > 0 && delayTime < 0 && !isReload &&!IsFullAuto_P)
             {
                 //총발사
-                bullet[weaponNum - 1].GetComponent<BulletScript>().bulletDamege = damage;
+                bullet[weaponNum - 1].GetComponent<BulletScript>().playerDamage = damage;
+
+
+                bullet[weaponNum - 1].GetComponent<BulletScript>().duringAbility = duringAbility;
 
 
 
@@ -310,12 +332,13 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             else if (Input.GetMouseButton(0) && weaponNum > 0 && ammo_P > 0 && delayTime < 0 && !isReload && IsFullAuto_P)
             {
                 //자동총발사
-                bullet[weaponNum - 1].GetComponent<BulletScript>().bulletDamege = damage;
+                bullet[weaponNum - 1].GetComponent<BulletScript>().playerDamage = damage;
 
 
+                bullet[weaponNum - 1].GetComponent<BulletScript>().duringAbility = duringAbility;
 
 
-                PhotonNetwork.Instantiate(weaponNum.ToString()/*이름 중요*/, shotPos.transform.position, Quaternion.identity)
+                PhotonNetwork.Instantiate("Bullet" + weaponNum.ToString()/*이름 중요*/, shotPos.transform.position, Quaternion.identity)
                     .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir);
                 ammo_P -= 1;
 
@@ -327,7 +350,10 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             if (Input.GetMouseButtonDown(1) && weaponNum2 > 0 && ammo_P2 > 0 && delayTime2 < 0 && !isReload2 && !IsFullAuto_P2)
             {
                 //반대쪽총발사
-                bullet[weaponNum2 - 1].GetComponent<BulletScript>().bulletDamege = damage;
+                bullet[weaponNum2 - 1].GetComponent<BulletScript>().playerDamage = damage;
+
+
+                bullet[weaponNum2 - 1].GetComponent<BulletScript>().duringAbility = duringAbility;
 
 
 
@@ -343,7 +369,10 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             else if (Input.GetMouseButton(1) && weaponNum2 > 0 && ammo_P2 > 0 && delayTime2 < 0 && !isReload2 && IsFullAuto_P2)
             {
                 //반대쪽총발사
-                bullet[weaponNum2 - 1].GetComponent<BulletScript>().bulletDamege = damage;
+                bullet[weaponNum2 - 1].GetComponent<BulletScript>().playerDamage = damage;
+
+
+                bullet[weaponNum2 - 1].GetComponent<BulletScript>().duringAbility = duringAbility;
 
 
 
@@ -365,7 +394,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     isReload = true;
                     reLoadOB.SetActive(true);
                     reLoadBarOB.SetActive(true);
-                    
+                    pv.RPC("ReloadWeaponSpriteRPC", RpcTarget.AllBuffered, itemSpriteName);
+                    //PhotonNetwork.Instantiate(weaponNum.ToString() + "_Clip", weaponReloadSpawn.transform.position, Quaternion.identity);
                 }
             }
             if (Input.GetKeyDown(KeyCode.R) || ammo_P2 == 0)
@@ -376,7 +406,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     isReload2 = true;
                     reLoadOB.SetActive(true);
                     reLoadBarOB.SetActive(true);
-
+                    pv.RPC("ReloadWeaponSpriteRPC", RpcTarget.AllBuffered, itemSpriteName);
+                    //PhotonNetwork.Instantiate(weaponNum2.ToString() + "_Clip", weaponReloadSpawn2.transform.position, Quaternion.identity);
                 }
             }
 
@@ -400,7 +431,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 ammo_P = maximumAmmo_P;
                 bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
                 reLoadAni.SetTrigger("Ready");
-                StartCoroutine(reLoad());
+                pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered, itemSpriteName);
+
             }
             if (reLoadingTime2 < 0 && isReload2)
             {
@@ -411,7 +443,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 ammo_P2 = maximumAmmo_P2;
                 bulletText2.text = ammo_P2.ToString() + "/" + maximumAmmo_P2.ToString();
                 reLoadAni.SetTrigger("Ready");
-                StartCoroutine(reLoad());
+                pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered, itemSpriteName);
             }
 
             if (Input.GetKeyDown(KeyCode.Q) && !isReload)
@@ -455,15 +487,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
 
 
-    IEnumerator reLoad()
-    {
-        //재장전
-        yield return new WaitForSeconds(0.4f);
 
-
-        reLoadOB.SetActive(false);
-
-    }
 
 
 
@@ -503,6 +527,19 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         weaponSprite.sprite = Resources.Load(itemSpriteName, typeof(Sprite)) as Sprite;
         }
     }
+    [PunRPC]
+    void ReloadWeaponSpriteRPC(string itemSpriteName)
+    {
+        if (weaponNum > 0)
+        {
+            //무기Sprite바꿈
+            weaponSprite.sprite = Resources.Load(itemSpriteName + "_RE", typeof(Sprite)) as Sprite;
+        }
+        else
+        {
+            weaponSprite.sprite = Resources.Load(itemSpriteName + "_RE", typeof(Sprite)) as Sprite;
+        }
+    }
 
 
 
@@ -516,14 +553,15 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
     public void Hit()
     {
-        hp -= takedDamage;
+        
+        hp -= takedDamage / (1 + DecreaseTakedDamage);
         if(hp <= 0)
         {
             if(weaponNum > 0)//죽었을때
             {
                 PhotonNetwork.Instantiate(weaponNum.ToString() + "weapon", gameObject.transform.position, Quaternion.identity).GetComponent<itemScript>().ammo = ammo_P;
             }
-            weaponNum = 0;
+            
             GameObject.Find("Canvas").transform.Find("RespawnPanel").gameObject.SetActive(true);
             pv.RPC("DestroyRPC", RpcTarget.AllBuffered);
         }

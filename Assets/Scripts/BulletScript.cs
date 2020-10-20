@@ -6,17 +6,34 @@ using Photon.Realtime;
 
 public class BulletScript : MonoBehaviour
 {
+    [SerializeField] string kindOfBullet;
+    [SerializeField] Player player;
     public PhotonView pv;
     int dirNum;//방향
     public float bulletSpeed;
-    public int bulletDamege;
+
+    public int playerDamage;
+    public float playerBlood;
+    public int bulletDamage;
+    public int finalDamage;
+
+
     public string bulletNum;
     [SerializeField] Rigidbody2D bulletRigid;
 
     int dirX;
     int dirY;
+
+    public int buffCode;
+    public float during;
+    public float duringAbility;
+    private void Awake()
+    {
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+    }
     private void Start()
     {
+        
         if(dirNum == 1)
         {
             dirX = 1;
@@ -37,6 +54,7 @@ public class BulletScript : MonoBehaviour
             dirX = 0;
             dirY = -1;
         }
+        finalDamage = playerDamage * bulletDamage;
 
         Destroy(gameObject, 3f);
     }
@@ -55,7 +73,11 @@ public class BulletScript : MonoBehaviour
         if (other.tag == "Ground") pv.RPC("DestroyRPC", RpcTarget.AllBuffered);
         if (!pv.IsMine && other.tag == "Player" && other.GetComponent<PhotonView>().IsMine)
         {
-            other.GetComponent<Player>().takedDamage = bulletDamege;
+            other.GetComponent<Player>().takedDamage = finalDamage;
+            player.hp += (1 + playerBlood) / finalDamage;
+            other.GetComponent<Player>().buffScript.buffNum = buffCode;
+            other.GetComponent<Player>().buffScript.Active = true;
+
             other.GetComponent<Player>().Hit();
 
             pv.RPC("DestroyRPC", RpcTarget.AllBuffered);
