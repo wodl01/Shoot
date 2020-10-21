@@ -1942,6 +1942,9 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 1
     Name: IsFalling
+  - Type: 1
+    SynchronizeType: 0
+    Name: AttackSpeed
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
@@ -1985,6 +1988,7 @@ MonoBehaviour:
   canvas: {fileID: 3338719847829250164}
   bulletText: {fileID: 0}
   bulletText2: {fileID: 0}
+  buffScript: {fileID: 0}
   reLoadOB: {fileID: 2908275431963921973}
   reLoadBarOB: {fileID: 4527915272866417660}
   reLoadBar: {fileID: 8850396356264317717}
@@ -2006,16 +2010,23 @@ MonoBehaviour:
   isLookUp: 0
   shotPos: {fileID: 5540588587113956563}
   shotPos2: {fileID: 2320627683909967439}
-  spawnAttackObName: 
+  spawnAttackObName: Bullet3
   spawnAttackObName2: 
+  spawnAttackObAmount: 1
+  spawnAttackObAmount2: 0
   spawnSkillObName: 
   spawnSkillObName2: 
+  duringAbility: 0
+  blood: 0
+  DecreaseTakedDamage: 0
   jumpPow: 300
   isGround: 1
   speed: 4
   weaponSprite: {fileID: 6233064764733165331}
   weaponNum: 0
   weaponNum2: 0
+  attackCode: 0
+  attackCode2: 0
   bullet:
   - {fileID: 8075715940360838214, guid: 22d8839269ea03142a9d36d8704c3fe0, type: 3}
   - {fileID: 8075715940360838214, guid: 899c30488fc4b67448c8fc2c68cf5199, type: 3}
@@ -2038,6 +2049,7 @@ MonoBehaviour:
   isReload2: 0
   itemSpriteName: 
   skillCode: 0
+  buffLength: 8
   attackDir: 0
   left: 0
   isBodySetUp: 0

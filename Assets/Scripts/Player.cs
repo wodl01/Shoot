@@ -49,7 +49,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     public float maxHpValue;
     public float hp;
 
-    public int takedDamage;
+    public float takedDamage;
 
     [SerializeField] bool isLookUp;
 
@@ -58,6 +58,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
     public string spawnAttackObName;
     public string spawnAttackObName2;
+    public int spawnAttackObAmount;
+    public int spawnAttackObAmount2;
 
     public string spawnSkillObName;
     public string spawnSkillObName2;
@@ -100,6 +102,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     itemScript item;
 
     public int skillCode;
+    [SerializeField] int buffLength;
 
     [SerializeField] int attackDir;
     /// <summary>
@@ -130,16 +133,19 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
         if (pv.IsMine)
         {
+            gameObject.name = "MyPlayer";
             var Cm = GameObject.Find("CMcamera").GetComponent<CinemachineVirtualCamera>();
             bulletText = GameObject.FindGameObjectWithTag("BulletText").GetComponent<Text>();
             bulletText2 = GameObject.FindGameObjectWithTag("BulletText2").GetComponent<Text>();
             buffScript = GameObject.FindGameObjectWithTag("BuffPanel").GetComponent<BuffScript>();
+            buffScript.player = this;
+
             Cm.Follow = transform;
             Cm.LookAt = transform;
 
             oneWay = GameObject.Find("OneWayTile").GetComponent<OneWayScript>();
             oneWay.player = this;
-            gameObject.name = "MyPlayer";
+            
             isMine = true;
         }
     }
@@ -318,11 +324,14 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
                 bullet[weaponNum - 1].GetComponent<BulletScript>().duringAbility = duringAbility;
 
-
-
-
-                PhotonNetwork.Instantiate(weaponNum.ToString()/*이름 중요*/, shotPos.transform.position, Quaternion.identity)
+                for (int i = 0; i < spawnAttackObAmount; i++)
+                {
+                    PhotonNetwork.Instantiate(spawnAttackObName/*이름 중요*/, shotPos.transform.position, Quaternion.identity)
                     .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir);
+                }
+
+
+                
                 ammo_P -= 1;
 
                 bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
@@ -338,8 +347,11 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 bullet[weaponNum - 1].GetComponent<BulletScript>().duringAbility = duringAbility;
 
 
-                PhotonNetwork.Instantiate("Bullet" + weaponNum.ToString()/*이름 중요*/, shotPos.transform.position, Quaternion.identity)
+                for (int i = 0; i < spawnAttackObAmount; i++)
+                {
+                    PhotonNetwork.Instantiate(spawnAttackObName/*이름 중요*/, shotPos.transform.position, Quaternion.identity)
                     .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir);
+                }
                 ammo_P -= 1;
 
                 bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
@@ -358,8 +370,11 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
 
 
-                PhotonNetwork.Instantiate(weaponNum2.ToString()/*이름 중요*/, shotPos2.transform.position, Quaternion.identity)
+                for (int i = 0; i < spawnAttackObAmount; i++)
+                {
+                    PhotonNetwork.Instantiate(spawnAttackObName2/*이름 중요*/, shotPos2.transform.position, Quaternion.identity)
                     .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir);
+                }
                 ammo_P2 -= 1;
 
                 bulletText2.text = ammo_P2.ToString() + "/" + maximumAmmo_P2.ToString();
@@ -368,17 +383,20 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             }
             else if (Input.GetMouseButton(1) && weaponNum2 > 0 && ammo_P2 > 0 && delayTime2 < 0 && !isReload2 && IsFullAuto_P2)
             {
-                //반대쪽총발사
+                //반대쪽연속총발사
                 bullet[weaponNum2 - 1].GetComponent<BulletScript>().playerDamage = damage;
 
 
                 bullet[weaponNum2 - 1].GetComponent<BulletScript>().duringAbility = duringAbility;
 
 
-
-
-                PhotonNetwork.Instantiate(weaponNum2.ToString()/*이름 중요*/, shotPos2.transform.position, Quaternion.identity)
+                for (int i = 0; i < spawnAttackObAmount; i++)
+                {
+                    PhotonNetwork.Instantiate(spawnAttackObName2/*이름 중요*/, shotPos2.transform.position, Quaternion.identity)
                     .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir);
+                }
+
+                
                 ammo_P2 -= 1;
 
                 bulletText2.text = ammo_P2.ToString() + "/" + maximumAmmo_P2.ToString();

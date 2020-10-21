@@ -1,12 +1,18 @@
 ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
+    - Buff
+    - BuffScript
     - BulletScript
     - FloorCheck
+    - GameManager
     - NetworkManager
     - OneWayScript
     - Player
+    - UiManager
+    - getitem
     - itemScript
+    - slidr
     Cinemachine.dll:
     - Cinemachine.CinemachineBrain
     - Cinemachine.CinemachineConfiner
@@ -45,12 +51,19 @@ ScriptsOnlyBuild:
     - UnityEditor.TestTools.TestRunner.TestListCacheData
     UnityEngine.UI.dll:
     - UnityEngine.EventSystems.EventSystem
+    - UnityEngine.EventSystems.EventTrigger
     - UnityEngine.EventSystems.StandaloneInputModule
     - UnityEngine.UI.Button
     - UnityEngine.UI.CanvasScaler
+    - UnityEngine.UI.ContentSizeFitter
     - UnityEngine.UI.GraphicRaycaster
+    - UnityEngine.UI.GridLayoutGroup
+    - UnityEngine.UI.HorizontalLayoutGroup
     - UnityEngine.UI.Image
     - UnityEngine.UI.InputField
+    - UnityEngine.UI.Mask
+    - UnityEngine.UI.ScrollRect
+    - UnityEngine.UI.Scrollbar
     - UnityEngine.UI.Shadow
     - UnityEngine.UI.Slider
     - UnityEngine.UI.Text
@@ -73,6 +86,8 @@ ScriptsOnlyBuild:
     - Class: 43
       Script: {instanceID: 0}
     - Class: 48
+      Script: {instanceID: 0}
+    - Class: 49
       Script: {instanceID: 0}
     - Class: 50
       Script: {instanceID: 0}
@@ -103,87 +118,113 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: -570}
     - Class: 114
-      Script: {instanceID: 616}
+      Script: {instanceID: 622}
     - Class: 114
-      Script: {instanceID: 9378}
+      Script: {instanceID: 9386}
     - Class: 114
-      Script: {instanceID: 9394}
+      Script: {instanceID: 9402}
     - Class: 114
-      Script: {instanceID: 9468}
+      Script: {instanceID: 9412}
     - Class: 114
-      Script: {instanceID: 9470}
-    - Class: 114
-      Script: {instanceID: 9476}
+      Script: {instanceID: 9458}
     - Class: 114
       Script: {instanceID: 9482}
+    - Class: 114
+      Script: {instanceID: 9484}
+    - Class: 114
+      Script: {instanceID: 9486}
     - Class: 114
       Script: {instanceID: 9490}
     - Class: 114
       Script: {instanceID: 9492}
     - Class: 114
-      Script: {instanceID: 9524}
+      Script: {instanceID: 9496}
     - Class: 114
-      Script: {instanceID: 9526}
+      Script: {instanceID: 9498}
     - Class: 114
-      Script: {instanceID: 9528}
+      Script: {instanceID: 9500}
     - Class: 114
-      Script: {instanceID: 9624}
+      Script: {instanceID: 9504}
     - Class: 114
-      Script: {instanceID: 9656}
+      Script: {instanceID: 9506}
     - Class: 114
-      Script: {instanceID: 9658}
+      Script: {instanceID: 9512}
     - Class: 114
-      Script: {instanceID: 9662}
+      Script: {instanceID: 9530}
     - Class: 114
-      Script: {instanceID: 9752}
+      Script: {instanceID: 9532}
     - Class: 114
-      Script: {instanceID: 9758}
+      Script: {instanceID: 9538}
     - Class: 114
-      Script: {instanceID: 9878}
+      Script: {instanceID: 9540}
     - Class: 114
-      Script: {instanceID: 9994}
+      Script: {instanceID: 9542}
     - Class: 114
-      Script: {instanceID: 10006}
+      Script: {instanceID: 9638}
     - Class: 114
-      Script: {instanceID: 10150}
+      Script: {instanceID: 9670}
     - Class: 114
-      Script: {instanceID: 10210}
+      Script: {instanceID: 9672}
+    - Class: 114
+      Script: {instanceID: 9676}
+    - Class: 114
+      Script: {instanceID: 9766}
+    - Class: 114
+      Script: {instanceID: 9772}
+    - Class: 114
+      Script: {instanceID: 9892}
+    - Class: 114
+      Script: {instanceID: 10008}
+    - Class: 114
+      Script: {instanceID: 10020}
+    - Class: 114
+      Script: {instanceID: 10164}
     - Class: 114
       Script: {instanceID: 10222}
     - Class: 114
-      Script: {instanceID: 10230}
+      Script: {instanceID: 10228}
     - Class: 114
-      Script: {instanceID: 10350}
+      Script: {instanceID: 10240}
     - Class: 114
-      Script: {instanceID: 10402}
+      Script: {instanceID: 10248}
     - Class: 114
-      Script: {instanceID: 10404}
+      Script: {instanceID: 10290}
     - Class: 114
-      Script: {instanceID: 10464}
+      Script: {instanceID: 10370}
     - Class: 114
-      Script: {instanceID: 10474}
+      Script: {instanceID: 10422}
+    - Class: 114
+      Script: {instanceID: 10424}
+    - Class: 114
+      Script: {instanceID: 10484}
+    - Class: 114
+      Script: {instanceID: 10494}
     - Class: 114
       Script: {instanceID: 10524}
     - Class: 114
-      Script: {instanceID: 10586}
+      Script: {instanceID: 10546}
     - Class: 114
-      Script: {instanceID: 10620}
+      Script: {instanceID: 10610}
     - Class: 114
-      Script: {instanceID: 10666}
+      Script: {instanceID: 10644}
     - Class: 114
       Script: {instanceID: 10674}
     - Class: 114
-      Script: {instanceID: 10686}
+      Script: {instanceID: 10692}
     - Class: 114
-      Script: {instanceID: 11118}
+      Script: {instanceID: 10700}
     - Class: 114
-      Script: {instanceID: 11122}
+      Script: {instanceID: 10712}
     - Class: 114
-      Script: {instanceID: 11160}
+      Script: {instanceID: 11144}
     - Class: 114
-      Script: {instanceID: 11212}
+      Script: {instanceID: 11148}
     - Class: 114
-      Script: {instanceID: 11226}
+      Script: {instanceID: 11186}
+    - Class: 114
+      Script: {instanceID: 11238}
+    - Class: 114
+      Script: {instanceID: 11252}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -377,6 +418,12 @@ ScriptsOnlyBuild:
     className: TextToggleIsOnTransition
   - hash:
       serializedVersion: 2
+      Hash: bcec7703bb79877323859393f68dc830
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: BuffScript
+  - hash:
+      serializedVersion: 2
       Hash: a5781dc71a671b1ad2b38de19f24b71f
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
@@ -405,6 +452,18 @@ ScriptsOnlyBuild:
     assemblyName: Cinemachine.dll
     namespaceName: 
     className: CinemachineRecomposer
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: BodyUpScript
+  - hash:
+      serializedVersion: 2
+      Hash: db4ce813b4da4c2b4b21ee9eb0bfa6c9
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: getitem
   - hash:
       serializedVersion: 2
       Hash: 60fb902c3bfc0533f4e7b79e5d161e78
@@ -1247,6 +1306,12 @@ ScriptsOnlyBuild:
     className: TMP_SpriteAnimator
   - hash:
       serializedVersion: 2
+      Hash: 572ab111718a2d70d3667fa1ea34b796
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: GameManager
+  - hash:
+      serializedVersion: 2
       Hash: 119c025e55e1dfed818eb7d81817c91e
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
@@ -1311,6 +1376,12 @@ ScriptsOnlyBuild:
     assemblyName: Cinemachine.dll
     namespaceName: Cinemachine
     className: CinemachinePath
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: slidr
   - hash:
       serializedVersion: 2
       Hash: c656dcc13ae391b68d594cc8f9c590b0
@@ -1397,7 +1468,7 @@ ScriptsOnlyBuild:
     className: NickNameField
   - hash:
       serializedVersion: 2
-      Hash: 64d05c2a05e44d230afbe937a54dd406
+      Hash: 31cc35dc1038fe705ed715585619bfa2
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: BulletScript
@@ -1479,6 +1550,12 @@ ScriptsOnlyBuild:
     assemblyName: PhotonUnityNetworking.Demos.dll
     namespaceName: Photon.Pun.Demo.Asteroids
     className: LobbyMainPanel
+  - hash:
+      serializedVersion: 2
+      Hash: bb56490621b81b94cfd8f906d80376ab
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: UiManager
   - hash:
       serializedVersion: 2
       Hash: 35a9693c388776aaf487636491a20f11
@@ -1617,6 +1694,12 @@ ScriptsOnlyBuild:
     assemblyName: PhotonUnityNetworking.Demos.dll
     namespaceName: Photon.Pun.Demo.Cockpit
     className: SendRateField
+  - hash:
+      serializedVersion: 2
+      Hash: 3b589f58ea9fd158fc4f377af75a2026
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: Buff
   - hash:
       serializedVersion: 2
       Hash: c656dcc13ae391b68d594cc8f9c590b0
@@ -2051,7 +2134,7 @@ ScriptsOnlyBuild:
     className: CountOfRoomsProperty
   - hash:
       serializedVersion: 2
-      Hash: c5cf19f7f0180ff2664c787ddde5311b
+      Hash: 9daf2eff1957685155532ddb886536db
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player

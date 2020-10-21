@@ -11,6 +11,7 @@ TagManager:
   - HitBox
   - BulletText2
   - BuffPanel
+  - Buff
   layers:
   - Default
   - TransparentFX

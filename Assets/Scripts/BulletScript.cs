@@ -6,19 +6,20 @@ using Photon.Realtime;
 
 public class BulletScript : MonoBehaviour
 {
-    [SerializeField] string kindOfBullet;
+    [SerializeField] bool isBullet;
+    
     [SerializeField] Player player;
     public PhotonView pv;
     int dirNum;//방향
     public float bulletSpeed;
 
-    public int playerDamage;
+    public float playerDamage;
     public float playerBlood;
-    public int bulletDamage;
-    public int finalDamage;
+    public float bulletDamage;
+    public float finalDamage;
 
 
-    public string bulletNum;
+
     [SerializeField] Rigidbody2D bulletRigid;
 
     int dirX;
@@ -29,7 +30,7 @@ public class BulletScript : MonoBehaviour
     public float duringAbility;
     private void Awake()
     {
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        //player = GameObject.Find("MyPlayer").GetComponent<Player>();
     }
     private void Start()
     {
@@ -38,6 +39,7 @@ public class BulletScript : MonoBehaviour
         {
             dirX = 1;
             dirY = 0;
+            
         }
         if (dirNum == 2)
         {
@@ -54,15 +56,20 @@ public class BulletScript : MonoBehaviour
             dirX = 0;
             dirY = -1;
         }
-        finalDamage = playerDamage * bulletDamage;
-
+        finalDamage = playerDamage * (1 + bulletDamage);
+        if (isBullet)
+        {
+            bulletRigid.velocity = new Vector3(dirX, dirY, 0) * bulletSpeed;
+        }
+        
         Destroy(gameObject, 3f);
+        
     }
 
     private void Update()
     {
         //transform.Translate(new Vector3(dirX,dirY,0) * bulletSpeed * Time.deltaTime);
-        bulletRigid.velocity = new Vector3(dirX, dirY, 0) * bulletSpeed;
+        
     }
 
     
@@ -73,8 +80,9 @@ public class BulletScript : MonoBehaviour
         if (other.tag == "Ground") pv.RPC("DestroyRPC", RpcTarget.AllBuffered);
         if (!pv.IsMine && other.tag == "Player" && other.GetComponent<PhotonView>().IsMine)
         {
-            other.GetComponent<Player>().takedDamage = finalDamage;
-            player.hp += (1 + playerBlood) / finalDamage;
+            other.GetComponent<Player>().takedDamage = finalDamage;//데미지주기
+            //player.hp += finalDamage /(1 + playerBlood);//피흡
+            //버프주기
             other.GetComponent<Player>().buffScript.buffNum = buffCode;
             other.GetComponent<Player>().buffScript.Active = true;
 
