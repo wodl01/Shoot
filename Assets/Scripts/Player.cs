@@ -16,7 +16,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     public GameManager gm;
     public Text nickNameText;
     public Image health;
-    [SerializeField] int damage;
+
 
 
     [SerializeField] Canvas canvas;
@@ -50,6 +50,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     public float hp;
 
     public float takedDamage;
+    public int playerDamage;
 
     [SerializeField] bool isLookUp;
 
@@ -125,6 +126,10 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
     void Awake()
     {
+        //this.gameObject.name = Random.Range(0, 999999).ToString();
+        //if( // 씬내에 같은 이름 있으면)
+        //   { // 다시 돌려줌 }
+
         gm = GameObject.Find("GameManager").GetComponent<GameManager>();
         gm.player = this;
 
@@ -133,7 +138,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
         if (pv.IsMine)
         {
-            gameObject.name = "MyPlayer";
+
             var Cm = GameObject.Find("CMcamera").GetComponent<CinemachineVirtualCamera>();
             bulletText = GameObject.FindGameObjectWithTag("BulletText").GetComponent<Text>();
             bulletText2 = GameObject.FindGameObjectWithTag("BulletText2").GetComponent<Text>();
@@ -147,6 +152,11 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             oneWay.player = this;
             
             isMine = true;
+            /*for (int i = 0; i < bullet.Length; i++)
+            {
+                bullet[i].GetComponent<BulletScript>().player = this;
+            }*/
+            
         }
     }
 
@@ -319,15 +329,21 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             if (Input.GetMouseButtonDown(0) && weaponNum > 0 && ammo_P > 0 && delayTime < 0 && !isReload &&!IsFullAuto_P)
             {
                 //총발사
-                bullet[weaponNum - 1].GetComponent<BulletScript>().playerDamage = damage;
+                //bullet[weaponNum - 1].GetComponent<BulletScript>().playerDamage = damage;
 
 
-                bullet[weaponNum - 1].GetComponent<BulletScript>().duringAbility = duringAbility;
+                //bullet[weaponNum - 1].GetComponent<BulletScript>().duringAbility = duringAbility;
+
+                //bullet[weaponNum - 1].GetComponent<BulletScript>().player = this;
 
                 for (int i = 0; i < spawnAttackObAmount; i++)
                 {
                     PhotonNetwork.Instantiate(spawnAttackObName/*이름 중요*/, shotPos.transform.position, Quaternion.identity)
-                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir);
+                        .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir , this.pv.ViewID);
+
+
+
+                    //  GameObject.FindGameObjectWithTag("AttackOB").GetComponent<BulletScript>().player = this;
                 }
 
 
@@ -341,16 +357,17 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             else if (Input.GetMouseButton(0) && weaponNum > 0 && ammo_P > 0 && delayTime < 0 && !isReload && IsFullAuto_P)
             {
                 //자동총발사
-                bullet[weaponNum - 1].GetComponent<BulletScript>().playerDamage = damage;
+                //bullet[weaponNum - 1].GetComponent<BulletScript>().playerDamage = playerDamage;
 
 
-                bullet[weaponNum - 1].GetComponent<BulletScript>().duringAbility = duringAbility;
+                //bullet[weaponNum - 1].GetComponent<BulletScript>().duringAbility = duringAbility;
 
 
                 for (int i = 0; i < spawnAttackObAmount; i++)
                 {
                     PhotonNetwork.Instantiate(spawnAttackObName/*이름 중요*/, shotPos.transform.position, Quaternion.identity)
                     .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir);
+                   // GameObject.FindGameObjectWithTag("AttackOB").GetComponent<BulletScript>().player = this;
                 }
                 ammo_P -= 1;
 
@@ -362,10 +379,10 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             if (Input.GetMouseButtonDown(1) && weaponNum2 > 0 && ammo_P2 > 0 && delayTime2 < 0 && !isReload2 && !IsFullAuto_P2)
             {
                 //반대쪽총발사
-                bullet[weaponNum2 - 1].GetComponent<BulletScript>().playerDamage = damage;
+                //bullet[weaponNum2 - 1].GetComponent<BulletScript>().playerDamage = playerDamage;
 
 
-                bullet[weaponNum2 - 1].GetComponent<BulletScript>().duringAbility = duringAbility;
+                //bullet[weaponNum2 - 1].GetComponent<BulletScript>().duringAbility = duringAbility;
 
 
 
@@ -374,6 +391,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 {
                     PhotonNetwork.Instantiate(spawnAttackObName2/*이름 중요*/, shotPos2.transform.position, Quaternion.identity)
                     .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir);
+                    //GameObject.FindGameObjectWithTag("AttackOB").GetComponent<BulletScript>().player = this;
                 }
                 ammo_P2 -= 1;
 
@@ -384,16 +402,17 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             else if (Input.GetMouseButton(1) && weaponNum2 > 0 && ammo_P2 > 0 && delayTime2 < 0 && !isReload2 && IsFullAuto_P2)
             {
                 //반대쪽연속총발사
-                bullet[weaponNum2 - 1].GetComponent<BulletScript>().playerDamage = damage;
+                //bullet[weaponNum2 - 1].GetComponent<BulletScript>().playerDamage = playerDamage;
 
 
-                bullet[weaponNum2 - 1].GetComponent<BulletScript>().duringAbility = duringAbility;
+                //bullet[weaponNum2 - 1].GetComponent<BulletScript>().duringAbility = duringAbility;
 
 
                 for (int i = 0; i < spawnAttackObAmount; i++)
                 {
                     PhotonNetwork.Instantiate(spawnAttackObName2/*이름 중요*/, shotPos2.transform.position, Quaternion.identity)
                     .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir);
+                   // GameObject.FindGameObjectWithTag("AttackOB").GetComponent<BulletScript>().player = this;
                 }
 
                 
@@ -567,7 +586,11 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         rigid.velocity = Vector2.zero;
         rigid.AddForce(Vector2.up * jumpPow);
     }
-
+    [PunRPC]
+    void AttackHeal(float healAmount)
+    {
+        hp += healAmount;
+    }
 
     public void Hit()
     {

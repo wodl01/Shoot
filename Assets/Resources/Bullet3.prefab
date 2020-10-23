@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 6863377485437895564}
   m_Layer: 0
   m_Name: Bullet3
-  m_TagString: Bullet
+  m_TagString: AttackOB
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -172,6 +172,8 @@ MonoBehaviour:
   playerBlood: 0
   bulletDamage: 0
   finalDamage: 0
+  playerName: 
+  finalAttackHeal: 0
   bulletRigid: {fileID: 8333840253154644444}
   buffCode: 1
   during: 4

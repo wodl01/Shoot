@@ -18,7 +18,7 @@ public class BuffScript : MonoBehaviour
     
     private void Update()
     {
-        if (Active)
+        if (Active && buffNum - 1 != -1)
         {
             Active = false;
             if(buffs[buffNum -1].GetComponent<Buff>().time < (duringAbility * during))

@@ -1984,7 +1984,6 @@ MonoBehaviour:
   gm: {fileID: 0}
   nickNameText: {fileID: 1021918189707896180}
   health: {fileID: 1972586464137781081}
-  damage: 10
   canvas: {fileID: 3338719847829250164}
   bulletText: {fileID: 0}
   bulletText2: {fileID: 0}
@@ -2007,17 +2006,18 @@ MonoBehaviour:
   maxHpValue: 100
   hp: 100
   takedDamage: 0
+  playerDamage: 10
   isLookUp: 0
   shotPos: {fileID: 5540588587113956563}
   shotPos2: {fileID: 2320627683909967439}
-  spawnAttackObName: Bullet3
+  spawnAttackObName: Bullet1
   spawnAttackObName2: 
   spawnAttackObAmount: 1
   spawnAttackObAmount2: 0
   spawnSkillObName: 
   spawnSkillObName2: 
-  duringAbility: 0
-  blood: 0
+  duringAbility: 0.1
+  blood: 0.5
   DecreaseTakedDamage: 0
   jumpPow: 300
   isGround: 1
@@ -2030,6 +2030,7 @@ MonoBehaviour:
   bullet:
   - {fileID: 8075715940360838214, guid: 22d8839269ea03142a9d36d8704c3fe0, type: 3}
   - {fileID: 8075715940360838214, guid: 899c30488fc4b67448c8fc2c68cf5199, type: 3}
+  - {fileID: 8075715940360838214, guid: 73ebb022b09bc1f4ea871b5cfa5f855b, type: 3}
   maximumAmmo_P: 0
   maximumAmmo_P2: 0
   ammo_P: 0

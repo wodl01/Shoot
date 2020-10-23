@@ -4,7 +4,6 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Bullet
   - Ground
   - Item
   - BulletText
@@ -12,6 +11,7 @@ TagManager:
   - BulletText2
   - BuffPanel
   - Buff
+  - AttackOB
   layers:
   - Default
   - TransparentFX

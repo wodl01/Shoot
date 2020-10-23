@@ -6,9 +6,9 @@ using Photon.Realtime;
 
 public class BulletScript : MonoBehaviour
 {
-    [SerializeField] bool isBullet;
-    
-    [SerializeField] Player player;
+    public bool isBullet;
+
+    public Player player;
     public PhotonView pv;
     int dirNum;//방향
     public float bulletSpeed;
@@ -17,8 +17,8 @@ public class BulletScript : MonoBehaviour
     public float playerBlood;
     public float bulletDamage;
     public float finalDamage;
-
-
+    public string playerName;
+    public float finalAttackHeal;
 
     [SerializeField] Rigidbody2D bulletRigid;
 
@@ -30,40 +30,21 @@ public class BulletScript : MonoBehaviour
     public float duringAbility;
     private void Awake()
     {
-        //player = GameObject.Find("MyPlayer").GetComponent<Player>();
+
+
+        // if (players.pv.IsMine == true)
+        //{
+        //   player = players;
+        //}
     }
+
+
+
+
+    
     private void Start()
     {
-        
-        if(dirNum == 1)
-        {
-            dirX = 1;
-            dirY = 0;
-            
-        }
-        if (dirNum == 2)
-        {
-            dirX = -1;
-            dirY = 0;
-        }
-        if (dirNum == 3)
-        {
-            dirX = 0;
-            dirY = 1;
-        }
-        if (dirNum == 4)
-        {
-            dirX = 0;
-            dirY = -1;
-        }
-        finalDamage = playerDamage * (1 + bulletDamage);
-        if (isBullet)
-        {
-            bulletRigid.velocity = new Vector3(dirX, dirY, 0) * bulletSpeed;
-        }
-        
-        Destroy(gameObject, 3f);
-        
+       
     }
 
     private void Update()
@@ -81,11 +62,13 @@ public class BulletScript : MonoBehaviour
         if (!pv.IsMine && other.tag == "Player" && other.GetComponent<PhotonView>().IsMine)
         {
             other.GetComponent<Player>().takedDamage = finalDamage;//데미지주기
-            //player.hp += finalDamage /(1 + playerBlood);//피흡
+            finalAttackHeal = (1 + playerBlood) / finalDamage;//피흡
+            Debug.Log((1 + playerBlood) / finalDamage);
+            player.pv.RPC("AttackHeal", RpcTarget.All, finalAttackHeal);
             //버프주기
             other.GetComponent<Player>().buffScript.buffNum = buffCode;
             other.GetComponent<Player>().buffScript.Active = true;
-
+            
             other.GetComponent<Player>().Hit();
 
             pv.RPC("DestroyRPC", RpcTarget.AllBuffered);
@@ -97,9 +80,62 @@ public class BulletScript : MonoBehaviour
     }
 
     [PunRPC]
-    void BulletDirRPC(int dir)
+    void BulletDirRPC(int dir , int pp)
     {
-        this.dirNum = dir;
+        //playerName = pp;
+        //Debug.Log(pp);
+        dirNum = dir;
+
+
+
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (GameObject py in players)
+        {
+
+            player = py.GetComponent<Player>();
+            if (player.pv.ViewID == pp)
+            {
+                //Debug.Log("찾았다" + player.name);
+                // 찾았다
+                if (dirNum == 1)
+                {
+                    dirX = 1;
+                    dirY = 0;
+
+                }
+                if (dirNum == 2)
+                {
+                    dirX = -1;
+                    dirY = 0;
+                }
+                if (dirNum == 3)
+                {
+                    dirX = 0;
+                    dirY = 1;
+                }
+                if (dirNum == 4)
+                {
+                    dirX = 0;
+                    dirY = -1;
+                }
+
+                if (isBullet)
+                {
+                    bulletRigid.velocity = new Vector3(dirX, dirY, 0) * bulletSpeed;
+                }
+
+                Destroy(gameObject, 3f);
+
+                playerDamage = player.GetComponent<Player>().playerDamage;
+                duringAbility = player.GetComponent<Player>().duringAbility;
+                playerBlood = player.GetComponent<Player>().blood;
+                finalDamage = playerDamage * (1 + bulletDamage);
+                return;
+            }
+
+        }
+        
     }
 
 

@@ -30,6 +30,9 @@ ScriptsOnlyBuild:
     - Photon.Pun.Demo.SlotRacer.PlayerControl
     - Photon.Pun.Demo.SlotRacer.Utils.SplineWalker
     PhotonUnityNetworking.Editor.dll:
+    - Photon.Pun.PhotonAnimatorViewEditor
+    - Photon.Pun.PhotonRigidbody2DViewEditor
+    - Photon.Pun.PhotonViewInspector
     - Photon.Pun.PunSceneSettings
     PhotonUnityNetworking.dll:
     - Photon.Pun.PhotonAnimatorView
@@ -42,10 +45,8 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.TestListCacheData
@@ -1468,7 +1469,7 @@ ScriptsOnlyBuild:
     className: NickNameField
   - hash:
       serializedVersion: 2
-      Hash: 31cc35dc1038fe705ed715585619bfa2
+      Hash: 2507866cc7044ddab4c32277f6f37622
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: BulletScript
@@ -2134,7 +2135,7 @@ ScriptsOnlyBuild:
     className: CountOfRoomsProperty
   - hash:
       serializedVersion: 2
-      Hash: 9daf2eff1957685155532ddb886536db
+      Hash: 021fe72597bc41a41375b04f9189b637
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player

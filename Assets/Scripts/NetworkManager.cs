@@ -38,7 +38,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     IEnumerator DestroyBullet()
     {
         yield return new WaitForSeconds(0.2f);
-        foreach(GameObject GO in GameObject.FindGameObjectsWithTag("Bullet"))
+        foreach(GameObject GO in GameObject.FindGameObjectsWithTag("AttackOB"))
         {
             GO.GetComponent<PhotonView>().RPC("DestroyRPC", RpcTarget.All);
         }
