@@ -64,6 +64,7 @@ public class BulletScript : MonoBehaviour
             other.GetComponent<Player>().takedDamage = finalDamage;//데미지주기
             finalAttackHeal = (1 + playerBlood) / finalDamage;//피흡
             Debug.Log((1 + playerBlood) / finalDamage);
+
             player.pv.RPC("AttackHeal", RpcTarget.All, finalAttackHeal);
             //버프주기
             other.GetComponent<Player>().buffScript.buffNum = buffCode;

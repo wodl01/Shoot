@@ -589,7 +589,18 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     void AttackHeal(float healAmount)
     {
-        hp += healAmount;
+        Debug.Log("qqqqq");
+        if(maxHpValue < hp + healAmount)
+        {
+            Debug.Log("qqqqq111");
+            hp = maxHpValue;
+        }
+        else
+        {
+            Debug.Log("qqqqq222");
+            hp += healAmount;
+        }
+        
     }
 
     public void Hit()

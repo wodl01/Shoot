@@ -2017,7 +2017,7 @@ MonoBehaviour:
   spawnSkillObName: 
   spawnSkillObName2: 
   duringAbility: 0.1
-  blood: 0.5
+  blood: 4.77
   DecreaseTakedDamage: 0
   jumpPow: 300
   isGround: 1
