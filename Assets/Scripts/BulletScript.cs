@@ -19,6 +19,7 @@ public class BulletScript : MonoBehaviour
     public float finalDamage;
     public string playerName;
     public float finalAttackHeal;
+    public int hitNum;
 
     [SerializeField] Rigidbody2D bulletRigid;
 

@@ -40,6 +40,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] GameObject weaponUpPos2;
     [SerializeField] GameObject weaponMidPos;
     [SerializeField] GameObject weaponMidPos2;
+    [SerializeField] GameObject weaponDownPos;
+    [SerializeField] GameObject weaponDownPos2;
 
     [SerializeField] GameObject weaponReloadSpawn;
     [SerializeField] GameObject weaponReloadSpawn2;
@@ -186,7 +188,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 }
                 else IsFullAuto_P = false;
 
-                itemSpriteName = other.name;
+                itemSpriteName = other.GetComponent<getitem>().weapon_number;
 
                 pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered, itemSpriteName);
 
@@ -295,9 +297,27 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             else if (!Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S))
             {
                 //아래를봄
-                attackDir = 4;
-                bodyUpAni.SetBool("IsLookUp", false);
-                bodyUpAni.SetBool("IsLookInfront", false);
+                if (!left)
+                {
+                    attackDir = 4;
+                    weaponOB.transform.position = weaponDownPos.transform.position;
+                    weaponOB.transform.rotation = Quaternion.Euler(0, 0, -90);
+                    weaponOB2.transform.position = weaponDownPos2.transform.position;
+                    weaponOB2.transform.rotation = Quaternion.Euler(0, 0, -90);
+                    bodyUpAni.SetBool("IsLookUp", false);
+                    bodyUpAni.SetBool("IsLookInfront", false);
+                }
+                if (left)
+                {
+                    attackDir = 4;
+                    weaponOB.transform.position = weaponDownPos.transform.position;
+                    weaponOB.transform.rotation = Quaternion.Euler(0, 0, 90);
+                    weaponOB2.transform.position = weaponDownPos2.transform.position;
+                    weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 90);
+                    bodyUpAni.SetBool("IsLookUp", false);
+                    bodyUpAni.SetBool("IsLookInfront", false);
+                }
+
             }
             else
             {
@@ -329,12 +349,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             if (Input.GetMouseButtonDown(0) && weaponNum > 0 && ammo_P > 0 && delayTime < 0 && !isReload &&!IsFullAuto_P)
             {
                 //총발사
-                //bullet[weaponNum - 1].GetComponent<BulletScript>().playerDamage = damage;
 
-
-                //bullet[weaponNum - 1].GetComponent<BulletScript>().duringAbility = duringAbility;
-
-                //bullet[weaponNum - 1].GetComponent<BulletScript>().player = this;
 
                 for (int i = 0; i < spawnAttackObAmount; i++)
                 {
@@ -357,17 +372,14 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             else if (Input.GetMouseButton(0) && weaponNum > 0 && ammo_P > 0 && delayTime < 0 && !isReload && IsFullAuto_P)
             {
                 //자동총발사
-                //bullet[weaponNum - 1].GetComponent<BulletScript>().playerDamage = playerDamage;
 
-
-                //bullet[weaponNum - 1].GetComponent<BulletScript>().duringAbility = duringAbility;
 
 
                 for (int i = 0; i < spawnAttackObAmount; i++)
                 {
                     PhotonNetwork.Instantiate(spawnAttackObName/*이름 중요*/, shotPos.transform.position, Quaternion.identity)
-                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir);
-                   // GameObject.FindGameObjectWithTag("AttackOB").GetComponent<BulletScript>().player = this;
+                        .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID);
+                    // GameObject.FindGameObjectWithTag("AttackOB").GetComponent<BulletScript>().player = this;
                 }
                 ammo_P -= 1;
 
@@ -379,10 +391,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             if (Input.GetMouseButtonDown(1) && weaponNum2 > 0 && ammo_P2 > 0 && delayTime2 < 0 && !isReload2 && !IsFullAuto_P2)
             {
                 //반대쪽총발사
-                //bullet[weaponNum2 - 1].GetComponent<BulletScript>().playerDamage = playerDamage;
 
-
-                //bullet[weaponNum2 - 1].GetComponent<BulletScript>().duringAbility = duringAbility;
 
 
 
@@ -390,7 +399,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 for (int i = 0; i < spawnAttackObAmount; i++)
                 {
                     PhotonNetwork.Instantiate(spawnAttackObName2/*이름 중요*/, shotPos2.transform.position, Quaternion.identity)
-                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir);
+                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID);
                     //GameObject.FindGameObjectWithTag("AttackOB").GetComponent<BulletScript>().player = this;
                 }
                 ammo_P2 -= 1;
@@ -402,16 +411,13 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             else if (Input.GetMouseButton(1) && weaponNum2 > 0 && ammo_P2 > 0 && delayTime2 < 0 && !isReload2 && IsFullAuto_P2)
             {
                 //반대쪽연속총발사
-                //bullet[weaponNum2 - 1].GetComponent<BulletScript>().playerDamage = playerDamage;
 
-
-                //bullet[weaponNum2 - 1].GetComponent<BulletScript>().duringAbility = duringAbility;
 
 
                 for (int i = 0; i < spawnAttackObAmount; i++)
                 {
                     PhotonNetwork.Instantiate(spawnAttackObName2/*이름 중요*/, shotPos2.transform.position, Quaternion.identity)
-                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir);
+                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID);
                    // GameObject.FindGameObjectWithTag("AttackOB").GetComponent<BulletScript>().player = this;
                 }
 
@@ -592,12 +598,10 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         Debug.Log("qqqqq");
         if(maxHpValue < hp + healAmount)
         {
-            Debug.Log("qqqqq111");
             hp = maxHpValue;
         }
         else
         {
-            Debug.Log("qqqqq222");
             hp += healAmount;
         }
         

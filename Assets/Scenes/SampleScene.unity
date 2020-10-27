@@ -8653,7 +8653,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 814ef6d125fa6f94ca6bc11f620e1e08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weapon_number: no3
+  weapon_number: no_3
   weapon_sprite: {fileID: 307242473}
   pv: {fileID: 307242477}
   gm: {fileID: 0}
@@ -16341,7 +16341,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 814ef6d125fa6f94ca6bc11f620e1e08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weapon_number: no2
+  weapon_number: no_2
   weapon_sprite: {fileID: 1605017089}
   pv: {fileID: 1605017085}
   gm: {fileID: 0}
@@ -18453,7 +18453,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 814ef6d125fa6f94ca6bc11f620e1e08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weapon_number: no1
+  weapon_number: no_1
   weapon_sprite: {fileID: 1976168081}
   pv: {fileID: 1976168077}
   gm: {fileID: 0}

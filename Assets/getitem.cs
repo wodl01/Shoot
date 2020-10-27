@@ -5,7 +5,7 @@ using Photon.Pun;
 
 public class getitem : MonoBehaviour
 {
-    [SerializeField] string weapon_number;
+    public string weapon_number;
     [SerializeField] SpriteRenderer weapon_sprite;
     [SerializeField] PhotonView pv;
     [SerializeField] GameManager gm;
