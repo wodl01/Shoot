@@ -2309,7 +2309,7 @@ MonoBehaviour:
   isLookUp: 0
   shotPos: {fileID: 5540588587113956563}
   shotPos2: {fileID: 2320627683909967439}
-  spawnAttackObName: Bullet1
+  spawnAttackObName: Attack1
   spawnAttackObName2: 
   spawnAttackObAmount: 1
   spawnAttackObAmount2: 0
@@ -2322,7 +2322,7 @@ MonoBehaviour:
   isGround: 1
   speed: 4
   weaponSprite: {fileID: 6233064764733165331}
-  weaponNum: 0
+  weaponNum: 1
   weaponNum2: 0
   attackCode: 0
   attackCode2: 0
@@ -2332,10 +2332,12 @@ MonoBehaviour:
   - {fileID: 8075715940360838214, guid: 73ebb022b09bc1f4ea871b5cfa5f855b, type: 3}
   maximumAmmo_P: 0
   maximumAmmo_P2: 0
-  ammo_P: 0
+  ammo_P: 100
   ammo_P2: 0
   IsFullAuto_P: 0
   IsFullAuto_P2: 0
+  readyToAttack: 0
+  readyToAttack2: 0
   delay_P: 0
   delay_P2: 0
   delayTime: 0

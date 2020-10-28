@@ -21,6 +21,8 @@ public class BulletScript : MonoBehaviour
     public float finalAttackHeal;
     public int hitNum;
 
+    [SerializeField] bool isRightGun;
+
     [SerializeField] Rigidbody2D bulletRigid;
 
     int dirX;
@@ -51,7 +53,10 @@ public class BulletScript : MonoBehaviour
     private void Update()
     {
         //transform.Translate(new Vector3(dirX,dirY,0) * bulletSpeed * Time.deltaTime);
-        
+        if (!isBullet)
+        {
+            transform.position = player.gameObject.transform.position;
+        }
     }
 
     
@@ -59,7 +64,7 @@ public class BulletScript : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Ground") pv.RPC("DestroyRPC", RpcTarget.AllBuffered);
+        if (other.tag == "Ground" && isBullet) pv.RPC("DestroyRPC", RpcTarget.AllBuffered);
         if (!pv.IsMine && other.tag == "Player" && other.GetComponent<PhotonView>().IsMine)
         {
             other.GetComponent<Player>().takedDamage = finalDamage;//데미지주기
@@ -72,23 +77,38 @@ public class BulletScript : MonoBehaviour
             other.GetComponent<Player>().buffScript.Active = true;
             
             other.GetComponent<Player>().Hit();
-
+            if (isBullet)
+            {
+                pv.RPC("DestroyRPC", RpcTarget.AllBuffered);
+            }
+            
+        }
+        
+    }
+    public void CanAttack()
+    {
+        if (isRightGun)
+        {
+            player.readyToAttack = true;
+            pv.RPC("DestroyRPC", RpcTarget.AllBuffered);
+        }
+        else
+        {
+            player.readyToAttack2 = true;
             pv.RPC("DestroyRPC", RpcTarget.AllBuffered);
         }
 
-
-
-        
+       
     }
 
     [PunRPC]
-    void BulletDirRPC(int dir , int pp)
+    void BulletDirRPC(int dir , int pp, bool isRight)
     {
         //playerName = pp;
         //Debug.Log(pp);
         dirNum = dir;
 
-
+        isRightGun = isRight;
 
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
@@ -126,6 +146,7 @@ public class BulletScript : MonoBehaviour
                 {
                     bulletRigid.velocity = new Vector3(dirX, dirY, 0) * bulletSpeed;
                 }
+
 
                 Destroy(gameObject, 3f);
 

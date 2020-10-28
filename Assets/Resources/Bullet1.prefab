@@ -175,6 +175,7 @@ MonoBehaviour:
   playerName: 
   finalAttackHeal: 0
   hitNum: 0
+  isRightGun: 0
   bulletRigid: {fileID: 5331436597969886933}
   buffCode: 0
   during: 0

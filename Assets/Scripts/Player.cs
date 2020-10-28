@@ -90,6 +90,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] int ammo_P2;
     [SerializeField] bool IsFullAuto_P;
     [SerializeField] bool IsFullAuto_P2;
+    public bool readyToAttack;
+    public bool readyToAttack2;
     [SerializeField] float delay_P;
     [SerializeField] float delay_P2;
     [SerializeField] float delayTime;
@@ -192,7 +194,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
                 pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered, itemSpriteName);
 
-                delay_P = item.delayTime;
+                readyToAttack = true;
                 reLoadTime_P = item.reLoadTime;
                 reLoadingTime = reLoadTime_P;
                 Debug.Log("1");
@@ -218,16 +220,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         {
             cooltime -= Time.deltaTime;
         }
-        if(delayTime >= 0)
-        {
-            delayTime -= Time.deltaTime;
-        }
 
-
-        if (delayTime2 >= 0)
-        {
-            delayTime2 -= Time.deltaTime;
-        }
 
 
 
@@ -346,15 +339,15 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
 
 
-            if (Input.GetMouseButtonDown(0) && weaponNum > 0 && ammo_P > 0 && delayTime < 0 && !isReload &&!IsFullAuto_P)
+            if (Input.GetMouseButtonDown(0) && weaponNum > 0 && ammo_P > 0 && readyToAttack && !isReload &&!IsFullAuto_P)
             {
                 //총발사
-
+                bool isRight = true;
 
                 for (int i = 0; i < spawnAttackObAmount; i++)
                 {
                     PhotonNetwork.Instantiate(spawnAttackObName/*이름 중요*/, shotPos.transform.position, Quaternion.identity)
-                        .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir , this.pv.ViewID);
+                        .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir , this.pv.ViewID, isRight);
 
 
 
@@ -367,31 +360,33 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
                 bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
 
-                delayTime = delay_P;
+                readyToAttack = false;
+
             }
-            else if (Input.GetMouseButton(0) && weaponNum > 0 && ammo_P > 0 && delayTime < 0 && !isReload && IsFullAuto_P)
+            else if (Input.GetMouseButton(0) && weaponNum > 0 && ammo_P > 0 && readyToAttack && !isReload && IsFullAuto_P)
             {
                 //자동총발사
-
+                bool isRight = true;
 
 
                 for (int i = 0; i < spawnAttackObAmount; i++)
                 {
                     PhotonNetwork.Instantiate(spawnAttackObName/*이름 중요*/, shotPos.transform.position, Quaternion.identity)
-                        .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID);
+                        .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
                     // GameObject.FindGameObjectWithTag("AttackOB").GetComponent<BulletScript>().player = this;
                 }
                 ammo_P -= 1;
 
                 bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
 
-                delayTime = delay_P;
+                readyToAttack = false;
+
             }
 
-            if (Input.GetMouseButtonDown(1) && weaponNum2 > 0 && ammo_P2 > 0 && delayTime2 < 0 && !isReload2 && !IsFullAuto_P2)
+            if (Input.GetMouseButtonDown(1) && weaponNum2 > 0 && ammo_P2 > 0 && readyToAttack2 && !isReload2 && !IsFullAuto_P2)
             {
                 //반대쪽총발사
-
+                bool isRight = false;
 
 
 
@@ -399,25 +394,26 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 for (int i = 0; i < spawnAttackObAmount; i++)
                 {
                     PhotonNetwork.Instantiate(spawnAttackObName2/*이름 중요*/, shotPos2.transform.position, Quaternion.identity)
-                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID);
+                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
                     //GameObject.FindGameObjectWithTag("AttackOB").GetComponent<BulletScript>().player = this;
                 }
                 ammo_P2 -= 1;
 
                 bulletText2.text = ammo_P2.ToString() + "/" + maximumAmmo_P2.ToString();
 
-                delayTime2 = delay_P2;
+                readyToAttack2 = false;
+
             }
-            else if (Input.GetMouseButton(1) && weaponNum2 > 0 && ammo_P2 > 0 && delayTime2 < 0 && !isReload2 && IsFullAuto_P2)
+            else if (Input.GetMouseButton(1) && weaponNum2 > 0 && ammo_P2 > 0 && readyToAttack2 && !isReload2 && IsFullAuto_P2)
             {
                 //반대쪽연속총발사
-
+                bool isRight = false;
 
 
                 for (int i = 0; i < spawnAttackObAmount; i++)
                 {
                     PhotonNetwork.Instantiate(spawnAttackObName2/*이름 중요*/, shotPos2.transform.position, Quaternion.identity)
-                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID);
+                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID ,isRight);
                    // GameObject.FindGameObjectWithTag("AttackOB").GetComponent<BulletScript>().player = this;
                 }
 
@@ -426,7 +422,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
                 bulletText2.text = ammo_P2.ToString() + "/" + maximumAmmo_P2.ToString();
 
-                delayTime2 = delay_P2;
+                readyToAttack2 = false;
+
             }
 
             if (Input.GetKeyDown(KeyCode.R)|| ammo_P == 0)
