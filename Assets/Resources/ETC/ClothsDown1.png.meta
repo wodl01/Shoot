@@ -1,37 +1,28 @@
 fileFormatVersion: 2
-guid: a1213dafe3e58c249bcba58abe3d3ef0
+guid: d954096b4a97e0b4986c16cb25e2034c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4862942130373081034
-    second: Clothes_0
+      213: 4308907796842149330
+    second: ClothsDown1_0
   - first:
-      213: 7566583126990785104
-    second: Clothes_1
+      213: 7619834696964619057
+    second: ClothsDown1_1
   - first:
-      213: 7798115773135034406
-    second: Clothes_2
+      213: -964419538981666772
+    second: ClothsDown1_2
   - first:
-      213: -6630935928423092300
-    second: Clothes_3
+      213: -6893527024205034975
+    second: ClothsDown1_3
   - first:
-      213: -6475819047146179335
-    second: Clothes_4
+      213: -7455800688902127831
+    second: ClothsDown1_4
   - first:
-      213: 1741794351880512470
-    second: Clothes_5
+      213: 7741781411649124820
+    second: ClothsDown1_5
   - first:
-      213: 8927547857190717070
-    second: Clothes_6
-  - first:
-      213: 3954441825173325506
-    second: Clothes_7
-  - first:
-      213: 4366684086613286107
-    second: Clothes_8
-  - first:
-      213: 1290318136122146416
-    second: Clothes_9
+      213: -2407250834256622597
+    second: ClothsDown1_6
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -92,8 +83,8 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 0
+    textureFormat: 4
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -103,8 +94,8 @@ TextureImporter:
     buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 0
+    textureFormat: 4
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -114,8 +105,8 @@ TextureImporter:
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 0
+    textureFormat: 4
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -125,91 +116,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Clothes_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 48
-        width: 17
-        height: 24
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4ebce3d52a3281e4fa2da0dd590b31d0
-      internalID: 4862942130373081034
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Clothes_1
-      rect:
-        serializedVersion: 2
-        x: 17
-        y: 48
-        width: 17
-        height: 24
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a5affce566acd4e43b2eee8e64e90571
-      internalID: 7566583126990785104
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Clothes_2
-      rect:
-        serializedVersion: 2
-        x: 34
-        y: 48
-        width: 17
-        height: 24
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a109e9efb5c40154a9a7323dfe274e92
-      internalID: 7798115773135034406
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Clothes_3
-      rect:
-        serializedVersion: 2
-        x: 51
-        y: 48
-        width: 17
-        height: 24
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9010b84e88f6bba4f95881ad56a6b041
-      internalID: -6630935928423092300
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Clothes_4
+      name: ClothsDown1_0
       rect:
         serializedVersion: 2
         x: 0
@@ -223,14 +130,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1792418ebecc30149bb1aa808ecf009b
-      internalID: -6475819047146179335
+      spriteID: 7c942f917fe2bf14bbd78134eec3eff0
+      internalID: 4308907796842149330
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Clothes_5
+      name: ClothsDown1_1
       rect:
         serializedVersion: 2
         x: 17
@@ -244,14 +151,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8e95c31d423823a46915c979e9562e63
-      internalID: 1741794351880512470
+      spriteID: cc32a9604c5174f4bae16373de87de09
+      internalID: 7619834696964619057
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Clothes_6
+      name: ClothsDown1_2
       rect:
         serializedVersion: 2
         x: 34
@@ -265,14 +172,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 76a07739bdae07c4c82b702cc44960e8
-      internalID: 8927547857190717070
+      spriteID: c92ba0bd1cd46f845b09ac921821d20e
+      internalID: -964419538981666772
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Clothes_7
+      name: ClothsDown1_3
       rect:
         serializedVersion: 2
         x: 51
@@ -286,14 +193,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b9ebfc71336c73440aad564bda719239
-      internalID: 3954441825173325506
+      spriteID: a3f2ad12ff5a3f34fbdf682d0da7994f
+      internalID: -6893527024205034975
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Clothes_8
+      name: ClothsDown1_4
       rect:
         serializedVersion: 2
         x: 0
@@ -307,14 +214,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c06548739611402478232cea9b70dbef
-      internalID: 4366684086613286107
+      spriteID: b9a16d715d0abfc4aaf02f25f80e589f
+      internalID: -7455800688902127831
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Clothes_9
+      name: ClothsDown1_5
       rect:
         serializedVersion: 2
         x: 17
@@ -328,8 +235,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f9dde860c3ef6864194dc177d918d96d
-      internalID: 1290318136122146416
+      spriteID: 6732244100fdc794d861627054ba29de
+      internalID: 7741781411649124820
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ClothsDown1_6
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 0
+        width: 17
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 375023b017ec98140b301deabb3b6678
+      internalID: -2407250834256622597
       vertices: []
       indices: 
       edges: []
@@ -337,7 +265,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 89dc7b8205ec91e4a9cb6c974487e1de
+    spriteID: 429049af2e264da48bbbf556191f98f3
     internalID: 0
     vertices: []
     indices: 

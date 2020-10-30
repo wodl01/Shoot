@@ -77,10 +77,13 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     public bool isGround;
     [SerializeField] float speed;
 
-    [SerializeField] SpriteRenderer weaponSprite;
+    [SerializeField] SpriteRenderer weaponSpriteRender;
+    [SerializeField] SpriteRenderer clothesSpriteRender;
     
     [SerializeField] int weaponNum;
     [SerializeField] int weaponNum2;
+    [SerializeField] int clothesNum;
+    [SerializeField] Sprite[] clothes;
     public int attackCode;
     public int attackCode2;
     [SerializeField] GameObject[] bullet;
@@ -92,10 +95,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] bool IsFullAuto_P2;
     public bool readyToAttack;
     public bool readyToAttack2;
-    [SerializeField] float delay_P;
-    [SerializeField] float delay_P2;
-    [SerializeField] float delayTime;
-    [SerializeField] float delayTime2;
+    public float attackSpeedAbility;
     [SerializeField] float reLoadTime_P;
     [SerializeField] float reLoadTime_P2;
     [SerializeField] float reLoadingTime;
@@ -116,7 +116,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     bool Once = true;
 
 
-    [SerializeField] bool left;
+    public bool left;
     public bool isBodySetUp;
     Vector3 curPos;
 
@@ -299,6 +299,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     weaponOB2.transform.rotation = Quaternion.Euler(0, 0, -90);
                     bodyUpAni.SetBool("IsLookUp", false);
                     bodyUpAni.SetBool("IsLookInfront", false);
+                    clothesSpriteRender.sprite = clothes[clothesNum - 1];
                 }
                 if (left)
                 {
@@ -309,11 +310,13 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 90);
                     bodyUpAni.SetBool("IsLookUp", false);
                     bodyUpAni.SetBool("IsLookInfront", false);
+                    clothesSpriteRender.sprite = clothes[clothesNum + 1];
                 }
 
             }
             else
             {
+                clothesSpriteRender.sprite = clothes[clothesNum];
                 if (left)
                 {
                     //왼쪽
@@ -349,9 +352,6 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     PhotonNetwork.Instantiate(spawnAttackObName/*이름 중요*/, shotPos.transform.position, Quaternion.identity)
                         .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir , this.pv.ViewID, isRight);
 
-
-
-                    //  GameObject.FindGameObjectWithTag("AttackOB").GetComponent<BulletScript>().player = this;
                 }
 
 
@@ -373,7 +373,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 {
                     PhotonNetwork.Instantiate(spawnAttackObName/*이름 중요*/, shotPos.transform.position, Quaternion.identity)
                         .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
-                    // GameObject.FindGameObjectWithTag("AttackOB").GetComponent<BulletScript>().player = this;
+
                 }
                 ammo_P -= 1;
 
@@ -395,7 +395,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 {
                     PhotonNetwork.Instantiate(spawnAttackObName2/*이름 중요*/, shotPos2.transform.position, Quaternion.identity)
                     .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
-                    //GameObject.FindGameObjectWithTag("AttackOB").GetComponent<BulletScript>().player = this;
+
                 }
                 ammo_P2 -= 1;
 
@@ -414,7 +414,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 {
                     PhotonNetwork.Instantiate(spawnAttackObName2/*이름 중요*/, shotPos2.transform.position, Quaternion.identity)
                     .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID ,isRight);
-                   // GameObject.FindGameObjectWithTag("AttackOB").GetComponent<BulletScript>().player = this;
+
                 }
 
                 
@@ -429,7 +429,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             if (Input.GetKeyDown(KeyCode.R)|| ammo_P == 0)
             {
                 //총장전
-                if (ammo_P != maximumAmmo_P && isReload == false && weaponNum > 0 && delayTime < 0)
+                if (ammo_P != maximumAmmo_P && isReload == false && weaponNum > 0)
                 {
                     isReload = true;
                     reLoadOB.SetActive(true);
@@ -441,7 +441,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             if (Input.GetKeyDown(KeyCode.R) || ammo_P2 == 0)
             {
                 //총장전
-                if (ammo_P2 != maximumAmmo_P2 && isReload2 == false && weaponNum2 > 0 && delayTime2 < 0)
+                if (ammo_P2 != maximumAmmo_P2 && isReload2 == false && weaponNum2 > 0)
                 {
                     isReload2 = true;
                     reLoadOB.SetActive(true);
@@ -493,7 +493,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 {
                     PhotonNetwork.Instantiate(weaponNum.ToString() + "weapon", gameObject.transform.position, Quaternion.identity).GetComponent<itemScript>().ammo = ammo_P;
 
-                    weaponSprite.sprite = null;
+                    weaponSpriteRender.sprite = null;
                     weaponNum = 0;
                     itemSpriteName = "Null";
 
@@ -560,26 +560,27 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         if(weaponNum > 0)
         {
             //무기Sprite바꿈
-            weaponSprite.sprite = Resources.Load(itemSpriteName, typeof(Sprite)) as Sprite;
+            weaponSpriteRender.sprite = Resources.Load(itemSpriteName, typeof(Sprite)) as Sprite;
         }
         else
         {
-        weaponSprite.sprite = Resources.Load(itemSpriteName, typeof(Sprite)) as Sprite;
+            weaponSpriteRender.sprite = Resources.Load(itemSpriteName, typeof(Sprite)) as Sprite;
         }
     }
-    [PunRPC]
+
+    /*[PunRPC]
     void ReloadWeaponSpriteRPC(string itemSpriteName)
     {
         if (weaponNum > 0)
         {
             //무기Sprite바꿈
-            weaponSprite.sprite = Resources.Load(itemSpriteName + "_RE", typeof(Sprite)) as Sprite;
+            weaponSpriteRender.sprite = Resources.Load(itemSpriteName + "_RE", typeof(Sprite)) as Sprite;
         }
         else
         {
-            weaponSprite.sprite = Resources.Load(itemSpriteName + "_RE", typeof(Sprite)) as Sprite;
+            weaponSpriteRender.sprite = Resources.Load(itemSpriteName + "_RE", typeof(Sprite)) as Sprite;
         }
-    }
+    }*/
 
 
 
@@ -632,13 +633,13 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         {
             stream.SendNext(transform.position);
             stream.SendNext(health.fillAmount);
-            stream.SendNext(weaponSprite.name);
+            stream.SendNext(weaponSpriteRender.name);
         }
         else
         {
             curPos = (Vector3)stream.ReceiveNext();
             health.fillAmount = (float)stream.ReceiveNext();
-            weaponSprite.name = (string)stream.ReceiveNext();
+            weaponSpriteRender.name = (string)stream.ReceiveNext();
         }
     }
 

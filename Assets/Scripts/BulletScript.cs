@@ -20,13 +20,16 @@ public class BulletScript : MonoBehaviour
     public string playerName;
     public float finalAttackHeal;
     public int hitNum;
+    public float attackSpeed;
 
     [SerializeField] bool isRightGun;
 
     [SerializeField] Rigidbody2D bulletRigid;
+    [SerializeField] Animator ani;
 
     int dirX;
     int dirY;
+    int islookLeft;
 
     public int buffCode;
     public float during;
@@ -56,6 +59,21 @@ public class BulletScript : MonoBehaviour
         if (!isBullet)
         {
             transform.position = player.gameObject.transform.position;
+
+            if(dirX != 0)
+            {
+                gameObject.transform.localScale = new Vector3(-dirX, 1, 1);
+                
+            }
+            
+            if(dirY != 0)
+            {
+                gameObject.transform.rotation = Quaternion.Euler(0, 0, dirY * -90);
+                gameObject.transform.localScale = new Vector3(1, islookLeft, 1);
+            }
+
+
+
         }
     }
 
@@ -118,8 +136,6 @@ public class BulletScript : MonoBehaviour
             player = py.GetComponent<Player>();
             if (player.pv.ViewID == pp)
             {
-                //Debug.Log("찾았다" + player.name);
-                // 찾았다
                 if (dirNum == 1)
                 {
                     dirX = 1;
@@ -146,7 +162,8 @@ public class BulletScript : MonoBehaviour
                 {
                     bulletRigid.velocity = new Vector3(dirX, dirY, 0) * bulletSpeed;
                 }
-
+                
+                islookLeft = player.left ? 1 : -1;
 
                 Destroy(gameObject, 3f);
 
@@ -154,6 +171,10 @@ public class BulletScript : MonoBehaviour
                 duringAbility = player.GetComponent<Player>().duringAbility;
                 playerBlood = player.GetComponent<Player>().blood;
                 finalDamage = playerDamage * (1 + bulletDamage);
+                attackSpeed = player.attackSpeedAbility;
+
+                ani.SetFloat("AttackSpeed", attackSpeed);
+
                 return;
             }
 
