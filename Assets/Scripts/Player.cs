@@ -18,7 +18,10 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     public GameManager gm;
     public Text nickNameText;
     public Image health;
-
+    [SerializeField] SpriteRenderer weaponSpriteRender;
+    [SerializeField] SpriteRenderer clothesSpriteRender;
+    [SerializeField] SpriteRenderer clothesDownSpriteRender;
+    [SerializeField]Sprite[] clotheDownSprs;
 
 
     [SerializeField] Canvas canvas;
@@ -37,13 +40,19 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] GameObject downPosOB;
 
     public GameObject weaponOB;
-    [SerializeField] GameObject weaponOB2;
-    [SerializeField] GameObject weaponUpPos;
-    [SerializeField] GameObject weaponUpPos2;
-    [SerializeField] GameObject weaponMidPos;
-    [SerializeField] GameObject weaponMidPos2;
-    [SerializeField] GameObject weaponDownPos;
-    [SerializeField] GameObject weaponDownPos2;
+    public GameObject weaponOB2;
+    [SerializeField] GameObject oneHandGunUpPos;
+    [SerializeField] GameObject oneHandGunUpPos2;
+    [SerializeField] GameObject oneHandGunMidPos;
+    [SerializeField] GameObject oneHandGunMidPos2;
+    [SerializeField] GameObject oneHandGunDownPos;
+    [SerializeField] GameObject oneHandGunDownPos2;
+    [SerializeField] GameObject oneHandSwordUpPos;
+    [SerializeField] GameObject oneHandSwordUpPos2;
+    [SerializeField] GameObject oneHandSwordMidPos;
+    [SerializeField] GameObject oneHandSwordMidPos2;
+    [SerializeField] GameObject oneHandSwordDownPos;
+    [SerializeField] GameObject oneHandSwordDownPos2;
 
     [SerializeField] GameObject weaponReloadSpawn;
     [SerializeField] GameObject weaponReloadSpawn2;
@@ -79,11 +88,11 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     public bool isGround;
     [SerializeField] float speed;
 
-    [SerializeField] SpriteRenderer weaponSpriteRender;
-    [SerializeField] SpriteRenderer clothesSpriteRender;
+
     
     [SerializeField] int weaponNum;
     [SerializeField] int weaponNum2;
+    [SerializeField] string weaponSpecies;
     [SerializeField] int clothesNum;
     [SerializeField] int plusMaxHp;
     [SerializeField] int clothesPlusHp;
@@ -159,6 +168,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             oneWay = GameObject.Find("OneWayTile").GetComponent<OneWayScript>();
             oneWay.player = this;
 
+            clotheDownSprs = Resources.LoadAll<Sprite>(clothesNum + "Clothe" + "/" + "3");
+
             isMine = true;
             /*for (int i = 0; i < bullet.Length; i++)
             {
@@ -194,7 +205,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     PhotonNetwork.Instantiate(weaponNum.ToString() + "weapon", gameObject.transform.position, Quaternion.identity).GetComponent<itemScript>().ammo = ammo_P;
                 }
 
-
+                
 
                 //"무기"아이템 얻음
                 weaponNum = item.itemNum;
@@ -259,15 +270,18 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             else
             {
                 ani.SetBool("IsMove", false);
+                //clothesDownSpriteRender.sprite = clotheDownSprs[0];
             }
 
             if (rigid.velocity.y < 0)
             {
                 ani.SetBool("IsFalling", true);
+                //clothesDownSpriteRender.sprite = clotheDownSprs[2];
             }
             else
             {
                 ani.SetBool("IsFalling", false);
+                //clothesDownSpriteRender.sprite = clotheDownSprs[1];
             }
 
             //isGround = Physics2D.OverlapCircle((Vector2)transform.position + new Vector2(0, -0.25f), didi, 1 << LayerMask.NameToLayer("Ground"));
@@ -280,81 +294,133 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             if (Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
             {
                 //위를봄
-                //pv.RPC("ClotheUpChange", RpcTarget.All,attackDir,clothesNum);
+                attackDir = 3;
+                bodyUpAni.SetBool("IsLookUp", true);
+                bodyUpAni.SetBool("IsLookInfront", false);
+                pv.RPC("ClotheUpChange", RpcTarget.All,attackDir,clothesNum);
                 if (!left)
                 {
-                    attackDir = 3;
-                    weaponOB.transform.position = weaponUpPos.transform.position;
-                    weaponOB.transform.rotation = Quaternion.Euler(0, 0, 90);
-                    weaponOB2.transform.position = weaponUpPos2.transform.position;
-                    weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 90);
-                    bodyUpAni.SetBool("IsLookUp", true);
-                    bodyUpAni.SetBool("IsLookInfront", false);
-                }
-                
+                    
+                    if(weaponSpecies == "OneHandGun")
+                    {
+                        weaponOB.transform.position = oneHandGunUpPos.transform.position;
+                        weaponOB.transform.rotation = Quaternion.Euler(0, 0, 90);
+                        weaponOB2.transform.position = oneHandGunUpPos2.transform.position;
+                        weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 90);
+                    }
+                    else if(weaponSpecies == "OneHandSword")
+                    {
+                        weaponOB.transform.position = oneHandSwordUpPos.transform.position;
+                        weaponOB.transform.rotation = Quaternion.Euler(0, 0, 200);
+                        weaponOB2.transform.position = oneHandSwordUpPos2.transform.position;
+                        weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 200);
+                    }
 
-                if (left)
+                }
+                else if (left)//위를봄
                 {
-                    attackDir = 3;
-                    weaponOB.transform.position = weaponUpPos.transform.position;
-                    weaponOB.transform.rotation = Quaternion.Euler(0, 0, -90);
-                    weaponOB2.transform.position = weaponUpPos2.transform.position;
-                    weaponOB2.transform.rotation = Quaternion.Euler(0, 0, -90);
-                    bodyUpAni.SetBool("IsLookUp", true);
-                    bodyUpAni.SetBool("IsLookInfront", false);
+                    
+                    if (weaponSpecies == "OneHandGun")
+                    {
+                        weaponOB.transform.position = oneHandGunUpPos.transform.position;
+                        weaponOB.transform.rotation = Quaternion.Euler(0, 0, -90);
+                        weaponOB2.transform.position = oneHandGunUpPos2.transform.position;
+                        weaponOB2.transform.rotation = Quaternion.Euler(0, 0, -90);
+                    }
+                    else if(weaponSpecies == "OneHandSword")
+                    {
+                        weaponOB.transform.position = oneHandSwordUpPos.transform.position;
+                        weaponOB.transform.rotation = Quaternion.Euler(0, 0, -200);
+                        weaponOB2.transform.position = oneHandSwordUpPos2.transform.position;
+                        weaponOB2.transform.rotation = Quaternion.Euler(0, 0, -200);
+                    }
+
                 }
             }
             else if (!Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S))
             {
                 //아래를봄
-                //pv.RPC("ClotheUpChange", RpcTarget.All,attackDir, clothesNum);
+                attackDir = 4;
+                bodyUpAni.SetBool("IsLookUp", false);
+                bodyUpAni.SetBool("IsLookInfront", false);
+                pv.RPC("ClotheUpChange", RpcTarget.All,attackDir, clothesNum);
                 if (!left)
                 {
-                    attackDir = 4;
-                    weaponOB.transform.position = weaponDownPos.transform.position;
-                    weaponOB.transform.rotation = Quaternion.Euler(0, 0, -90);
-                    weaponOB2.transform.position = weaponDownPos2.transform.position;
-                    weaponOB2.transform.rotation = Quaternion.Euler(0, 0, -90);
-                    bodyUpAni.SetBool("IsLookUp", false);
-                    bodyUpAni.SetBool("IsLookInfront", false);
-                    
+                    if (weaponSpecies == "OneHandGun")
+                    {
+                        weaponOB.transform.position = oneHandGunDownPos.transform.position;
+                        weaponOB.transform.rotation = Quaternion.Euler(0, 0, -90);
+                        weaponOB2.transform.position = oneHandGunDownPos2.transform.position;
+                        weaponOB2.transform.rotation = Quaternion.Euler(0, 0, -90);
+                    }
+                    else if (weaponSpecies == "OneHandSword")
+                    {
+                        weaponOB.transform.position = oneHandSwordDownPos.transform.position;
+                        weaponOB.transform.rotation = Quaternion.Euler(0, 0, -44);
+                        weaponOB2.transform.position = oneHandSwordDownPos2.transform.position;
+                        weaponOB2.transform.rotation = Quaternion.Euler(0, 0, -44);
+                    }
                 }
-                if (left)
+                if (left)//아래를봄
                 {
-                    attackDir = 4;
-                    weaponOB.transform.position = weaponDownPos.transform.position;
-                    weaponOB.transform.rotation = Quaternion.Euler(0, 0, 90);
-                    weaponOB2.transform.position = weaponDownPos2.transform.position;
-                    weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 90);
-                    bodyUpAni.SetBool("IsLookUp", false);
-                    bodyUpAni.SetBool("IsLookInfront", false);
-
+                    if (weaponSpecies == "OneHandGun")
+                    {
+                        weaponOB.transform.position = oneHandGunDownPos.transform.position;
+                        weaponOB.transform.rotation = Quaternion.Euler(0, 0, 90);
+                        weaponOB2.transform.position = oneHandGunDownPos2.transform.position;
+                        weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 90);
+                    }
+                    else if (weaponSpecies == "OneHandSword")
+                    {
+                        weaponOB.transform.position = oneHandSwordDownPos.transform.position;
+                        weaponOB.transform.rotation = Quaternion.Euler(0, 0, 44);
+                        weaponOB2.transform.position = oneHandSwordDownPos2.transform.position;
+                        weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 44);
+                    }
                 }
-
             }
             else
             {
                 //중간
-                //pv.RPC("ClotheUpChange", RpcTarget.All,attackDir, clothesNum);
+                bodyUpAni.SetBool("IsLookInfront", true);
+                pv.RPC("ClotheUpChange", RpcTarget.All,attackDir, clothesNum);
                 if (left)
                 {
                     //왼쪽
-                    weaponOB.transform.position = weaponMidPos.transform.position;
-                    weaponOB.transform.rotation = Quaternion.Euler(0, 0, 0);
-                    weaponOB2.transform.position = weaponMidPos2.transform.position;
-                    weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 0);
                     attackDir = 2;
-                    bodyUpAni.SetBool("IsLookInfront", true);
+                    if (weaponSpecies == "OneHandGun")
+                    {
+                        weaponOB.transform.position = oneHandGunMidPos.transform.position;
+                        weaponOB.transform.rotation = Quaternion.Euler(0, 0, 0);
+                        weaponOB2.transform.position = oneHandGunMidPos2.transform.position;
+                        weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    }
+                    else if (weaponSpecies == "OneHandSword")
+                    {
+                        weaponOB.transform.position = oneHandSwordMidPos.transform.position;
+                        weaponOB.transform.rotation = Quaternion.Euler(0, 0, 44);
+                        weaponOB2.transform.position = oneHandSwordMidPos2.transform.position;
+                        weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 44);
+                    }
                 }
-                else
+                else//중간
                 {
                     //오른쪽
-                    weaponOB.transform.position = weaponMidPos.transform.position;
-                    weaponOB.transform.rotation = Quaternion.Euler(0, 0, 0);
-                    weaponOB2.transform.position = weaponMidPos2.transform.position;
-                    weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 0);
                     attackDir = 1;
-                    bodyUpAni.SetBool("IsLookInfront", true);
+                    if(weaponSpecies == "OneHandGun")
+                    {
+                        weaponOB.transform.position = oneHandGunMidPos.transform.position;
+                        weaponOB.transform.rotation = Quaternion.Euler(0, 0, 0);
+                        weaponOB2.transform.position = oneHandGunMidPos2.transform.position;
+                        weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    }
+                    else if (weaponSpecies == "OneHandSword")
+                    {
+                        weaponOB.transform.position = oneHandSwordMidPos.transform.position;
+                        weaponOB.transform.rotation = Quaternion.Euler(0, 0, -44);
+                        weaponOB2.transform.position = oneHandSwordMidPos2.transform.position;
+                        weaponOB2.transform.rotation = Quaternion.Euler(0, 0, -44);
+                    }
                 }
             }
 
@@ -543,6 +609,36 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         isBodySetUp = false;
         bodyUp.transform.position = downPosOB.transform.position;
     }
+    public void ClothesDownAni0()
+    {
+
+        clothesDownSpriteRender.sprite = clotheDownSprs[3];
+    }
+    public void ClothesDownAni1()
+    {
+        clothesDownSpriteRender.sprite = clotheDownSprs[4];
+    }
+    public void ClothesDownAni2()
+    {
+        clothesDownSpriteRender.sprite = clotheDownSprs[5];
+    }
+    public void ClothesDownAni3()
+    {
+        clothesDownSpriteRender.sprite = clotheDownSprs[6];
+    }
+    public void ClothesDownJumpUp()
+    {
+        clothesDownSpriteRender.sprite = clotheDownSprs[1];
+    }
+    public void ClothesDownJumpDown()
+    {
+        clothesDownSpriteRender.sprite = clotheDownSprs[2];
+    }
+    public void ClothesDownIdle()
+    {
+        clothesDownSpriteRender.sprite = clotheDownSprs[0];
+    }
+
 
     IEnumerator ClothesHeal()
     {
@@ -606,7 +702,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         if (attackDir == 1 || attackDir == 2) dir = 0;
         else if (attackDir == 3) dir = 1;
         else if (attackDir == 4) dir = 2;
-        Debug.Log("11");
+        clothesSpriteRender.sprite = Resources.Load(clotheNum + "Clothe" + "/" + dir, typeof(Sprite)) as Sprite;
+        Debug.Log(clotheNum + "Clothe" + "/" + dir);
         
 
     }
