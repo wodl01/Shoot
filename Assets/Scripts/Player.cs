@@ -8,7 +8,9 @@ using Cinemachine;
 
 public class Player : MonoBehaviourPunCallbacks, IPunObservable
 {
+    [SerializeField] Player player;
     public bool isMine = false;
+    ExitGames.Client.Photon.Hashtable PropriedadesPlayer = new ExitGames.Client.Photon.Hashtable();
     public Rigidbody2D rigid;
     public Animator ani;
     public SpriteRenderer sprite;
@@ -83,6 +85,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] int weaponNum;
     [SerializeField] int weaponNum2;
     [SerializeField] int clothesNum;
+    [SerializeField] int plusMaxHp;
+    [SerializeField] int clothesPlusHp;
     [SerializeField] Sprite[] clothes;
     public int attackCode;
     public int attackCode2;
@@ -154,15 +158,27 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
             oneWay = GameObject.Find("OneWayTile").GetComponent<OneWayScript>();
             oneWay.player = this;
-            
+
             isMine = true;
             /*for (int i = 0; i < bullet.Length; i++)
             {
                 bullet[i].GetComponent<BulletScript>().player = this;
             }*/
-            
+
+
+            /*PropriedadesPlayer.Add("idSkin", PlayerPrefs.GetInt("skinAtual"));
+            PropriedadesPlayer.Add("nomePlayer", PlayerPrefs.GetString("name"));
+
+            PhotonNetwork.LocalPlayer.SetCustomProperties(PropriedadesPlayer);
+
+            clothesSpriteRender.sprite = clothes[clothesNum];
+            */
+            StartCoroutine(ClothesHeal());
         }
+
     }
+
+    
 
     private void OnTriggerStay2D(Collider2D other)
     {
@@ -264,6 +280,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             if (Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
             {
                 //위를봄
+                //pv.RPC("ClotheUpChange", RpcTarget.All,attackDir,clothesNum);
                 if (!left)
                 {
                     attackDir = 3;
@@ -290,6 +307,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             else if (!Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S))
             {
                 //아래를봄
+                //pv.RPC("ClotheUpChange", RpcTarget.All,attackDir, clothesNum);
                 if (!left)
                 {
                     attackDir = 4;
@@ -299,7 +317,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     weaponOB2.transform.rotation = Quaternion.Euler(0, 0, -90);
                     bodyUpAni.SetBool("IsLookUp", false);
                     bodyUpAni.SetBool("IsLookInfront", false);
-                    clothesSpriteRender.sprite = clothes[clothesNum - 1];
+                    
                 }
                 if (left)
                 {
@@ -310,13 +328,14 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 90);
                     bodyUpAni.SetBool("IsLookUp", false);
                     bodyUpAni.SetBool("IsLookInfront", false);
-                    clothesSpriteRender.sprite = clothes[clothesNum + 1];
+
                 }
 
             }
             else
             {
-                clothesSpriteRender.sprite = clothes[clothesNum];
+                //중간
+                //pv.RPC("ClotheUpChange", RpcTarget.All,attackDir, clothesNum);
                 if (left)
                 {
                     //왼쪽
@@ -507,7 +526,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             }
             if (Input.GetKeyDown(KeyCode.E))
             {
-
+                
             }
         }
         else if ((transform.position = curPos).sqrMagnitude >= 100) transform.position = curPos;
@@ -525,7 +544,20 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         bodyUp.transform.position = downPosOB.transform.position;
     }
 
-
+    IEnumerator ClothesHeal()
+    {
+        yield return new WaitForSeconds(5f);
+        if(maxHpValue < hp + clothesPlusHp)//오버
+        {
+            hp = maxHpValue;
+        }
+        else
+        {
+            hp += clothesPlusHp;
+        }
+        
+        StartCoroutine(ClothesHeal());
+    }
 
 
 
@@ -566,6 +598,17 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         {
             weaponSpriteRender.sprite = Resources.Load(itemSpriteName, typeof(Sprite)) as Sprite;
         }
+    }
+    [PunRPC]
+    void ClotheUpChange(int dir, int clotheNum)
+    {
+        Sprite[] spr;
+        if (attackDir == 1 || attackDir == 2) dir = 0;
+        else if (attackDir == 3) dir = 1;
+        else if (attackDir == 4) dir = 2;
+        Debug.Log("11");
+        
+
     }
 
     /*[PunRPC]
@@ -633,13 +676,13 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         {
             stream.SendNext(transform.position);
             stream.SendNext(health.fillAmount);
-            stream.SendNext(weaponSpriteRender.name);
+            //stream.SendNext(weaponSpriteRender.name);
         }
         else
         {
             curPos = (Vector3)stream.ReceiveNext();
             health.fillAmount = (float)stream.ReceiveNext();
-            weaponSpriteRender.name = (string)stream.ReceiveNext();
+            //weaponSpriteRender.name = (string)stream.ReceiveNext();
         }
     }
 

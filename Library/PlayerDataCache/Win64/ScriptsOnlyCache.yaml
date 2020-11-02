@@ -42,10 +42,8 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.TestListCacheData
@@ -1468,7 +1466,7 @@ ScriptsOnlyBuild:
     className: NickNameField
   - hash:
       serializedVersion: 2
-      Hash: d43f070a0214e5ded6e68a17cd87e7e2
+      Hash: 29dc36527f0230f675a35641d4fd0c77
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: BulletScript
@@ -2134,7 +2132,7 @@ ScriptsOnlyBuild:
     className: CountOfRoomsProperty
   - hash:
       serializedVersion: 2
-      Hash: 8aed91d0f29acae3001d4d03115192b1
+      Hash: 4a17063a388135967f846996dbcaa39a
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player
