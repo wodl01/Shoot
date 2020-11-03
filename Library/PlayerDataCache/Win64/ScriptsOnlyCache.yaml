@@ -9,6 +9,7 @@ ScriptsOnlyBuild:
     - NetworkManager
     - OneWayScript
     - Player
+    - PlayerAniManager
     - UiManager
     - getitem
     - itemScript
@@ -30,6 +31,8 @@ ScriptsOnlyBuild:
     - Photon.Pun.Demo.SlotRacer.PlayerControl
     - Photon.Pun.Demo.SlotRacer.Utils.SplineWalker
     PhotonUnityNetworking.Editor.dll:
+    - Photon.Pun.PhotonTransformViewEditor
+    - Photon.Pun.PhotonViewInspector
     - Photon.Pun.PunSceneSettings
     PhotonUnityNetworking.dll:
     - Photon.Pun.PhotonAnimatorView
@@ -166,63 +169,65 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 9676}
     - Class: 114
-      Script: {instanceID: 9766}
+      Script: {instanceID: 9722}
     - Class: 114
-      Script: {instanceID: 9772}
+      Script: {instanceID: 9768}
     - Class: 114
-      Script: {instanceID: 9892}
+      Script: {instanceID: 9774}
     - Class: 114
-      Script: {instanceID: 10008}
+      Script: {instanceID: 9894}
     - Class: 114
-      Script: {instanceID: 10020}
+      Script: {instanceID: 10010}
     - Class: 114
-      Script: {instanceID: 10164}
+      Script: {instanceID: 10022}
     - Class: 114
-      Script: {instanceID: 10222}
+      Script: {instanceID: 10166}
     - Class: 114
-      Script: {instanceID: 10228}
+      Script: {instanceID: 10224}
     - Class: 114
-      Script: {instanceID: 10240}
+      Script: {instanceID: 10230}
     - Class: 114
-      Script: {instanceID: 10248}
+      Script: {instanceID: 10242}
     - Class: 114
-      Script: {instanceID: 10290}
+      Script: {instanceID: 10250}
     - Class: 114
-      Script: {instanceID: 10370}
+      Script: {instanceID: 10292}
     - Class: 114
-      Script: {instanceID: 10422}
+      Script: {instanceID: 10372}
     - Class: 114
       Script: {instanceID: 10424}
     - Class: 114
-      Script: {instanceID: 10484}
+      Script: {instanceID: 10426}
     - Class: 114
-      Script: {instanceID: 10494}
+      Script: {instanceID: 10486}
     - Class: 114
-      Script: {instanceID: 10524}
+      Script: {instanceID: 10496}
     - Class: 114
-      Script: {instanceID: 10546}
+      Script: {instanceID: 10526}
     - Class: 114
-      Script: {instanceID: 10610}
+      Script: {instanceID: 10548}
     - Class: 114
-      Script: {instanceID: 10644}
+      Script: {instanceID: 10612}
     - Class: 114
-      Script: {instanceID: 10674}
+      Script: {instanceID: 10646}
     - Class: 114
-      Script: {instanceID: 10692}
+      Script: {instanceID: 10676}
     - Class: 114
-      Script: {instanceID: 10700}
+      Script: {instanceID: 10694}
     - Class: 114
-      Script: {instanceID: 10712}
+      Script: {instanceID: 10702}
     - Class: 114
-      Script: {instanceID: 11144}
+      Script: {instanceID: 10714}
     - Class: 114
-      Script: {instanceID: 11148}
+      Script: {instanceID: 11146}
     - Class: 114
-      Script: {instanceID: 11186}
+      Script: {instanceID: 11150}
     - Class: 114
-      Script: {instanceID: 11238}
+      Script: {instanceID: 11188}
     - Class: 114
-      Script: {instanceID: 11252}
+      Script: {instanceID: 11240}
+    - Class: 114
+      Script: {instanceID: 11254}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -906,6 +911,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: SignalAsset
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: PlayerAniManager
   - hash:
       serializedVersion: 2
       Hash: ba160f8fe96116c81151a9a24d7d9f4f
@@ -2132,7 +2143,7 @@ ScriptsOnlyBuild:
     className: CountOfRoomsProperty
   - hash:
       serializedVersion: 2
-      Hash: 4a17063a388135967f846996dbcaa39a
+      Hash: 8680c19c28044ac0154ab80816054223
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player

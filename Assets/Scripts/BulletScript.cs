@@ -108,16 +108,18 @@ public class BulletScript : MonoBehaviour
         if (isRightGun)
         {
             player.readyToAttack = true;
+            player.pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered,player.weaponNum);
             pv.RPC("DestroyRPC", RpcTarget.AllBuffered);
         }
         else
         {
             player.readyToAttack2 = true;
+            player.pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered, player.weaponNum2);
             pv.RPC("DestroyRPC", RpcTarget.AllBuffered);
         }
-
-       
     }
+
+
 
     [PunRPC]
     void BulletDirRPC(int dir , int pp, bool isRight)

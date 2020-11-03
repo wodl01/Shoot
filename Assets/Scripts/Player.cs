@@ -19,9 +19,10 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     public Text nickNameText;
     public Image health;
     [SerializeField] SpriteRenderer weaponSpriteRender;
+    [SerializeField] SpriteRenderer weaponSpriteRender2;
     [SerializeField] SpriteRenderer clothesSpriteRender;
     [SerializeField] SpriteRenderer clothesDownSpriteRender;
-    [SerializeField]Sprite[] clotheDownSprs;
+    int clothesDownAniNum;
 
 
     [SerializeField] Canvas canvas;
@@ -90,13 +91,12 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
 
     
-    [SerializeField] int weaponNum;
-    [SerializeField] int weaponNum2;
+    public int weaponNum;
+    public int weaponNum2;
     [SerializeField] string weaponSpecies;
     [SerializeField] int clothesNum;
     [SerializeField] int plusMaxHp;
     [SerializeField] int clothesPlusHp;
-    [SerializeField] Sprite[] clothes;
     public int attackCode;
     public int attackCode2;
     [SerializeField] GameObject[] bullet;
@@ -116,7 +116,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] Animator reLoadAni;
     [SerializeField] bool isReload;
     [SerializeField] bool isReload2;
-    [SerializeField] string itemSpriteName; 
+    public string itemSpriteName; 
     itemScript item;
 
     public int skillCode;
@@ -168,22 +168,11 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             oneWay = GameObject.Find("OneWayTile").GetComponent<OneWayScript>();
             oneWay.player = this;
 
-            clotheDownSprs = Resources.LoadAll<Sprite>(clothesNum + "Clothe" + "/" + "3");
+            pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered, weaponNum);
+            pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered, weaponNum2);
 
             isMine = true;
-            /*for (int i = 0; i < bullet.Length; i++)
-            {
-                bullet[i].GetComponent<BulletScript>().player = this;
-            }*/
 
-
-            /*PropriedadesPlayer.Add("idSkin", PlayerPrefs.GetInt("skinAtual"));
-            PropriedadesPlayer.Add("nomePlayer", PlayerPrefs.GetString("name"));
-
-            PhotonNetwork.LocalPlayer.SetCustomProperties(PropriedadesPlayer);
-
-            clothesSpriteRender.sprite = clothes[clothesNum];
-            */
             StartCoroutine(ClothesHeal());
         }
 
@@ -219,7 +208,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
                 itemSpriteName = other.GetComponent<getitem>().weapon_number;
 
-                pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered, itemSpriteName);
+                pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered, weaponNum);
 
                 readyToAttack = true;
                 reLoadTime_P = item.reLoadTime;
@@ -297,7 +286,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 attackDir = 3;
                 bodyUpAni.SetBool("IsLookUp", true);
                 bodyUpAni.SetBool("IsLookInfront", false);
-                pv.RPC("ClotheUpChange", RpcTarget.All,attackDir,clothesNum);
+                pv.RPC("ClotheUpChange", RpcTarget.All,attackDir);
                 if (!left)
                 {
                     
@@ -343,7 +332,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 attackDir = 4;
                 bodyUpAni.SetBool("IsLookUp", false);
                 bodyUpAni.SetBool("IsLookInfront", false);
-                pv.RPC("ClotheUpChange", RpcTarget.All,attackDir, clothesNum);
+                pv.RPC("ClotheUpChange", RpcTarget.All,attackDir);
                 if (!left)
                 {
                     if (weaponSpecies == "OneHandGun")
@@ -356,9 +345,9 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     else if (weaponSpecies == "OneHandSword")
                     {
                         weaponOB.transform.position = oneHandSwordDownPos.transform.position;
-                        weaponOB.transform.rotation = Quaternion.Euler(0, 0, -44);
+                        weaponOB.transform.rotation = Quaternion.Euler(0, 0, -71);
                         weaponOB2.transform.position = oneHandSwordDownPos2.transform.position;
-                        weaponOB2.transform.rotation = Quaternion.Euler(0, 0, -44);
+                        weaponOB2.transform.rotation = Quaternion.Euler(0, 0, -71);
                     }
                 }
                 if (left)//아래를봄
@@ -373,9 +362,9 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     else if (weaponSpecies == "OneHandSword")
                     {
                         weaponOB.transform.position = oneHandSwordDownPos.transform.position;
-                        weaponOB.transform.rotation = Quaternion.Euler(0, 0, 44);
+                        weaponOB.transform.rotation = Quaternion.Euler(0, 0, 71);
                         weaponOB2.transform.position = oneHandSwordDownPos2.transform.position;
-                        weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 44);
+                        weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 71);
                     }
                 }
             }
@@ -383,7 +372,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             {
                 //중간
                 bodyUpAni.SetBool("IsLookInfront", true);
-                pv.RPC("ClotheUpChange", RpcTarget.All,attackDir, clothesNum);
+                pv.RPC("ClotheUpChange", RpcTarget.All,attackDir);
                 if (left)
                 {
                     //왼쪽
@@ -439,8 +428,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
                 }
 
+                pv.RPC("EmptyWeaponSpriteRPC", RpcTarget.AllBuffered, isRight);
 
-                
                 ammo_P -= 1;
 
                 bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
@@ -460,6 +449,9 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                         .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
 
                 }
+
+                pv.RPC("EmptyWeaponSpriteRPC", RpcTarget.AllBuffered, isRight);
+
                 ammo_P -= 1;
 
                 bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
@@ -473,7 +465,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 //반대쪽총발사
                 bool isRight = false;
 
-
+                
 
 
                 for (int i = 0; i < spawnAttackObAmount; i++)
@@ -482,6 +474,9 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
 
                 }
+
+                pv.RPC("EmptyWeaponSpriteRPC", RpcTarget.AllBuffered, isRight);
+
                 ammo_P2 -= 1;
 
                 bulletText2.text = ammo_P2.ToString() + "/" + maximumAmmo_P2.ToString();
@@ -502,7 +497,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
                 }
 
-                
+                pv.RPC("EmptyWeaponSpriteRPC", RpcTarget.AllBuffered, isRight);
+
                 ammo_P2 -= 1;
 
                 bulletText2.text = ammo_P2.ToString() + "/" + maximumAmmo_P2.ToString();
@@ -556,7 +552,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 ammo_P = maximumAmmo_P;
                 bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
                 reLoadAni.SetTrigger("Ready");
-                pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered, itemSpriteName);
+
 
             }
             if (reLoadingTime2 < 0 && isReload2)
@@ -568,7 +564,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 ammo_P2 = maximumAmmo_P2;
                 bulletText2.text = ammo_P2.ToString() + "/" + maximumAmmo_P2.ToString();
                 reLoadAni.SetTrigger("Ready");
-                pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered, itemSpriteName);
+
             }
 
             if (Input.GetKeyDown(KeyCode.Q) && !isReload)
@@ -582,7 +578,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     weaponNum = 0;
                     itemSpriteName = "Null";
 
-                    pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered, itemSpriteName);
+                    pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered, weaponNum);
 
                     ammo_P = 0;
                     maximumAmmo_P = 0;
@@ -609,34 +605,40 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         isBodySetUp = false;
         bodyUp.transform.position = downPosOB.transform.position;
     }
-    public void ClothesDownAni0()
+    public void ClothesDownAni0()//1
     {
-
-        clothesDownSpriteRender.sprite = clotheDownSprs[3];
+        clothesDownAniNum = 6;
+        pv.RPC("ClothesDownChange", RpcTarget.AllBuffered, clothesDownAniNum);
     }
-    public void ClothesDownAni1()
+    public void ClothesDownAni1()//2
     {
-        clothesDownSpriteRender.sprite = clotheDownSprs[4];
+        clothesDownAniNum = 7;
+        pv.RPC("ClothesDownChange", RpcTarget.AllBuffered, clothesDownAniNum);
     }
-    public void ClothesDownAni2()
+    public void ClothesDownAni2()//3
     {
-        clothesDownSpriteRender.sprite = clotheDownSprs[5];
+        clothesDownAniNum = 8;
+        pv.RPC("ClothesDownChange", RpcTarget.AllBuffered, clothesDownAniNum);
     }
-    public void ClothesDownAni3()
+    public void ClothesDownAni3()//4
     {
-        clothesDownSpriteRender.sprite = clotheDownSprs[6];
+        clothesDownAniNum = 9;
+        pv.RPC("ClothesDownChange", RpcTarget.AllBuffered, clothesDownAniNum);
     }
-    public void ClothesDownJumpUp()
+    public void ClothesDownJumpUp()//점프
     {
-        clothesDownSpriteRender.sprite = clotheDownSprs[1];
+        clothesDownAniNum = 4;
+        pv.RPC("ClothesDownChange", RpcTarget.AllBuffered, clothesDownAniNum);
     }
-    public void ClothesDownJumpDown()
+    public void ClothesDownJumpDown()//점프다운
     {
-        clothesDownSpriteRender.sprite = clotheDownSprs[2];
+        clothesDownAniNum = 5;
+        pv.RPC("ClothesDownChange", RpcTarget.AllBuffered, clothesDownAniNum);
     }
-    public void ClothesDownIdle()
+    public void ClothesDownIdle()//가만히
     {
-        clothesDownSpriteRender.sprite = clotheDownSprs[0];
+        clothesDownAniNum = 3;
+        pv.RPC("ClothesDownChange", RpcTarget.AllBuffered, clothesDownAniNum);
     }
 
 
@@ -683,29 +685,61 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     }
     
     [PunRPC]
-    void ChangeWeaponSpriteRPC(string itemSpriteName)
+    public void ChangeWeaponSpriteRPC(int itemSpriteName)
     {
-        if(weaponNum > 0)
+        if(weaponNum > 1000 && weaponNum2 > 1000)
         {
             //무기Sprite바꿈
-            weaponSpriteRender.sprite = Resources.Load(itemSpriteName, typeof(Sprite)) as Sprite;
+            weaponSpriteRender.sprite = Resources.Load("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString(), typeof(Sprite)) as Sprite;
+            Debug.Log("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString());
+
+            weaponSpriteRender2.sprite = Resources.Load("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString(), typeof(Sprite)) as Sprite;
+            Debug.Log("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString());
+        }
+        else if (weaponNum > 1000 && weaponNum2 < 1000)
+        {
+            weaponSpriteRender.sprite = Resources.Load("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString(), typeof(Sprite)) as Sprite;
+            Debug.Log("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum.ToString());
+        }
+        else if(weaponNum < 1000 && weaponNum2 > 1000)
+        {
+            weaponSpriteRender2.sprite = Resources.Load("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString(), typeof(Sprite)) as Sprite;
+            Debug.Log("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString());
         }
         else
         {
-            weaponSpriteRender.sprite = Resources.Load(itemSpriteName, typeof(Sprite)) as Sprite;
+            weaponSpriteRender.sprite = Resources.Load("Null", typeof(Sprite)) as Sprite;
+            weaponSpriteRender2.sprite = Resources.Load("Null", typeof(Sprite)) as Sprite;
         }
     }
     [PunRPC]
-    void ClotheUpChange(int dir, int clotheNum)
+    void EmptyWeaponSpriteRPC(bool isright)
     {
-        Sprite[] spr;
+        if (isright)
+        {
+            weaponSpriteRender.sprite = Resources.Load("Null", typeof(Sprite)) as Sprite;
+        }
+        else
+        {
+            weaponSpriteRender2.sprite = Resources.Load("Null", typeof(Sprite)) as Sprite;
+        }
+    }
+    [PunRPC]
+    void ClotheUpChange(int dir)
+    {
+
         if (attackDir == 1 || attackDir == 2) dir = 0;
         else if (attackDir == 3) dir = 1;
         else if (attackDir == 4) dir = 2;
-        clothesSpriteRender.sprite = Resources.Load(clotheNum + "Clothe" + "/" + dir, typeof(Sprite)) as Sprite;
-        Debug.Log(clotheNum + "Clothe" + "/" + dir);
+        clothesSpriteRender.sprite = Resources.Load(clothesNum + "Clothe" + "/" + dir, typeof(Sprite)) as Sprite;
+        Debug.Log(clothesNum + "Clothe" + "/" + dir);
         
 
+    }
+    [PunRPC]
+    void ClothesDownChange(int num)
+    {
+        clothesDownSpriteRender.sprite = Resources.Load(clothesNum + "Clothe" + "/" + num, typeof(Sprite)) as Sprite;
     }
 
     /*[PunRPC]
