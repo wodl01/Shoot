@@ -58,7 +58,15 @@ public class BulletScript : MonoBehaviour
         //transform.Translate(new Vector3(dirX,dirY,0) * bulletSpeed * Time.deltaTime);
         if (!isBullet)
         {
-            transform.position = player.gameObject.transform.position;
+            if (isRightGun)
+            {
+                transform.position = player.shotPos.transform.position;
+            }
+            else
+            {
+                transform.position = player.shotPos2.transform.position;
+            }
+            
 
             if(dirX != 0)
             {

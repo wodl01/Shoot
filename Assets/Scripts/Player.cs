@@ -68,8 +68,10 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
     [SerializeField] bool isLookUp;
 
-    [SerializeField] GameObject shotPos;
-    [SerializeField] GameObject shotPos2;
+    public GameObject shotPos;
+    public GameObject shotPos2;
+    public GameObject swingPos;
+    public GameObject swingPos2;
 
     public string spawnAttackObName;
     public string spawnAttackObName2;
@@ -416,15 +418,25 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
 
 
-            if (Input.GetMouseButtonDown(0) && weaponNum > 0 && ammo_P > 0 && readyToAttack && !isReload &&!IsFullAuto_P)
+            if (Input.GetMouseButtonDown(0) && weaponNum > 999 && ammo_P > 0 && readyToAttack && !isReload &&!IsFullAuto_P)
             {
                 //총발사
                 bool isRight = true;
 
                 for (int i = 0; i < spawnAttackObAmount; i++)
                 {
-                    PhotonNetwork.Instantiate(spawnAttackObName/*이름 중요*/, shotPos.transform.position, Quaternion.identity)
-                        .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir , this.pv.ViewID, isRight);
+                    if(weaponNum > 999 && weaponNum < 2000)
+                    {
+                        PhotonNetwork.Instantiate(spawnAttackObName/*이름 중요*/, shotPos.transform.position, Quaternion.identity)
+                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
+
+                    }
+                    else if(weaponNum > 1999 && weaponNum < 3000)
+                    {
+                        PhotonNetwork.Instantiate(spawnAttackObName/*이름 중요*/, swingPos.transform.position, Quaternion.identity)
+                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
+
+                    }
 
                 }
 
@@ -437,7 +449,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 readyToAttack = false;
 
             }
-            else if (Input.GetMouseButton(0) && weaponNum > 0 && ammo_P > 0 && readyToAttack && !isReload && IsFullAuto_P)
+            else if (Input.GetMouseButton(0) && weaponNum > 999 && ammo_P > 0 && readyToAttack && !isReload && IsFullAuto_P)
             {
                 //자동총발사
                 bool isRight = true;
@@ -445,9 +457,18 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
                 for (int i = 0; i < spawnAttackObAmount; i++)
                 {
-                    PhotonNetwork.Instantiate(spawnAttackObName/*이름 중요*/, shotPos.transform.position, Quaternion.identity)
-                        .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
+                    if (weaponNum > 999 && weaponNum < 2000)
+                    {
+                        PhotonNetwork.Instantiate(spawnAttackObName/*이름 중요*/, shotPos.transform.position, Quaternion.identity)
+                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
 
+                    }
+                    else if (weaponNum > 1999 && weaponNum < 3000)
+                    {
+                        PhotonNetwork.Instantiate(spawnAttackObName/*이름 중요*/, swingPos.transform.position, Quaternion.identity)
+                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
+
+                    }
                 }
 
                 pv.RPC("EmptyWeaponSpriteRPC", RpcTarget.AllBuffered, isRight);
@@ -460,7 +481,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
             }
 
-            if (Input.GetMouseButtonDown(1) && weaponNum2 > 0 && ammo_P2 > 0 && readyToAttack2 && !isReload2 && !IsFullAuto_P2)
+            if (Input.GetMouseButtonDown(1) && weaponNum2 > 999 && ammo_P2 > 0 && readyToAttack2 && !isReload2 && !IsFullAuto_P2)
             {
                 //반대쪽총발사
                 bool isRight = false;
@@ -470,9 +491,19 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
                 for (int i = 0; i < spawnAttackObAmount; i++)
                 {
-                    PhotonNetwork.Instantiate(spawnAttackObName2/*이름 중요*/, shotPos2.transform.position, Quaternion.identity)
-                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
 
+                    if (weaponNum > 999 && weaponNum < 2000)
+                    {
+                        PhotonNetwork.Instantiate(spawnAttackObName2/*이름 중요*/, shotPos2.transform.position, Quaternion.identity)
+                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
+
+                    }
+                    else if (weaponNum > 1999 && weaponNum < 3000)
+                    {
+                        PhotonNetwork.Instantiate(spawnAttackObName/*이름 중요*/, swingPos2.transform.position, Quaternion.identity)
+                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
+
+                    }
                 }
 
                 pv.RPC("EmptyWeaponSpriteRPC", RpcTarget.AllBuffered, isRight);
@@ -484,7 +515,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 readyToAttack2 = false;
 
             }
-            else if (Input.GetMouseButton(1) && weaponNum2 > 0 && ammo_P2 > 0 && readyToAttack2 && !isReload2 && IsFullAuto_P2)
+            else if (Input.GetMouseButton(1) && weaponNum2 > 999 && ammo_P2 > 0 && readyToAttack2 && !isReload2 && IsFullAuto_P2)
             {
                 //반대쪽연속총발사
                 bool isRight = false;
@@ -492,9 +523,19 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
                 for (int i = 0; i < spawnAttackObAmount; i++)
                 {
-                    PhotonNetwork.Instantiate(spawnAttackObName2/*이름 중요*/, shotPos2.transform.position, Quaternion.identity)
-                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID ,isRight);
 
+                    if (weaponNum > 999 && weaponNum < 2000)
+                    {
+                        PhotonNetwork.Instantiate(spawnAttackObName2/*이름 중요*/, shotPos2.transform.position, Quaternion.identity)
+                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
+
+                    }
+                    else if (weaponNum > 1999 && weaponNum < 3000)
+                    {
+                        PhotonNetwork.Instantiate(spawnAttackObName2/*이름 중요*/, swingPos2.transform.position, Quaternion.identity)
+                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
+
+                    }
                 }
 
                 pv.RPC("EmptyWeaponSpriteRPC", RpcTarget.AllBuffered, isRight);
