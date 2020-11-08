@@ -10,7 +10,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 {
     [SerializeField] Player player;
     public bool isMine = false;
-    ExitGames.Client.Photon.Hashtable PropriedadesPlayer = new ExitGames.Client.Photon.Hashtable();
+    
     public Rigidbody2D rigid;
     public Animator ani;
     public SpriteRenderer sprite;
@@ -18,6 +18,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     public GameManager gm;
     public Text nickNameText;
     public Image health;
+    [SerializeField] GameObject damageText;
+    [SerializeField] GameObject DmgOB;
     [SerializeField] SpriteRenderer weaponSpriteRender;
     [SerializeField] SpriteRenderer weaponSpriteRender2;
     [SerializeField] SpriteRenderer clothesSpriteRender;
@@ -30,6 +32,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] Text bulletText2;
 
     public BuffScript buffScript;
+    
 
     [SerializeField] GameObject reLoadOB;
     [SerializeField] GameObject reLoadBarOB;
@@ -63,7 +66,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     public float maxHpValue;
     public float hp;
 
-    public float takedDamage;
+
     public int playerDamage;
 
     [SerializeField] bool isLookUp;
@@ -98,7 +101,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] string weaponSpecies;
     [SerializeField] int clothesNum;
     [SerializeField] int plusMaxHp;
-    [SerializeField] int clothesPlusHp;
+    [SerializeField] float clothesPlusHp;
     public int attackCode;
     public int attackCode2;
     [SerializeField] GameObject[] bullet;
@@ -162,6 +165,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             bulletText = GameObject.FindGameObjectWithTag("BulletText").GetComponent<Text>();
             bulletText2 = GameObject.FindGameObjectWithTag("BulletText2").GetComponent<Text>();
             buffScript = GameObject.FindGameObjectWithTag("BuffPanel").GetComponent<BuffScript>();
+            DmgOB = GameObject.Find("DamageDummy");
             buffScript.player = this;
 
             Cm.Follow = transform;
@@ -239,7 +243,13 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             cooltime -= Time.deltaTime;
         }
 
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            GameObject damage = PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity);
 
+            damage.transform.SetParent(DmgOB.transform);
+            damage.transform.localScale = new Vector3(1, 1, 1);
+        }
 
 
 
@@ -683,20 +693,6 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     }
 
 
-    IEnumerator ClothesHeal()
-    {
-        yield return new WaitForSeconds(5f);
-        if(maxHpValue < hp + clothesPlusHp)//오버
-        {
-            hp = maxHpValue;
-        }
-        else
-        {
-            hp += clothesPlusHp;
-        }
-        
-        StartCoroutine(ClothesHeal());
-    }
 
 
 
@@ -805,32 +801,55 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         rigid.velocity = Vector2.zero;
         rigid.AddForce(Vector2.up * jumpPow);
     }
-    [PunRPC]
-    void AttackHeal(float healAmount)
+
+    IEnumerator ClothesHeal()
     {
-        Debug.Log("qqqqq");
-        if(maxHpValue < hp + healAmount)
+        
+        yield return new WaitForSeconds(5f);
+        int colorNum = 0;
+        PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, clothesPlusHp, colorNum);
+        if (maxHpValue < hp + clothesPlusHp)//오버
         {
             hp = maxHpValue;
         }
         else
         {
+            hp += clothesPlusHp;
+        }
+
+        StartCoroutine(ClothesHeal());
+    }
+    [PunRPC]
+    public void AttackHeal(float takingDmg)
+    {
+        int colorNum = 0;
+        
+        float healAmount = takingDmg * blood;
+        PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, healAmount, colorNum);
+        if (maxHpValue < hp + takingDmg)
+        {
+            hp = maxHpValue;
+            Debug.Log("no");
+        }
+        else
+        {
             hp += healAmount;
+            Debug.Log("yes");
         }
         
     }
-
-    public void Hit()
+   
+    public void Hit(float takedDmg)
     {
-        
-        hp -= takedDamage / (1 + DecreaseTakedDamage);
+        float finalDamage;
+        int colorNum = 1;
+        finalDamage = takedDmg / (1 + DecreaseTakedDamage);
+        hp -= Mathf.Round(finalDamage);
+
+        PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, finalDamage, colorNum);
+
         if(hp <= 0)
         {
-            if(weaponNum > 0)//죽었을때
-            {
-                PhotonNetwork.Instantiate(weaponNum.ToString() + "weapon", gameObject.transform.position, Quaternion.identity).GetComponent<itemScript>().ammo = ammo_P;
-            }
-            
             GameObject.Find("Canvas").transform.Find("RespawnPanel").gameObject.SetActive(true);
             pv.RPC("DestroyRPC", RpcTarget.AllBuffered);
         }

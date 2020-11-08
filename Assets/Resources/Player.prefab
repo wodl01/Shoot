@@ -8049,6 +8049,8 @@ MonoBehaviour:
   gm: {fileID: 0}
   nickNameText: {fileID: 1021918189707896180}
   health: {fileID: 1972586464137781081}
+  damageText: {fileID: 0}
+  DmgOB: {fileID: 0}
   weaponSpriteRender: {fileID: 6233064764733165331}
   weaponSpriteRender2: {fileID: 5758045288693226121}
   clothesSpriteRender: {fileID: 4692429249892423493}
@@ -8082,7 +8084,6 @@ MonoBehaviour:
   weaponReloadSpawn2: {fileID: 775862332639215476}
   maxHpValue: 100
   hp: 100
-  takedDamage: 0
   playerDamage: 10
   isLookUp: 0
   shotPos: {fileID: 5540588587113956563}
@@ -8096,13 +8097,13 @@ MonoBehaviour:
   spawnSkillObName: 
   spawnSkillObName2: 
   duringAbility: 0.1
-  blood: 4.77
+  blood: 0.5
   DecreaseTakedDamage: 0
   jumpPow: 300
   isGround: 1
   speed: 4
-  weaponNum: 3000
-  weaponNum2: 3000
+  weaponNum: 2000
+  weaponNum2: 2000
   weaponSpecies: OneHandSword
   clothesNum: 1
   plusMaxHp: 0

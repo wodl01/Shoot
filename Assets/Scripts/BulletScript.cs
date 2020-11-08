@@ -18,7 +18,6 @@ public class BulletScript : MonoBehaviour
     public float bulletDamage;
     public float finalDamage;
     public string playerName;
-    public float finalAttackHeal;
     public int hitNum;
     public float attackSpeed;
 
@@ -93,16 +92,17 @@ public class BulletScript : MonoBehaviour
         if (other.tag == "Ground" && isBullet) pv.RPC("DestroyRPC", RpcTarget.AllBuffered);
         if (!pv.IsMine && other.tag == "Player" && other.GetComponent<PhotonView>().IsMine)
         {
-            other.GetComponent<Player>().takedDamage = finalDamage;//데미지주기
-            finalAttackHeal = (1 + playerBlood) / finalDamage;//피흡
-            Debug.Log((1 + playerBlood) / finalDamage);
 
-            player.pv.RPC("AttackHeal", RpcTarget.All, finalAttackHeal);
+
+
+            other.GetComponent<Player>().Hit(finalDamage);
+            player.pv.RPC("AttackHeal",RpcTarget.AllBuffered,finalDamage);
+
             //버프주기
             other.GetComponent<Player>().buffScript.buffNum = buffCode;
             other.GetComponent<Player>().buffScript.Active = true;
+
             
-            other.GetComponent<Player>().Hit();
             if (isBullet)
             {
                 pv.RPC("DestroyRPC", RpcTarget.AllBuffered);

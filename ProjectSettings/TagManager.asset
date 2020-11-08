@@ -12,6 +12,7 @@ TagManager:
   - BuffPanel
   - Buff
   - AttackOB
+  - DamageDummy
   layers:
   - Default
   - TransparentFX
