@@ -167,16 +167,17 @@ MonoBehaviour:
   isBullet: 1
   player: {fileID: 0}
   pv: {fileID: 493115050675736992}
-  bulletSpeed: 17
+  bulletSpeed: 32.11
   playerDamage: 0
   playerBlood: 0
   bulletDamage: 0.2
   finalDamage: 0
   playerName: 
-  finalAttackHeal: 0
   hitNum: 0
+  attackSpeed: 0
   isRightGun: 0
   bulletRigid: {fileID: 5331436597969886933}
+  ani: {fileID: 0}
   buffCode: 0
   during: 0
   duringAbility: 0

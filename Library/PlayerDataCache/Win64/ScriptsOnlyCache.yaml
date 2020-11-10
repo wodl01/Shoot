@@ -44,8 +44,10 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.TestListCacheData
@@ -359,7 +361,7 @@ ScriptsOnlyBuild:
     className: PhotonStatsGui
   - hash:
       serializedVersion: 2
-      Hash: 7064d6d45e2adc9f6bb442bbbf9dc6ad
+      Hash: 06834e14203079a34a1bb6e51714abe4
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: DamageText
@@ -2153,7 +2155,7 @@ ScriptsOnlyBuild:
     className: CountOfRoomsProperty
   - hash:
       serializedVersion: 2
-      Hash: 5f3ff2d70c953525b199279c4c7de7a7
+      Hash: ae13973364e893e3d023882025df960d
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player

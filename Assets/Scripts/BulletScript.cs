@@ -66,7 +66,7 @@ public class BulletScript : MonoBehaviour
                 transform.position = player.shotPos2.transform.position;
             }
             
-
+            /*
             if(dirX != 0)
             {
                 gameObject.transform.localScale = new Vector3(-dirX, 1, 1);
@@ -75,13 +75,15 @@ public class BulletScript : MonoBehaviour
             
             if(dirY != 0)
             {
-                gameObject.transform.rotation = Quaternion.Euler(0, 0, dirY * -90);
+               // gameObject.transform.rotation = Quaternion.Euler(0, 0, dirY * -90);
                 gameObject.transform.localScale = new Vector3(1, islookLeft, 1);
-            }
-
-
-
+            }*/
         }
+        else
+        {
+            gameObject.transform.Translate(bulletSpeed * 0.01f, 0, 0);
+        }
+
     }
 
     
@@ -93,11 +95,15 @@ public class BulletScript : MonoBehaviour
         if (!pv.IsMine && other.tag == "Player" && other.GetComponent<PhotonView>().IsMine)
         {
 
+            int colorNum = 0;
 
+            float healAmount;
 
-            other.GetComponent<Player>().Hit(finalDamage);
-            player.pv.RPC("AttackHeal",RpcTarget.AllBuffered,finalDamage);
+            other.GetComponent<Player>().Hit(finalDamage,1);
 
+            player.GetComponent<PhotonView>().RPC("AttackHeal", RpcTarget.AllBuffered, finalDamage);
+            healAmount = finalDamage * player.blood;
+            PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, healAmount, colorNum);
             //버프주기
             other.GetComponent<Player>().buffScript.buffNum = buffCode;
             other.GetComponent<Player>().buffScript.Active = true;
@@ -130,7 +136,7 @@ public class BulletScript : MonoBehaviour
 
 
     [PunRPC]
-    void BulletDirRPC(int dir , int pp, bool isRight)
+    void BulletDirRPC(int dir , int pp, bool isRight, float spread)
     {
         //playerName = pp;
         //Debug.Log(pp);
@@ -146,32 +152,38 @@ public class BulletScript : MonoBehaviour
             player = py.GetComponent<Player>();
             if (player.pv.ViewID == pp)
             {
-                if (dirNum == 1)
+                float spr;
+                float spr2;
+                spr = player.bulletSpread;
+                spr2 = player.bulletSpread2;
+                /*if (dirNum == 1)//왼
                 {
                     dirX = 1;
                     dirY = 0;
-
                 }
-                if (dirNum == 2)
+                if (dirNum == 2)//오
                 {
                     dirX = -1;
                     dirY = 0;
                 }
-                if (dirNum == 3)
+                if (dirNum == 3)//위
                 {
                     dirX = 0;
                     dirY = 1;
                 }
-                if (dirNum == 4)
+                if (dirNum == 4)//아래
                 {
                     dirX = 0;
                     dirY = -1;
-                }
+                }*/
 
                 if (isBullet)
                 {
-                    bulletRigid.velocity = new Vector3(dirX, dirY, 0) * bulletSpeed;
+                    //float tempx = gameObject.transform.rotation.z / 10;
+                    //bulletRigid.velocity = new Vector3(dirX, dirY + tempx, 0) * bulletSpeed;
+
                 }
+
                 
                 islookLeft = player.left ? 1 : -1;
 
@@ -182,8 +194,11 @@ public class BulletScript : MonoBehaviour
                 playerBlood = player.GetComponent<Player>().blood;
                 finalDamage = playerDamage * (1 + bulletDamage);
                 attackSpeed = player.attackSpeedAbility;
-
-                ani.SetFloat("AttackSpeed", attackSpeed);
+                if (!isBullet)
+                {
+                    ani.SetFloat("AttackSpeed", attackSpeed);
+                }
+                
 
                 return;
             }

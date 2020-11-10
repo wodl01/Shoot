@@ -13,6 +13,7 @@ TagManager:
   - Buff
   - AttackOB
   - DamageDummy
+  - Monster
   layers:
   - Default
   - TransparentFX

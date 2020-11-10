@@ -145,6 +145,7 @@ MonoBehaviour:
   unLooking: 0.5
   damageColor: {r: 1, g: 0.19339621, b: 0.19339621, a: 1}
   healColor: {r: 0.30545035, g: 1, b: 0.1745283, a: 1}
+  poisonColor: {r: 0.7612462, g: 0, b: 1, a: 1}
 --- !u!114 &6690984514987352043
 MonoBehaviour:
   m_ObjectHideFlags: 0

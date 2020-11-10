@@ -266,8 +266,8 @@ MonoBehaviour:
   isRightGun: 0
   bulletRigid: {fileID: 0}
   ani: {fileID: 3717251157692763894}
-  buffCode: 0
-  during: 0
+  buffCode: 1
+  during: 3
   duringAbility: 0
 --- !u!114 &-1070217484384164808
 MonoBehaviour:

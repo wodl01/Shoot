@@ -8070,8 +8070,8 @@ MonoBehaviour:
   weaponOB2: {fileID: 4465836194479106539}
   oneHandGunUpPos: {fileID: 5069144172103065273}
   oneHandGunUpPos2: {fileID: 4385365636504521633}
-  oneHandGunMidPos: {fileID: 2836491919301246898}
-  oneHandGunMidPos2: {fileID: 4803574992159175897}
+  oneHandGunMidPos: {fileID: 4803574992159175897}
+  oneHandGunMidPos2: {fileID: 2836491919301246898}
   oneHandGunDownPos: {fileID: 1382558334636665959}
   oneHandGunDownPos2: {fileID: 4992175567104310497}
   oneHandSwordUpPos: {fileID: 8278049863492956480}
@@ -8090,21 +8090,23 @@ MonoBehaviour:
   shotPos2: {fileID: 2320627683909967439}
   swingPos: {fileID: 3519819456736244177}
   swingPos2: {fileID: 7058549144447198815}
-  spawnAttackObName: Attack1
+  spawnAttackObName: Bullet1
   spawnAttackObName2: Attack1
   spawnAttackObAmount: 1
   spawnAttackObAmount2: 1
   spawnSkillObName: 
   spawnSkillObName2: 
-  duringAbility: 0.1
+  duringAbility: 0
   blood: 0.5
   DecreaseTakedDamage: 0
+  DecreaseTakedHeal: 0
   jumpPow: 300
   isGround: 1
   speed: 4
-  weaponNum: 2000
+  weaponNum: 1000
   weaponNum2: 2000
-  weaponSpecies: OneHandSword
+  weaponSpecies: OneHandGun
+  weaponSpecies2: OneHandSword
   clothesNum: 1
   plusMaxHp: 0
   clothesPlusHp: 20
@@ -8114,6 +8116,8 @@ MonoBehaviour:
   - {fileID: 8075715940360838214, guid: 22d8839269ea03142a9d36d8704c3fe0, type: 3}
   - {fileID: 8075715940360838214, guid: 899c30488fc4b67448c8fc2c68cf5199, type: 3}
   - {fileID: 8075715940360838214, guid: 73ebb022b09bc1f4ea871b5cfa5f855b, type: 3}
+  bulletSpread: 0
+  bulletSpread2: 0
   maximumAmmo_P: 0
   maximumAmmo_P2: 0
   ammo_P: 100

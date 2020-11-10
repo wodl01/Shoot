@@ -89,6 +89,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     public float blood;
 
     public float DecreaseTakedDamage;
+    public float DecreaseTakedHeal;
 
     [SerializeField] float jumpPow;
     public bool isGround;
@@ -99,12 +100,15 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     public int weaponNum;
     public int weaponNum2;
     [SerializeField] string weaponSpecies;
+    [SerializeField] string weaponSpecies2;
     [SerializeField] int clothesNum;
     [SerializeField] int plusMaxHp;
     [SerializeField] float clothesPlusHp;
     public int attackCode;
     public int attackCode2;
     [SerializeField] GameObject[] bullet;
+    public float bulletSpread;
+    public float bulletSpread2;
     [SerializeField] int maximumAmmo_P;
     [SerializeField] int maximumAmmo_P2;
     [SerializeField] int ammo_P;
@@ -145,7 +149,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
     [SerializeField] OneWayScript oneWay;
     public bool isFallen;
-
+    float dirX;
     void Awake()
     {
         //this.gameObject.name = Random.Range(0, 999999).ToString();
@@ -271,18 +275,18 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             else
             {
                 ani.SetBool("IsMove", false);
-                //clothesDownSpriteRender.sprite = clotheDownSprs[0];
+
             }
 
             if (rigid.velocity.y < 0)
             {
                 ani.SetBool("IsFalling", true);
-                //clothesDownSpriteRender.sprite = clotheDownSprs[2];
+
             }
             else
             {
                 ani.SetBool("IsFalling", false);
-                //clothesDownSpriteRender.sprite = clotheDownSprs[1];
+
             }
 
             //isGround = Physics2D.OverlapCircle((Vector2)transform.position + new Vector2(0, -0.25f), didi, 1 << LayerMask.NameToLayer("Ground"));
@@ -306,13 +310,21 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     {
                         weaponOB.transform.position = oneHandGunUpPos.transform.position;
                         weaponOB.transform.rotation = Quaternion.Euler(0, 0, 90);
-                        weaponOB2.transform.position = oneHandGunUpPos2.transform.position;
-                        weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 90);
+                        
                     }
                     else if(weaponSpecies == "OneHandSword")
                     {
                         weaponOB.transform.position = oneHandSwordUpPos.transform.position;
                         weaponOB.transform.rotation = Quaternion.Euler(0, 0, 200);
+                        
+                    }
+                    if(weaponSpecies2 == "OneHandGun")
+                    {
+                        weaponOB2.transform.position = oneHandGunUpPos2.transform.position;
+                        weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 90);
+                    }
+                    else if(weaponSpecies2 == "OneHandSword")
+                    {
                         weaponOB2.transform.position = oneHandSwordUpPos2.transform.position;
                         weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 200);
                     }
@@ -325,13 +337,21 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     {
                         weaponOB.transform.position = oneHandGunUpPos.transform.position;
                         weaponOB.transform.rotation = Quaternion.Euler(0, 0, -90);
-                        weaponOB2.transform.position = oneHandGunUpPos2.transform.position;
-                        weaponOB2.transform.rotation = Quaternion.Euler(0, 0, -90);
+                        
                     }
                     else if(weaponSpecies == "OneHandSword")
                     {
                         weaponOB.transform.position = oneHandSwordUpPos.transform.position;
                         weaponOB.transform.rotation = Quaternion.Euler(0, 0, -200);
+                        
+                    }
+                    if (weaponSpecies2 == "OneHandGun")
+                    {
+                        weaponOB2.transform.position = oneHandGunUpPos2.transform.position;
+                        weaponOB2.transform.rotation = Quaternion.Euler(0, 0, -90);
+                    }
+                    else if (weaponSpecies2 == "OneHandSword")
+                    {
                         weaponOB2.transform.position = oneHandSwordUpPos2.transform.position;
                         weaponOB2.transform.rotation = Quaternion.Euler(0, 0, -200);
                     }
@@ -351,13 +371,21 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     {
                         weaponOB.transform.position = oneHandGunDownPos.transform.position;
                         weaponOB.transform.rotation = Quaternion.Euler(0, 0, -90);
-                        weaponOB2.transform.position = oneHandGunDownPos2.transform.position;
-                        weaponOB2.transform.rotation = Quaternion.Euler(0, 0, -90);
+                        
                     }
                     else if (weaponSpecies == "OneHandSword")
                     {
                         weaponOB.transform.position = oneHandSwordDownPos.transform.position;
                         weaponOB.transform.rotation = Quaternion.Euler(0, 0, -71);
+                        
+                    }
+                    if (weaponSpecies2 == "OneHandGun")
+                    {
+                        weaponOB2.transform.position = oneHandGunDownPos2.transform.position;
+                        weaponOB2.transform.rotation = Quaternion.Euler(0, 0, -90);
+                    }
+                    else if (weaponSpecies2 == "OneHandSword")
+                    {
                         weaponOB2.transform.position = oneHandSwordDownPos2.transform.position;
                         weaponOB2.transform.rotation = Quaternion.Euler(0, 0, -71);
                     }
@@ -368,13 +396,21 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     {
                         weaponOB.transform.position = oneHandGunDownPos.transform.position;
                         weaponOB.transform.rotation = Quaternion.Euler(0, 0, 90);
-                        weaponOB2.transform.position = oneHandGunDownPos2.transform.position;
-                        weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 90);
+                        
                     }
                     else if (weaponSpecies == "OneHandSword")
                     {
                         weaponOB.transform.position = oneHandSwordDownPos.transform.position;
                         weaponOB.transform.rotation = Quaternion.Euler(0, 0, 71);
+                        
+                    }
+                    if (weaponSpecies2 == "OneHandGun")
+                    {
+                        weaponOB2.transform.position = oneHandGunDownPos2.transform.position;
+                        weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 90);
+                    }
+                    else if (weaponSpecies2 == "OneHandSword")
+                    {
                         weaponOB2.transform.position = oneHandSwordDownPos2.transform.position;
                         weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 71);
                     }
@@ -393,13 +429,21 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     {
                         weaponOB.transform.position = oneHandGunMidPos.transform.position;
                         weaponOB.transform.rotation = Quaternion.Euler(0, 0, 0);
-                        weaponOB2.transform.position = oneHandGunMidPos2.transform.position;
-                        weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 0);
+                        
                     }
                     else if (weaponSpecies == "OneHandSword")
                     {
                         weaponOB.transform.position = oneHandSwordMidPos.transform.position;
                         weaponOB.transform.rotation = Quaternion.Euler(0, 0, 44);
+                        
+                    }
+                    if (weaponSpecies2 == "OneHandGun")
+                    {
+                        weaponOB2.transform.position = oneHandGunMidPos2.transform.position;
+                        weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    }
+                    else if (weaponSpecies2 == "OneHandSword")
+                    {
                         weaponOB2.transform.position = oneHandSwordMidPos2.transform.position;
                         weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 44);
                     }
@@ -412,13 +456,21 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     {
                         weaponOB.transform.position = oneHandGunMidPos.transform.position;
                         weaponOB.transform.rotation = Quaternion.Euler(0, 0, 0);
-                        weaponOB2.transform.position = oneHandGunMidPos2.transform.position;
-                        weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 0);
+                        
                     }
                     else if (weaponSpecies == "OneHandSword")
                     {
                         weaponOB.transform.position = oneHandSwordMidPos.transform.position;
                         weaponOB.transform.rotation = Quaternion.Euler(0, 0, -44);
+                        
+                    }
+                    if (weaponSpecies2 == "OneHandGun")
+                    {
+                        weaponOB2.transform.position = oneHandGunMidPos2.transform.position;
+                        weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    }
+                    else if (weaponSpecies2 == "OneHandSword")
+                    {
                         weaponOB2.transform.position = oneHandSwordMidPos2.transform.position;
                         weaponOB2.transform.rotation = Quaternion.Euler(0, 0, -44);
                     }
@@ -432,27 +484,56 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             {
                 //총발사
                 bool isRight = true;
+                if (weaponNum > 999 && weaponNum < 2000)
+                {
+                    StartCoroutine(FireCoolTIme(isRight));
+                }
 
+                if (attackDir == 1)
+                {
+                    dirX = 0;
+                    Debug.Log("오늘쪽");
+                }
+                else if (attackDir == 2)
+                {
+                    dirX = 180;
+                    Debug.Log("왼ㅉㄸㄱ");
+                }
+                else if (attackDir == 3)
+                {
+                    dirX = 90;
+                    Debug.Log("위");
+                }
+                else if (attackDir == 4)
+                {
+                    dirX = 270;
+                    Debug.Log("아래");
+                }
+                
                 for (int i = 0; i < spawnAttackObAmount; i++)
                 {
                     if(weaponNum > 999 && weaponNum < 2000)
                     {
-                        PhotonNetwork.Instantiate(spawnAttackObName/*이름 중요*/, shotPos.transform.position, Quaternion.identity)
-                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
-
+                        PhotonNetwork.Instantiate(spawnAttackObName/*이름 중요*/, shotPos.transform.position, Quaternion.Euler(0,0, Random.Range(dirX - bulletSpread, dirX + bulletSpread)))
+                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight, bulletSpread);
+                        Debug.Log(dirX);
                     }
                     else if(weaponNum > 1999 && weaponNum < 3000)
                     {
-                        PhotonNetwork.Instantiate(spawnAttackObName/*이름 중요*/, swingPos.transform.position, Quaternion.identity)
-                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
+                        PhotonNetwork.Instantiate(spawnAttackObName/*이름 중요*/, swingPos.transform.position, Quaternion.Euler(0, 0, Random.Range(dirX - bulletSpread, dirX + bulletSpread)))
+                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight, bulletSpread);
 
                     }
 
                 }
-
-                pv.RPC("EmptyWeaponSpriteRPC", RpcTarget.AllBuffered, isRight);
+                if(weaponSpecies == "OneHandSword")
+                {
+                    pv.RPC("EmptyWeaponSpriteRPC", RpcTarget.AllBuffered, isRight);
+                }
+                
 
                 ammo_P -= 1;
+
 
                 bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
 
@@ -470,13 +551,13 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     if (weaponNum > 999 && weaponNum < 2000)
                     {
                         PhotonNetwork.Instantiate(spawnAttackObName/*이름 중요*/, shotPos.transform.position, Quaternion.identity)
-                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
+                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight, bulletSpread);
 
                     }
                     else if (weaponNum > 1999 && weaponNum < 3000)
                     {
                         PhotonNetwork.Instantiate(spawnAttackObName/*이름 중요*/, swingPos.transform.position, Quaternion.identity)
-                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
+                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight, bulletSpread);
 
                     }
                 }
@@ -505,13 +586,13 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     if (weaponNum > 999 && weaponNum < 2000)
                     {
                         PhotonNetwork.Instantiate(spawnAttackObName2/*이름 중요*/, shotPos2.transform.position, Quaternion.identity)
-                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
+                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight, bulletSpread2);
 
                     }
                     else if (weaponNum > 1999 && weaponNum < 3000)
                     {
                         PhotonNetwork.Instantiate(spawnAttackObName/*이름 중요*/, swingPos2.transform.position, Quaternion.identity)
-                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
+                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight, bulletSpread2);
 
                     }
                 }
@@ -537,13 +618,13 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     if (weaponNum > 999 && weaponNum < 2000)
                     {
                         PhotonNetwork.Instantiate(spawnAttackObName2/*이름 중요*/, shotPos2.transform.position, Quaternion.identity)
-                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
+                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight, bulletSpread2);
 
                     }
                     else if (weaponNum > 1999 && weaponNum < 3000)
                     {
                         PhotonNetwork.Instantiate(spawnAttackObName2/*이름 중요*/, swingPos2.transform.position, Quaternion.identity)
-                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
+                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight, bulletSpread2);
 
                     }
                 }
@@ -724,24 +805,24 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void ChangeWeaponSpriteRPC(int itemSpriteName)
     {
-        if(weaponNum > 1000 && weaponNum2 > 1000)
+        if(weaponNum >= 1000 && weaponNum2 > 1000)
         {
             //무기Sprite바꿈
             weaponSpriteRender.sprite = Resources.Load("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString(), typeof(Sprite)) as Sprite;
-            Debug.Log("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString());
+
 
             weaponSpriteRender2.sprite = Resources.Load("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString(), typeof(Sprite)) as Sprite;
-            Debug.Log("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString());
+
         }
-        else if (weaponNum > 1000 && weaponNum2 < 1000)
+        else if (weaponNum >= 1000 && weaponNum2 < 1000)
         {
             weaponSpriteRender.sprite = Resources.Load("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString(), typeof(Sprite)) as Sprite;
-            Debug.Log("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum.ToString());
+
         }
-        else if(weaponNum < 1000 && weaponNum2 > 1000)
+        else if(weaponNum < 1000 && weaponNum2 >= 1000)
         {
             weaponSpriteRender2.sprite = Resources.Load("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString(), typeof(Sprite)) as Sprite;
-            Debug.Log("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString());
+
         }
         else
         {
@@ -749,6 +830,19 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             weaponSpriteRender2.sprite = Resources.Load("Null", typeof(Sprite)) as Sprite;
         }
     }
+    IEnumerator FireCoolTIme(bool isright)
+    {
+        yield return new WaitForSeconds(1f);
+        if (isright)
+        {
+            readyToAttack = true;
+        }
+        else
+        {
+            readyToAttack2 = true;
+        }
+    }
+
     [PunRPC]
     void EmptyWeaponSpriteRPC(bool isright)
     {
@@ -807,14 +901,14 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         
         yield return new WaitForSeconds(5f);
         int colorNum = 0;
-        PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, clothesPlusHp, colorNum);
-        if (maxHpValue < hp + clothesPlusHp)//오버
+        PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, clothesPlusHp * DecreaseTakedHeal, colorNum);
+        if (maxHpValue < hp + (clothesPlusHp * DecreaseTakedHeal))//오버
         {
             hp = maxHpValue;
         }
         else
         {
-            hp += clothesPlusHp;
+            hp += clothesPlusHp * DecreaseTakedHeal;
         }
 
         StartCoroutine(ClothesHeal());
@@ -822,27 +916,27 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void AttackHeal(float takingDmg)
     {
-        int colorNum = 0;
+        //int colorNum = 0;
         
         float healAmount = takingDmg * blood;
-        PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, healAmount, colorNum);
-        if (maxHpValue < hp + takingDmg)
+        //PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, healAmount, colorNum);
+        if (maxHpValue < hp + (takingDmg * DecreaseTakedHeal))
         {
             hp = maxHpValue;
             Debug.Log("no");
         }
         else
         {
-            hp += healAmount;
+            hp += healAmount * DecreaseTakedHeal;
             Debug.Log("yes");
         }
         
     }
    
-    public void Hit(float takedDmg)
+    public void Hit(float takedDmg, int colorNum)
     {
         float finalDamage;
-        int colorNum = 1;
+
         finalDamage = takedDmg / (1 + DecreaseTakedDamage);
         hp -= Mathf.Round(finalDamage);
 

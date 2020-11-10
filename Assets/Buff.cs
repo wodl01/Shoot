@@ -38,15 +38,23 @@ public class Buff : MonoBehaviour
         if(buffNum == 1)
         {
             StartCoroutine(poisonLv1());
-            Debug.Log("dd");
+            player.DecreaseTakedHeal = 0.8f;
+
+        }
+    }
+    private void OnDisable()
+    {
+        if (buffNum == 1)
+        {
+            player.DecreaseTakedHeal = 1f;
         }
     }
     IEnumerator poisonLv1()
     {
         if(time > 0)
         {
-            player.hp -= 10f;
-            yield return new WaitForSeconds(1f);
+            player.Hit(1,2);
+            yield return new WaitForSeconds(0.3f);
             StartCoroutine(poisonLv1());
         }
         
