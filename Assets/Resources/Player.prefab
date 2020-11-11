@@ -8118,6 +8118,8 @@ MonoBehaviour:
   - {fileID: 8075715940360838214, guid: 73ebb022b09bc1f4ea871b5cfa5f855b, type: 3}
   bulletSpread: 0
   bulletSpread2: 0
+  kick: 0
+  kick2: 0
   maximumAmmo_P: 0
   maximumAmmo_P2: 0
   ammo_P: 100
