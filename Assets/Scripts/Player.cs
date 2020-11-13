@@ -32,6 +32,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] Text bulletText2;
 
     public BuffScript buffScript;
+    [SerializeField] Animator darkBuffAni;
     
 
     [SerializeField] GameObject reLoadOB;
@@ -109,8 +110,9 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] GameObject[] bullet;
     public float bulletSpread;
     public float bulletSpread2;
-    public float kick;
-    public float kick2;
+    float kickXX;
+    public float kickX;//2
+    public float kickY;//200
     [SerializeField] int maximumAmmo_P;
     [SerializeField] int maximumAmmo_P2;
     [SerializeField] int ammo_P;
@@ -119,6 +121,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] bool IsFullAuto_P2;
     public bool readyToAttack;
     public bool readyToAttack2;
+    public float shotDelay;
+    public float shotDelay2;
     public float attackSpeedAbility;
     [SerializeField] float reLoadTime_P;
     [SerializeField] float reLoadTime_P2;
@@ -131,7 +135,6 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     itemScript item;
 
     public int skillCode;
-    [SerializeField] int buffLength;
 
     [SerializeField] int attackDir;
     /// <summary>
@@ -149,7 +152,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
 
 
-    [SerializeField] OneWayScript oneWay;
+    [SerializeField] PassPlayerToTile PPTT;
     public bool isFallen;
     float dirZ;
     float dirY;
@@ -174,12 +177,13 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             buffScript = GameObject.FindGameObjectWithTag("BuffPanel").GetComponent<BuffScript>();
             DmgOB = GameObject.Find("DamageDummy");
             buffScript.player = this;
+            buffScript.darkAni = darkBuffAni;
 
             Cm.Follow = transform;
             Cm.LookAt = transform;
 
-            oneWay = GameObject.Find("OneWayTile").GetComponent<OneWayScript>();
-            oneWay.player = this;
+            PPTT = GameObject.Find("OneWay").GetComponent<PassPlayerToTile>();
+            PPTT.Player = this;
 
             pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered, weaponNum);
             pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered, weaponNum2);
@@ -264,9 +268,17 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         {
             //움직임
             float axis = Input.GetAxisRaw("Horizontal");
-            Vector3 move = new Vector3(axis, 0, 0);
-            rigid.velocity = new Vector2(speed * axis, rigid.velocity.y);
-
+            //Vector3 move = new Vector3(axis, 0, 0);
+            if (isGround)
+            {
+                rigid.velocity = new Vector2(speed * axis, rigid.velocity.y);
+                kickXX = 0;
+            }
+            else
+            {
+                rigid.velocity = new Vector2(speed * axis + kickXX, rigid.velocity.y);
+            }
+            
 
             health.fillAmount = hp / maxHpValue;
 
@@ -487,7 +499,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             {
                 //총발사
                 bool isRight = true;
-                if (weaponNum > 999 && weaponNum < 2000)
+                if (weaponSpecies == "OneHandGun")
                 {
                     StartCoroutine(FireCoolTIme(isRight));
                 }
@@ -495,15 +507,15 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 {
                     dirZ = 0;
                     dirY = 0;
-                    rigid.AddForce(new Vector2(-kick,0));
+                    kickXX = -kickX;
                     Debug.Log("오늘쪽");
                 }
                 else if (attackDir == 2)
                 {
                     dirZ = 0;
                     dirY = 180;
-                    Debug.Log("왼ㅉㄸㄱ");
-                    rigid.AddForce(new Vector2(kick, 0));
+                    kickXX = kickX;
+                    
                 }
                 else if (attackDir == 3)
                 {
@@ -517,7 +529,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                         dirZ = 90;
                         dirY = 0;
                     }
-                    rigid.AddForce(new Vector2(0, -kick));
+                    rigid.AddForce(new Vector2(0, -kickY));
                     Debug.Log("위");
                 }
                 else if (attackDir == 4)
@@ -532,7 +544,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                         dirZ = -90;
                         dirY = 0;
                     }
-                    rigid.AddForce(new Vector2(0, kick));
+                    rigid.AddForce(new Vector2(0, kickY));
                     Debug.Log("아래");
                 }
                 
@@ -572,7 +584,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             {
                 //자동총발사
                 bool isRight = true;
-                if (weaponNum > 999 && weaponNum < 2000)
+                if (weaponSpecies == "OneHandGun")
                 {
                     StartCoroutine(FireCoolTIme(isRight));
                 }
@@ -581,14 +593,15 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 {
                     dirZ = 0;
                     dirY = 0;
-
+                    kickXX = -kickX;
                     Debug.Log("오늘쪽");
                 }
                 else if (attackDir == 2)
                 {
                     dirZ = 0;
                     dirY = 180;
-                    Debug.Log("왼ㅉㄸㄱ");
+                    kickXX = kickX;
+
                 }
                 else if (attackDir == 3)
                 {
@@ -602,7 +615,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                         dirZ = 90;
                         dirY = 0;
                     }
-
+                    rigid.AddForce(new Vector2(0, -kickY));
                     Debug.Log("위");
                 }
                 else if (attackDir == 4)
@@ -617,7 +630,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                         dirZ = -90;
                         dirY = 0;
                     }
-
+                    rigid.AddForce(new Vector2(0, kickY));
                     Debug.Log("아래");
                 }
 
@@ -637,8 +650,10 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     }
                 }
 
-                pv.RPC("EmptyWeaponSpriteRPC", RpcTarget.AllBuffered, isRight);
-
+                if (weaponSpecies == "OneHandSword")
+                {
+                    pv.RPC("EmptyWeaponSpriteRPC", RpcTarget.AllBuffered, isRight);
+                }
                 ammo_P -= 1;
 
                 bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
@@ -651,7 +666,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             {
                 //반대쪽총발사
                 bool isRight = false;
-                if (weaponNum > 999 && weaponNum < 2000)
+                if (weaponSpecies2 == "OneHandGun")
                 {
                     StartCoroutine(FireCoolTIme(isRight));
                 }
@@ -659,14 +674,15 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 {
                     dirZ = 0;
                     dirY = 0;
-
+                    kickXX = -kickX;
                     Debug.Log("오늘쪽");
                 }
                 else if (attackDir == 2)
                 {
                     dirZ = 0;
-                    dirY = 180; 
-                    Debug.Log("왼ㅉㄸㄱ");
+                    dirY = 180;
+                    kickXX = kickX;
+
                 }
                 else if (attackDir == 3)
                 {
@@ -680,7 +696,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                         dirZ = 90;
                         dirY = 0;
                     }
-
+                    rigid.AddForce(new Vector2(0, -kickY));
                     Debug.Log("위");
                 }
                 else if (attackDir == 4)
@@ -695,7 +711,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                         dirZ = -90;
                         dirY = 0;
                     }
-
+                    rigid.AddForce(new Vector2(0, kickY));
                     Debug.Log("아래");
                 }
 
@@ -718,8 +734,10 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     }
                 }
 
-                pv.RPC("EmptyWeaponSpriteRPC", RpcTarget.AllBuffered, isRight);
-
+                if (weaponSpecies2 == "OneHandSword")
+                {
+                    pv.RPC("EmptyWeaponSpriteRPC", RpcTarget.AllBuffered, isRight);
+                }
                 ammo_P2 -= 1;
 
                 bulletText2.text = ammo_P2.ToString() + "/" + maximumAmmo_P2.ToString();
@@ -731,7 +749,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             {
                 //반대쪽연속총발사
                 bool isRight = false;
-                if (weaponNum > 999 && weaponNum < 2000)
+                if (weaponSpecies2 == "OneHandGun")
                 {
                     StartCoroutine(FireCoolTIme(isRight));
                 }
@@ -739,14 +757,15 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 {
                     dirZ = 0;
                     dirY = 0;
-
+                    kickXX = -kickX;
                     Debug.Log("오늘쪽");
                 }
                 else if (attackDir == 2)
                 {
                     dirZ = 0;
                     dirY = 180;
-                    Debug.Log("왼ㅉㄸㄱ");
+                    kickXX = kickX;
+
                 }
                 else if (attackDir == 3)
                 {
@@ -760,7 +779,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                         dirZ = 90;
                         dirY = 0;
                     }
-
+                    rigid.AddForce(new Vector2(0, -kickY));
                     Debug.Log("위");
                 }
                 else if (attackDir == 4)
@@ -775,7 +794,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                         dirZ = -90;
                         dirY = 0;
                     }
-
+                    rigid.AddForce(new Vector2(0, kickY));
                     Debug.Log("아래");
                 }
 
@@ -796,8 +815,10 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     }
                 }
 
-                pv.RPC("EmptyWeaponSpriteRPC", RpcTarget.AllBuffered, isRight);
-
+                if (weaponSpecies2 == "OneHandSword")
+                {
+                    pv.RPC("EmptyWeaponSpriteRPC", RpcTarget.AllBuffered, isRight);
+                }
                 ammo_P2 -= 1;
 
                 bulletText2.text = ammo_P2.ToString() + "/" + maximumAmmo_P2.ToString();
@@ -999,7 +1020,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     }
     IEnumerator FireCoolTIme(bool isright)
     {
-        yield return new WaitForSeconds(1f);
+        
+        yield return new WaitForSeconds(isright ? shotDelay : shotDelay2);
         if (isright)
         {
             readyToAttack = true;
@@ -1100,11 +1122,17 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         
     }
    
-    public void Hit(float takedDmg, int colorNum)
+    public void Hit(float takedDmg, int colorNum, bool canDecrease)
     {
         float finalDamage;
-
-        finalDamage = takedDmg / (1 + DecreaseTakedDamage);
+        if (canDecrease)
+        {
+            finalDamage = takedDmg / (1 + DecreaseTakedDamage);
+        }
+        else
+        {
+            finalDamage = takedDmg;
+        }
         hp -= Mathf.Round(finalDamage);
 
         PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, finalDamage, colorNum);

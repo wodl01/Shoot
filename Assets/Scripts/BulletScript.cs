@@ -99,7 +99,7 @@ public class BulletScript : MonoBehaviour
 
             float healAmount;
 
-            other.GetComponent<Player>().Hit(finalDamage,1);
+            other.GetComponent<Player>().Hit(finalDamage,1,true);
 
             player.GetComponent<PhotonView>().RPC("AttackHeal", RpcTarget.AllBuffered, finalDamage);
             healAmount = finalDamage * player.blood;

@@ -12,7 +12,7 @@ public class FloorCheck : MonoBehaviour
     {
         if (!isUp)
         {
-            if (collision.tag == "Ground")
+            if (collision.tag == "Ground" || collision.tag == "PassingGround")
             {
                 player.isGround = true;
             }
@@ -24,7 +24,7 @@ public class FloorCheck : MonoBehaviour
         }
         if (isUp)
         {
-            if (collision.tag == "Ground")
+            if (collision.tag == "Ground" || collision.tag == "PassingGround")
             {
                 player.isFallen = true;
             }

@@ -14,6 +14,7 @@ TagManager:
   - AttackOB
   - DamageDummy
   - Monster
+  - PassingGround
   layers:
   - Default
   - TransparentFX

@@ -13,20 +13,23 @@ public class BuffScript : MonoBehaviour
 
     public Player player;
 
+    public Animator darkAni;
 
-
-    
+    bool once = true;
     private void Update()
     {
-        if (Active && buffNum - 1 != -1)
+
+
+        if (Active && buffNum != -1)
         {
             Active = false;
-            if(buffs[buffNum -1].GetComponent<Buff>().time < (duringAbility * during))
+            if(buffs[buffNum].GetComponent<Buff>().time < (duringAbility * during))
             {
-                buffs[buffNum - 1].GetComponent<Buff>().player = player;
-                buffs[buffNum -1].GetComponent<Buff>().during = (duringAbility * during);//총시간
-                buffs[buffNum -1].GetComponent<Buff>().time = buffs[buffNum -1].GetComponent<Buff>().during;//작용시간 = 총시간
-                buffs[buffNum -1].SetActive(true);
+                buffs[buffNum].GetComponent<Buff>().player = player;
+                buffs[buffNum].GetComponent<Buff>().darkEffectAni = darkAni;
+                buffs[buffNum].GetComponent<Buff>().during = (duringAbility * during);//총시간
+                buffs[buffNum].GetComponent<Buff>().time = buffs[buffNum].GetComponent<Buff>().during;//작용시간 = 총시간
+                buffs[buffNum].SetActive(true);
                 
                 
             }
