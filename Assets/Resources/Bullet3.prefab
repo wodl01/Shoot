@@ -173,8 +173,11 @@ MonoBehaviour:
   bulletDamage: 0
   finalDamage: 0
   playerName: 
-  finalAttackHeal: 0
+  hitNum: 0
+  attackSpeed: 0
+  isRightGun: 0
   bulletRigid: {fileID: 8333840253154644444}
-  buffCode: 1
+  ani: {fileID: 0}
+  buffCode: 0
   during: 4
   duringAbility: 0

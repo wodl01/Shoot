@@ -77,8 +77,6 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     public GameObject swingPos;
     public GameObject swingPos2;
 
-    public string spawnAttackObName;
-    public string spawnAttackObName2;
     public int spawnAttackObAmount;
     public int spawnAttackObAmount2;
 
@@ -554,13 +552,13 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 {
                     if(weaponNum > 999 && weaponNum < 2000)
                     {
-                        PhotonNetwork.Instantiate(spawnAttackObName/*이름 중요*/, shotPos.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread, dirZ + bulletSpread)))
+                        PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString() + "A"/*이름 중요*/, shotPos.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread, dirZ + bulletSpread)))
                                                 .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
                         Debug.Log(dirZ);
                     }
                     else if(weaponNum > 1999 && weaponNum < 3000)
                     {
-                        PhotonNetwork.Instantiate(spawnAttackObName/*이름 중요*/, swingPos.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread, dirZ + bulletSpread)))
+                        PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString() + "A"/*이름 중요*/, swingPos.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread, dirZ + bulletSpread)))
                                                 .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
 
                     }
@@ -638,13 +636,13 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 {
                     if (weaponNum > 999 && weaponNum < 2000)
                     {
-                        PhotonNetwork.Instantiate(spawnAttackObName/*이름 중요*/, shotPos.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread, dirZ + bulletSpread)))
+                        PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString() + "A"/*이름 중요*/, shotPos.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread, dirZ + bulletSpread)))
                                                 .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
 
                     }
                     else if (weaponNum > 1999 && weaponNum < 3000)
                     {
-                        PhotonNetwork.Instantiate(spawnAttackObName/*이름 중요*/, swingPos.transform.position, Quaternion.Euler(0, 0, Random.Range(dirZ - bulletSpread, dirZ + bulletSpread)))
+                        PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString() + "A"/*이름 중요*/, swingPos.transform.position, Quaternion.Euler(0, 0, Random.Range(dirZ - bulletSpread, dirZ + bulletSpread)))
                                                 .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
 
                     }
@@ -720,15 +718,15 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 for (int i = 0; i < spawnAttackObAmount; i++)
                 {
 
-                    if (weaponNum > 999 && weaponNum < 2000)
+                    if (weaponNum2 > 999 && weaponNum2 < 2000)
                     {
-                        PhotonNetwork.Instantiate(spawnAttackObName2/*이름 중요*/, shotPos2.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread2, dirZ + bulletSpread2)))
+                        PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString() + "A"/*이름 중요*/, shotPos2.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread2, dirZ + bulletSpread2)))
                                                 .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
 
                     }
-                    else if (weaponNum > 1999 && weaponNum < 3000)
+                    else if (weaponNum2 > 1999 && weaponNum2 < 3000)
                     {
-                        PhotonNetwork.Instantiate(spawnAttackObName/*이름 중요*/, swingPos2.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread2, dirZ + bulletSpread2)))
+                        PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString() + "A"/*이름 중요*/, swingPos2.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread2, dirZ + bulletSpread2)))
                                                 .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
 
                     }
@@ -801,15 +799,15 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 for (int i = 0; i < spawnAttackObAmount; i++)
                 {
 
-                    if (weaponNum > 999 && weaponNum < 2000)
+                    if (weaponNum2 > 999 && weaponNum2 < 2000)
                     {
-                        PhotonNetwork.Instantiate(spawnAttackObName2/*이름 중요*/, shotPos2.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread2, dirZ + bulletSpread2)))
+                        PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString() + "A"/*이름 중요*/, shotPos2.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread2, dirZ + bulletSpread2)))
                                                 .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
 
                     }
-                    else if (weaponNum > 1999 && weaponNum < 3000)
+                    else if (weaponNum2 > 1999 && weaponNum2 < 3000)
                     {
-                        PhotonNetwork.Instantiate(spawnAttackObName2/*이름 중요*/, swingPos2.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread2, dirZ + bulletSpread2)))
+                        PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString() + "A"/*이름 중요*/, swingPos2.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread2, dirZ + bulletSpread2)))
                                                 .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
 
                     }
@@ -1139,6 +1137,10 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
         if(hp <= 0)
         {
+            for (int i = 0; i < buffScript.buffs.Length; i++)
+            {
+                buffScript.buffs[i].SetActive(false);
+            }
             GameObject.Find("Canvas").transform.Find("RespawnPanel").gameObject.SetActive(true);
             pv.RPC("DestroyRPC", RpcTarget.AllBuffered);
         }

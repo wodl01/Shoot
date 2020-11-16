@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 2469497397419127960}
   - component: {fileID: 8014935425220672512}
   - component: {fileID: 7810079005121335193}
-  - component: {fileID: 5331436597969886933}
+  - component: {fileID: 8333840253154644444}
   - component: {fileID: 493115050675736992}
   - component: {fileID: 6863377485437895564}
   m_Layer: 0
-  m_Name: Bullet1
+  m_Name: Bullet4
   m_TagString: AttackOB
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 8075715940360838214}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 8776ef76824ca394296d4a84062c4391, type: 3}
-  m_Color: {r: 1, g: 0, b: 0.009897232, a: 1}
+  m_Color: {r: 0.41509432, g: 0.41509432, b: 0.41509432, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -109,7 +109,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.1923077, y: 0.1923077}
   m_EdgeRadius: 0
---- !u!50 &5331436597969886933
+--- !u!50 &8333840253154644444
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -167,17 +167,17 @@ MonoBehaviour:
   isBullet: 1
   player: {fileID: 0}
   pv: {fileID: 493115050675736992}
-  bulletSpeed: 32.11
+  bulletSpeed: 4
   playerDamage: 0
   playerBlood: 0
-  bulletDamage: 0.2
+  bulletDamage: 0
   finalDamage: 0
   playerName: 
   hitNum: 0
   attackSpeed: 0
   isRightGun: 0
-  bulletRigid: {fileID: 5331436597969886933}
+  bulletRigid: {fileID: 8333840253154644444}
   ani: {fileID: 0}
-  buffCode: 0
-  during: 0
+  buffCode: 2
+  during: 4
   duringAbility: 0

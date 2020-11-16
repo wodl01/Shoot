@@ -9,6 +9,7 @@ ScriptsOnlyBuild:
     - GameManager
     - NetworkManager
     - OneWayScript
+    - PassPlayerToTile
     - Player
     - PlayerAniManager
     - UiManager
@@ -181,59 +182,61 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 9776}
     - Class: 114
-      Script: {instanceID: 9896}
+      Script: {instanceID: 9864}
     - Class: 114
-      Script: {instanceID: 10012}
+      Script: {instanceID: 9898}
     - Class: 114
-      Script: {instanceID: 10024}
+      Script: {instanceID: 10014}
     - Class: 114
-      Script: {instanceID: 10168}
+      Script: {instanceID: 10026}
     - Class: 114
-      Script: {instanceID: 10226}
+      Script: {instanceID: 10170}
     - Class: 114
-      Script: {instanceID: 10232}
+      Script: {instanceID: 10228}
     - Class: 114
-      Script: {instanceID: 10244}
+      Script: {instanceID: 10234}
     - Class: 114
-      Script: {instanceID: 10252}
+      Script: {instanceID: 10246}
     - Class: 114
-      Script: {instanceID: 10294}
+      Script: {instanceID: 10254}
     - Class: 114
-      Script: {instanceID: 10374}
+      Script: {instanceID: 10296}
     - Class: 114
-      Script: {instanceID: 10426}
+      Script: {instanceID: 10376}
     - Class: 114
       Script: {instanceID: 10428}
     - Class: 114
-      Script: {instanceID: 10488}
+      Script: {instanceID: 10430}
     - Class: 114
-      Script: {instanceID: 10498}
+      Script: {instanceID: 10490}
     - Class: 114
-      Script: {instanceID: 10528}
+      Script: {instanceID: 10500}
     - Class: 114
-      Script: {instanceID: 10550}
+      Script: {instanceID: 10530}
     - Class: 114
-      Script: {instanceID: 10614}
+      Script: {instanceID: 10552}
     - Class: 114
-      Script: {instanceID: 10648}
+      Script: {instanceID: 10616}
     - Class: 114
-      Script: {instanceID: 10678}
+      Script: {instanceID: 10650}
     - Class: 114
-      Script: {instanceID: 10696}
+      Script: {instanceID: 10680}
     - Class: 114
-      Script: {instanceID: 10704}
+      Script: {instanceID: 10698}
     - Class: 114
-      Script: {instanceID: 10716}
+      Script: {instanceID: 10706}
     - Class: 114
-      Script: {instanceID: 11148}
+      Script: {instanceID: 10718}
     - Class: 114
-      Script: {instanceID: 11152}
+      Script: {instanceID: 11150}
     - Class: 114
-      Script: {instanceID: 11190}
+      Script: {instanceID: 11154}
     - Class: 114
-      Script: {instanceID: 11242}
+      Script: {instanceID: 11192}
     - Class: 114
-      Script: {instanceID: 11256}
+      Script: {instanceID: 11244}
+    - Class: 114
+      Script: {instanceID: 11258}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -433,7 +436,7 @@ ScriptsOnlyBuild:
     className: TextToggleIsOnTransition
   - hash:
       serializedVersion: 2
-      Hash: bcec7703bb79877323859393f68dc830
+      Hash: 7ef035352df0022e47a1f7664e3e084e
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: BuffScript
@@ -973,7 +976,7 @@ ScriptsOnlyBuild:
     className: ToDemoHubButton
   - hash:
       serializedVersion: 2
-      Hash: dcb5868d6341f67d143d378a48f101a8
+      Hash: 6e2dc50c9403d1f2b01a7242bcf85c27
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: OneWayScript
@@ -1037,6 +1040,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: AnimationPlayableAsset
+  - hash:
+      serializedVersion: 2
+      Hash: d6ebed49be0a1c8d9033b58b2fc94ccf
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: PassPlayerToTile
   - hash:
       serializedVersion: 2
       Hash: 8890abe75d242bc13a5b8ffd07f54869
@@ -1717,7 +1726,7 @@ ScriptsOnlyBuild:
     className: SendRateField
   - hash:
       serializedVersion: 2
-      Hash: 3b589f58ea9fd158fc4f377af75a2026
+      Hash: 7a151d0562cd94c14675c38ac3c15a85
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Buff
@@ -2155,7 +2164,7 @@ ScriptsOnlyBuild:
     className: CountOfRoomsProperty
   - hash:
       serializedVersion: 2
-      Hash: ae13973364e893e3d023882025df960d
+      Hash: 92b241ae16424d72aae4b823d2818cb7
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player

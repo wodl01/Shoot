@@ -7353,7 +7353,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 12
   m_Sprite: {fileID: 21300000, guid: 48b399d71ad230044a9d6494a5e46e7f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -8271,8 +8271,6 @@ MonoBehaviour:
   shotPos2: {fileID: 2320627683909967439}
   swingPos: {fileID: 3519819456736244177}
   swingPos2: {fileID: 7058549144447198815}
-  spawnAttackObName: Bullet1
-  spawnAttackObName2: Attack1
   spawnAttackObAmount: 1
   spawnAttackObAmount2: 1
   spawnSkillObName: 

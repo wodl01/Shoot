@@ -29,11 +29,13 @@ public class Buff : MonoBehaviour
 
             gameObject.SetActive(false);
         }
-
-
-
-
+       
     }
+
+
+
+
+    
     private void OnEnable()
     {
 
@@ -47,6 +49,18 @@ public class Buff : MonoBehaviour
         {
             darkEffectAni.SetInteger("BuffLv", 1);
         }
+        if (buffNum == 2)
+        {
+            darkEffectAni.SetInteger("BuffLv", 2);
+        }
+        if (buffNum == 3)
+        {
+            darkEffectAni.SetInteger("BuffLv", 3);
+        }
+        if (buffNum == 4)
+        {
+            darkEffectAni.SetInteger("BuffLv", 4);
+        }
     }
     private void OnDisable()
     {
@@ -54,25 +68,26 @@ public class Buff : MonoBehaviour
         {
             player.DecreaseTakedHeal = 1f;
         }
-        if(buffNum == 1)
+        if (buffNum == 1 || buffNum == 2 || buffNum == 3 || buffNum == 4)
         {
             darkEffectAni.SetInteger("BuffLv", 0);
-
         }
+        time = 0;
     }
+
     IEnumerator poisonLv1()
     {
         if(time > 0)
         {
-            if(player.maxHpValue * 0.003f < player.hp && player.hp != 1)
+            if(Mathf.Round(player.maxHpValue * 0.03f) < player.hp && player.hp != 1)
             {
                 player.Hit(player.maxHpValue * 0.03f, 2, false);
-                Debug.Log("1111");
+                Debug.Log(player.maxHpValue * 0.03f + "111111111");
             }
-            else if(player.maxHpValue * 0.003f >= player.hp && player.hp != 1)
+            else if(Mathf.Round(player.maxHpValue * 0.03f) >= player.hp && player.hp != 1)
             {
                 player.Hit(player.hp -1, 2, false);
-                Debug.Log("2222");
+                Debug.Log(player.hp - 1 + "2222222222");
             }
             else
             {
