@@ -129,6 +129,14 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] Animator reLoadAni;
     [SerializeField] bool isReload;
     [SerializeField] bool isReload2;
+    public int barrierMax;
+    public int barrierMax2;
+    [SerializeField] float barrierAmount;
+    [SerializeField] float barrierAmount2;
+    public bool isShilding;
+    public float shildRechargeTime;
+    [SerializeField] float shildChargeMaxTime;
+
     public string itemSpriteName; 
     itemScript item;
 
@@ -230,7 +238,18 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 reLoadingTime = reLoadTime_P;
                 Debug.Log("1");
 
-                bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
+                if(weaponNum >= 1000 || weaponNum < 2000)
+                {
+                    bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
+                }
+                else if(weaponNum >= 2000 || weaponNum < 3000)
+                {
+                    bulletText.text = "∞";
+                }
+                else if(weaponNum >= 3000)
+                {
+                    bulletText.text = barrierAmount.ToString() + "/" + barrierMax.ToString();
+                }
 
 
                 //자신이 획득한"무기"삭제
@@ -319,7 +338,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 if (!left)
                 {
                     
-                    if(weaponSpecies == "OneHandGun")
+                    if(weaponSpecies == "OneHandGun" || weaponSpecies == "OneHandShild" || weaponSpecies == "TwoHandShild")
                     {
                         weaponOB.transform.position = oneHandGunUpPos.transform.position;
                         weaponOB.transform.rotation = Quaternion.Euler(0, 0, 90);
@@ -331,7 +350,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                         weaponOB.transform.rotation = Quaternion.Euler(0, 0, 200);
                         
                     }
-                    if(weaponSpecies2 == "OneHandGun")
+                    if(weaponSpecies2 == "OneHandGun" || weaponSpecies2 == "OneHandShild" || weaponSpecies2 == "TwoHandShild")
                     {
                         weaponOB2.transform.position = oneHandGunUpPos2.transform.position;
                         weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 90);
@@ -346,7 +365,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 else if (left)//위를봄
                 {
                     
-                    if (weaponSpecies == "OneHandGun")
+                    if (weaponSpecies == "OneHandGun" || weaponSpecies == "OneHandShild" || weaponSpecies == "TwoHandShild")
                     {
                         weaponOB.transform.position = oneHandGunUpPos.transform.position;
                         weaponOB.transform.rotation = Quaternion.Euler(0, 0, -90);
@@ -358,7 +377,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                         weaponOB.transform.rotation = Quaternion.Euler(0, 0, -200);
                         
                     }
-                    if (weaponSpecies2 == "OneHandGun")
+                    if (weaponSpecies2 == "OneHandGun" || weaponSpecies2 == "OneHandShild" || weaponSpecies2 == "TwoHandShild")
                     {
                         weaponOB2.transform.position = oneHandGunUpPos2.transform.position;
                         weaponOB2.transform.rotation = Quaternion.Euler(0, 0, -90);
@@ -380,7 +399,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 pv.RPC("ClotheUpChange", RpcTarget.All,attackDir);
                 if (!left)
                 {
-                    if (weaponSpecies == "OneHandGun")
+                    if (weaponSpecies == "OneHandGun" || weaponSpecies == "OneHandShild" || weaponSpecies == "TwoHandShild")
                     {
                         weaponOB.transform.position = oneHandGunDownPos.transform.position;
                         weaponOB.transform.rotation = Quaternion.Euler(0, 0, -90);
@@ -392,7 +411,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                         weaponOB.transform.rotation = Quaternion.Euler(0, 0, -71);
                         
                     }
-                    if (weaponSpecies2 == "OneHandGun")
+                    if (weaponSpecies2 == "OneHandGun" || weaponSpecies2 == "OneHandShild" || weaponSpecies2 == "TwoHandShild")
                     {
                         weaponOB2.transform.position = oneHandGunDownPos2.transform.position;
                         weaponOB2.transform.rotation = Quaternion.Euler(0, 0, -90);
@@ -405,7 +424,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 }
                 if (left)//아래를봄
                 {
-                    if (weaponSpecies == "OneHandGun")
+                    if (weaponSpecies == "OneHandGun" || weaponSpecies == "OneHandShild" || weaponSpecies == "TwoHandShild")
                     {
                         weaponOB.transform.position = oneHandGunDownPos.transform.position;
                         weaponOB.transform.rotation = Quaternion.Euler(0, 0, 90);
@@ -417,7 +436,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                         weaponOB.transform.rotation = Quaternion.Euler(0, 0, 71);
                         
                     }
-                    if (weaponSpecies2 == "OneHandGun")
+                    if (weaponSpecies2 == "OneHandGun" || weaponSpecies2 == "OneHandShild" || weaponSpecies2 == "TwoHandShild")
                     {
                         weaponOB2.transform.position = oneHandGunDownPos2.transform.position;
                         weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 90);
@@ -438,7 +457,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 {
                     //왼쪽
                     attackDir = 2;
-                    if (weaponSpecies == "OneHandGun")
+                    if (weaponSpecies == "OneHandGun" || weaponSpecies == "OneHandShild" || weaponSpecies == "TwoHandShild")
                     {
                         weaponOB.transform.position = oneHandGunMidPos.transform.position;
                         weaponOB.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -450,7 +469,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                         weaponOB.transform.rotation = Quaternion.Euler(0, 0, 44);
                         
                     }
-                    if (weaponSpecies2 == "OneHandGun")
+                    if (weaponSpecies2 == "OneHandGun" || weaponSpecies2 == "OneHandShild" || weaponSpecies2 == "TwoHandShild")
                     {
                         weaponOB2.transform.position = oneHandGunMidPos2.transform.position;
                         weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -465,7 +484,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 {
                     //오른쪽
                     attackDir = 1;
-                    if(weaponSpecies == "OneHandGun")
+                    if(weaponSpecies == "OneHandGun" || weaponSpecies == "OneHandShild" || weaponSpecies == "TwoHandShild")
                     {
                         weaponOB.transform.position = oneHandGunMidPos.transform.position;
                         weaponOB.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -477,7 +496,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                         weaponOB.transform.rotation = Quaternion.Euler(0, 0, -44);
                         
                     }
-                    if (weaponSpecies2 == "OneHandGun")
+                    if (weaponSpecies2 == "OneHandGun" || weaponSpecies2 == "OneHandShild" || weaponSpecies2 == "TwoHandShild")
                     {
                         weaponOB2.transform.position = oneHandGunMidPos2.transform.position;
                         weaponOB2.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -493,7 +512,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
 
 
-            if (Input.GetMouseButtonDown(0) && weaponNum > 999 && ammo_P > 0 && readyToAttack && !isReload &&!IsFullAuto_P)
+            if (Input.GetMouseButtonDown(0) && weaponNum > 999 && ammo_P > 0 && readyToAttack && !isReload && !IsFullAuto_P)
             {
                 //총발사
                 bool isRight = true;
@@ -513,7 +532,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     dirZ = 0;
                     dirY = 180;
                     kickXX = kickX;
-                    
+
                 }
                 else if (attackDir == 3)
                 {
@@ -545,18 +564,18 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     rigid.AddForce(new Vector2(0, kickY));
                     Debug.Log("아래");
                 }
-                
-                
+
+
 
                 for (int i = 0; i < spawnAttackObAmount; i++)
                 {
-                    if(weaponNum > 999 && weaponNum < 2000)
+                    if (weaponNum > 999 && weaponNum < 2000)
                     {
                         PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString() + "A"/*이름 중요*/, shotPos.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread, dirZ + bulletSpread)))
                                                 .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
                         Debug.Log(dirZ);
                     }
-                    else if(weaponNum > 1999 && weaponNum < 3000)
+                    else if (weaponNum > 1999 && weaponNum < 3000)
                     {
                         PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString() + "A"/*이름 중요*/, swingPos.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread, dirZ + bulletSpread)))
                                                 .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
@@ -564,16 +583,24 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     }
 
                 }
-                if(weaponSpecies == "OneHandSword")
+                if (weaponSpecies == "OneHandSword")
                 {
                     pv.RPC("EmptyWeaponSpriteRPC", RpcTarget.AllBuffered, isRight);
                 }
-                
+
 
                 ammo_P -= 1;
 
 
-                bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
+                if (weaponNum >= 1000 && weaponNum < 2000)
+                {
+                    bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
+                }
+                else if (weaponNum >= 2000 && weaponNum < 3000)
+                {
+                    bulletText.text = "∞";
+                }
+
 
                 readyToAttack = false;
 
@@ -654,11 +681,24 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 }
                 ammo_P -= 1;
 
-                bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
+
+                if (weaponNum >= 1000 && weaponNum < 2000)
+                {
+                    bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
+                }
+                else if (weaponNum >= 2000 && weaponNum < 3000)
+                {
+                    bulletText.text = "∞";
+                }
+                else if (weaponNum >= 3000)
+                {
+                    bulletText.text = barrierAmount.ToString() + "/" + barrierMax.ToString();
+                }
 
                 readyToAttack = false;
 
             }
+
 
             if (Input.GetMouseButtonDown(1) && weaponNum2 > 999 && ammo_P2 > 0 && readyToAttack2 && !isReload2 && !IsFullAuto_P2)
             {
@@ -738,7 +778,15 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 }
                 ammo_P2 -= 1;
 
-                bulletText2.text = ammo_P2.ToString() + "/" + maximumAmmo_P2.ToString();
+                if (weaponNum2 >= 1000 && weaponNum2 < 2000)
+                {
+                    bulletText2.text = ammo_P2.ToString() + "/" + maximumAmmo_P2.ToString();
+                }
+                else if (weaponNum2 >= 2000 && weaponNum2 < 3000)
+                {
+                    bulletText2.text = "∞";
+                }
+
 
                 readyToAttack2 = false;
 
@@ -819,7 +867,18 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 }
                 ammo_P2 -= 1;
 
-                bulletText2.text = ammo_P2.ToString() + "/" + maximumAmmo_P2.ToString();
+
+
+
+                if (weaponNum2 >= 1000 && weaponNum2 < 2000)
+                {
+                    bulletText2.text = ammo_P2.ToString() + "/" + maximumAmmo_P2.ToString();
+                }
+                else if (weaponNum2 >= 2000 && weaponNum2 < 3000)
+                {
+                    bulletText2.text = "∞";
+                }
+
 
                 readyToAttack2 = false;
 
@@ -858,7 +917,31 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             {
                 reLoadingTime2 -= Time.deltaTime;
             }
+            if(shildRechargeTime >= 0)
+            {
+                shildRechargeTime -= Time.deltaTime;
+            }
+            else
+            {
+                if(weaponNum >= 3000 && weaponNum < 5000 && barrierAmount < barrierMax)
+                {
+                    barrierAmount += barrierMax * shildChargeMaxTime;
+                }
+                if(barrierAmount > barrierMax)
+                {
+                    barrierAmount = barrierMax;
+                }
+            }
+            if (weaponNum >= 3000)
+            {
+                
+                bulletText.text = barrierAmount.ToString("F0") + "/" + barrierMax.ToString("F0");
+            }
+            if (weaponNum2 >= 3000)
+            {
 
+                bulletText2.text = barrierAmount2.ToString("F0") + "/" + barrierMax2.ToString("F0");
+            }
             reLoadBar.value = reLoadingTime / reLoadTime_P;
 
             if(reLoadingTime < 0 && isReload)
@@ -868,7 +951,15 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 reLoadBarOB.SetActive(false);
 
                 ammo_P = maximumAmmo_P;
-                bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
+                if (weaponNum >= 1000 && weaponNum < 2000)
+                {
+                    bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
+                }
+                else if (weaponNum >= 2000 && weaponNum < 3000)
+                {
+                    bulletText.text = "∞";
+                }
+
                 reLoadAni.SetTrigger("Ready");
 
 
@@ -880,7 +971,16 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 reLoadBarOB.SetActive(false);
 
                 ammo_P2 = maximumAmmo_P2;
-                bulletText2.text = ammo_P2.ToString() + "/" + maximumAmmo_P2.ToString();
+
+                if (weaponNum2 >= 1000 && weaponNum2 < 2000)
+                {
+                    bulletText2.text = ammo_P2.ToString() + "/" + maximumAmmo_P2.ToString();
+                }
+                else if (weaponNum2 >= 2000 && weaponNum2 < 3000)
+                {
+                    bulletText2.text = "∞";
+                }
+
                 reLoadAni.SetTrigger("Ready");
 
             }
@@ -901,7 +1001,15 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     ammo_P = 0;
                     maximumAmmo_P = 0;
 
-                    bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
+                    if (weaponNum >= 1000 && weaponNum < 2000)
+                    {
+                        bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
+                    }
+                    else if (weaponNum >= 2000 && weaponNum < 3000)
+                    {
+                        bulletText.text = "∞";
+                    }
+
                 }
             }
             if (Input.GetKeyDown(KeyCode.E))
@@ -1014,6 +1122,18 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         {
             weaponSpriteRender.sprite = Resources.Load("Null", typeof(Sprite)) as Sprite;
             weaponSpriteRender2.sprite = Resources.Load("Null", typeof(Sprite)) as Sprite;
+        }
+        if (weaponNum >= 1000 && weaponNum < 2000)
+        {
+            bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
+        }
+        else if (weaponNum >= 2000 && weaponNum < 3000)
+        {
+            bulletText.text = "∞";
+        }
+        else if (weaponNum >= 3000)
+        {
+            bulletText.text = barrierAmount.ToString() + "/" + barrierMax.ToString();
         }
     }
     IEnumerator FireCoolTIme(bool isright)
