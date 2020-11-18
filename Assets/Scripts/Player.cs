@@ -136,6 +136,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     public bool isShilding;
     public float shildRechargeTime;
     [SerializeField] float shildChargeMaxTime;
+    public bool canUseShild;
 
     public string itemSpriteName; 
     itemScript item;
@@ -930,6 +931,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 if(barrierAmount > barrierMax)
                 {
                     barrierAmount = barrierMax;
+                    canUseShild = true;
                 }
             }
             if (weaponNum >= 3000)
@@ -1243,7 +1245,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     public void Hit(float takedDmg, int colorNum, bool canDecrease)
     {
         float finalDamage;
-        if (canDecrease)
+        if (canDecrease && !isShilding)
         {
             finalDamage = takedDmg / (1 + DecreaseTakedDamage);
         }
@@ -1251,11 +1253,26 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         {
             finalDamage = takedDmg;
         }
-        hp -= Mathf.Round(finalDamage);
+        if (isShilding)
+        {
+            colorNum = 3;
+            barrierAmount -= finalDamage;
+            PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, finalDamage, colorNum);
+            if (barrierAmount < 0)
+            {
+                barrierAmount = 0;
+                canUseShild = false;
+            }
+        }
+        else
+        {
+            hp -= Mathf.Round(finalDamage);
+            PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, finalDamage, colorNum);
+        }
 
-        PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, finalDamage, colorNum);
 
-        if(hp <= 0)
+
+        if (hp <= 0)
         {
             for (int i = 0; i < buffScript.buffs.Length; i++)
             {

@@ -12,6 +12,7 @@ ScriptsOnlyBuild:
     - PassPlayerToTile
     - Player
     - PlayerAniManager
+    - ShildScript
     - UiManager
     - getitem
     - itemScript
@@ -45,13 +46,9 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
-    UnityEditor.TestRunner.dll:
-    - UnityEditor.TestTools.TestRunner.TestListCacheData
     UnityEngine.UI.dll:
     - UnityEngine.EventSystems.EventSystem
     - UnityEngine.EventSystems.EventTrigger
@@ -228,15 +225,17 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10718}
     - Class: 114
-      Script: {instanceID: 11150}
+      Script: {instanceID: 10916}
     - Class: 114
-      Script: {instanceID: 11154}
+      Script: {instanceID: 11152}
     - Class: 114
-      Script: {instanceID: 11192}
+      Script: {instanceID: 11156}
     - Class: 114
-      Script: {instanceID: 11244}
+      Script: {instanceID: 11194}
     - Class: 114
-      Script: {instanceID: 11258}
+      Script: {instanceID: 11246}
+    - Class: 114
+      Script: {instanceID: 11260}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -1882,6 +1881,12 @@ ScriptsOnlyBuild:
     className: CinemachineInputProvider
   - hash:
       serializedVersion: 2
+      Hash: 57c042ad99316d97b34e071707a370eb
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: ShildScript
+  - hash:
+      serializedVersion: 2
       Hash: c5fd97cc10b89deaf7c60af66a6b0d5a
     assemblyName: PhotonRealtime.dll
     namespaceName: Photon.Realtime
@@ -2164,7 +2169,7 @@ ScriptsOnlyBuild:
     className: CountOfRoomsProperty
   - hash:
       serializedVersion: 2
-      Hash: 92b241ae16424d72aae4b823d2818cb7
+      Hash: 10a7c81b260491885404169f86ef600b
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player

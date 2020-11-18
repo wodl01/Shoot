@@ -19,6 +19,7 @@ public class DamageText : MonoBehaviour
     [SerializeField] Color damageColor;
     [SerializeField] Color healColor;
     [SerializeField] Color poisonColor;
+    [SerializeField] Color shildColor;
     Color color;
 
 
@@ -51,6 +52,10 @@ public class DamageText : MonoBehaviour
         else if(colornum == 2)
         {
             damage.color = poisonColor;
+        }
+        else if(colornum == 3)
+        {
+            damage.color = shildColor;
         }
     }
 }
