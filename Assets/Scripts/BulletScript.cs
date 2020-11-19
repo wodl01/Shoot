@@ -100,8 +100,10 @@ public class BulletScript : MonoBehaviour
             float healAmount;
 
             other.GetComponent<Player>().Hit(finalDamage,1,true);
-
-            player.GetComponent<PhotonView>().RPC("AttackHeal", RpcTarget.AllBuffered, finalDamage);
+            if(player.isShilding == false)
+            {
+                player.GetComponent<PhotonView>().RPC("AttackHeal", RpcTarget.AllBuffered, finalDamage);
+            }
             healAmount = finalDamage * player.blood;
             PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, healAmount, colorNum);
             //버프주기

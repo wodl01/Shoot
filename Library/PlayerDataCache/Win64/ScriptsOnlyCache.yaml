@@ -1885,7 +1885,7 @@ ScriptsOnlyBuild:
     className: CinemachineInputProvider
   - hash:
       serializedVersion: 2
-      Hash: 0b22e2abca31dbfed15d2e53443fdd16
+      Hash: a42d13f70241c6dcb4d055f37508a5c6
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ShildScript
@@ -2173,7 +2173,7 @@ ScriptsOnlyBuild:
     className: CountOfRoomsProperty
   - hash:
       serializedVersion: 2
-      Hash: 2363dc41c4c8c062a9fc677e65b4c22a
+      Hash: 807b8672c17c8f64ea5d41d6ad677361
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player
@@ -2192,4 +2192,4 @@ ScriptsOnlyBuild:
   platform: 19
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
-  playerPath: D:/Tset/Shoot.exe
+  playerPath: C:/Users/Administrator/Desktop/ShootTest/Shoot.exe

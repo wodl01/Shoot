@@ -67,6 +67,7 @@
     <Compile Include="Assets\DamageText.cs" />
     <Compile Include="Assets\GameManager.cs" />
     <Compile Include="Assets\getitem.cs" />
+    <Compile Include="Assets\MonsterScript.cs" />
     <Compile Include="Assets\PassPlayerToTile.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\Common\EventSystemSpawner.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\Common\OnStartDelete.cs" />
