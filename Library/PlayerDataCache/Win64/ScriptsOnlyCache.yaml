@@ -46,9 +46,13 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
+    UnityEditor.TestRunner.dll:
+    - UnityEditor.TestTools.TestRunner.TestListCacheData
     UnityEngine.UI.dll:
     - UnityEngine.EventSystems.EventSystem
     - UnityEngine.EventSystems.EventTrigger
@@ -363,7 +367,7 @@ ScriptsOnlyBuild:
     className: PhotonStatsGui
   - hash:
       serializedVersion: 2
-      Hash: 06834e14203079a34a1bb6e51714abe4
+      Hash: 7d704d15e7b050b176eb735d9c1e4e3c
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: DamageText
@@ -1881,7 +1885,7 @@ ScriptsOnlyBuild:
     className: CinemachineInputProvider
   - hash:
       serializedVersion: 2
-      Hash: 57c042ad99316d97b34e071707a370eb
+      Hash: 0b22e2abca31dbfed15d2e53443fdd16
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ShildScript
@@ -2169,7 +2173,7 @@ ScriptsOnlyBuild:
     className: CountOfRoomsProperty
   - hash:
       serializedVersion: 2
-      Hash: 10a7c81b260491885404169f86ef600b
+      Hash: 2363dc41c4c8c062a9fc677e65b4c22a
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player

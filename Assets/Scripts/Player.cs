@@ -137,6 +137,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     public float shildRechargeTime;
     [SerializeField] float shildChargeMaxTime;
     public bool canUseShild;
+    [SerializeField] SpriteRenderer shildSprite;
+
 
     public string itemSpriteName; 
     itemScript item;
@@ -691,10 +693,6 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 {
                     bulletText.text = "∞";
                 }
-                else if (weaponNum >= 3000)
-                {
-                    bulletText.text = barrierAmount.ToString() + "/" + barrierMax.ToString();
-                }
 
                 readyToAttack = false;
 
@@ -924,7 +922,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             }
             else
             {
-                if(weaponNum >= 3000 && weaponNum < 5000 && barrierAmount < barrierMax)
+                if(weaponNum >= 3000 && weaponNum < 5000 && barrierAmount < barrierMax && !canUseShild)
                 {
                     barrierAmount += barrierMax * shildChargeMaxTime;
                 }
@@ -1133,9 +1131,24 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         {
             bulletText.text = "∞";
         }
-        else if (weaponNum >= 3000)
+    }
+    [PunRPC]
+    public void ShildShape(bool isActive, bool isright)
+    {
+        if (isright && isActive)
         {
-            bulletText.text = barrierAmount.ToString() + "/" + barrierMax.ToString();
+            shildSprite.sprite = Resources.Load("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString(), typeof(Sprite)) as Sprite;
+            Debug.Log("1111");
+        }
+        else if (!isright && isActive)
+        {
+            shildSprite.sprite = Resources.Load("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString(), typeof(Sprite)) as Sprite;
+            Debug.Log("2222");
+        }
+        else if (!isActive)
+        {
+            shildSprite.sprite = Resources.Load("Null", typeof(Sprite)) as Sprite;
+            Debug.Log("3333");
         }
     }
     IEnumerator FireCoolTIme(bool isright)

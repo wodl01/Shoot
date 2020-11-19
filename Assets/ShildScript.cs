@@ -7,7 +7,7 @@ public class ShildScript : MonoBehaviour
 {
     [SerializeField] Player player;
     [SerializeField] PhotonView pv;
-    [SerializeField] SpriteRenderer shildSprite;
+
     [SerializeField] Animator ani;
     [SerializeField] bool isright;
     private void Update()
@@ -21,7 +21,7 @@ public class ShildScript : MonoBehaviour
                 player.shildRechargeTime = 1;
                 ani.SetBool("ShildOn", true);
                 isright = true;
-                pv.RPC("ShildShape", RpcTarget.AllBuffered,active);
+                pv.RPC("ShildShape", RpcTarget.AllBuffered,active, isright);
             }
 
 
@@ -35,35 +35,17 @@ public class ShildScript : MonoBehaviour
                 player.shildRechargeTime = 1;
                 ani.SetBool("ShildOn", true);
                 isright = false;
-                pv.RPC("ShildShape", RpcTarget.AllBuffered, active);
+                pv.RPC("ShildShape", RpcTarget.AllBuffered, active, isright);
             }
         }
         else
         {
             bool active = false;
             ani.SetBool("ShildOn", false);
-            pv.RPC("ShildShape", RpcTarget.AllBuffered, active);
+            pv.RPC("ShildShape", RpcTarget.AllBuffered, active, isright);
             player.isShilding = false;
         }
     }
 
-    [PunRPC]
-    void ShildShape(bool isActive)
-    {
-        if (isright && isActive)
-        {
-            shildSprite.sprite = Resources.Load("Weapon" + "/" + player.weaponNum.ToString() + "Weapon" + "/" + player.weaponNum.ToString(), typeof(Sprite)) as Sprite;
-            Debug.Log("1111");
-        }
-        else if (!isright && isActive)
-        {
-            shildSprite.sprite = Resources.Load("Weapon" + "/" + player.weaponNum2.ToString() + "Weapon" + "/" + player.weaponNum2.ToString(), typeof(Sprite)) as Sprite;
-            Debug.Log("2222");
-        }
-        else if(!isActive)
-        {
-            shildSprite.sprite = Resources.Load("Null", typeof(Sprite)) as Sprite;
-            Debug.Log("3333");
-        }
-    }
+    
 }
