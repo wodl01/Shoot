@@ -908,35 +908,39 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     //PhotonNetwork.Instantiate(weaponNum2.ToString() + "_Clip", weaponReloadSpawn2.transform.position, Quaternion.identity);
                 }
             }
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButton(0) && canUseShild)
             {
-                if (weaponNum >= 3000 && weaponNum < 5000 && canUseShild)
+                //방패
+                if (weaponNum >= 3000 && weaponNum < 5000)
                 {
                     bool active = true;
+
+                    
                     isShilding = true;
                     shildRechargeTime = 1;
                     
                     isRightShild = true;
-                    pv.RPC("ShildShape", RpcTarget.AllBuffered, active, isRightShild);
+                    pv.RPC("ShildShape", RpcTarget.AllBuffered, isShilding, isRightShild);
                 }
 
 
             }
-            else if (Input.GetMouseButton(1))
+            else if (Input.GetMouseButton(1) && canUseShild)
             {
-                if (weaponNum2 >= 3000 && weaponNum2 < 5000 && canUseShild)
+                //반대쪽 방패
+                if (weaponNum2 >= 3000 && weaponNum2 < 5000)
                 {
                     bool active = true;
                     isShilding = true;
                     shildRechargeTime = 1;
                     isRightShild = false;
-                    pv.RPC("ShildShape", RpcTarget.AllBuffered, active, isRightShild);
+                    pv.RPC("ShildShape", RpcTarget.AllBuffered, isShilding, isRightShild);
                 }
             }
             else
             {
                 bool active = false;
-                pv.RPC("ShildShape", RpcTarget.AllBuffered, active, isRightShild);
+                pv.RPC("ShildShape", RpcTarget.AllBuffered, isShilding, isRightShild);
                 isShilding = false;
             }
         
@@ -1167,19 +1171,19 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void ShildShape(bool isActive, bool isright)
     {
-        if (isright && isActive)
+        if (isright && isActive && canUseShild)
         {
             shildSprite.sprite = Resources.Load("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString(), typeof(Sprite)) as Sprite;
             shildAni.SetBool("ShildOn", true);
             Debug.Log("1111");
         }
-        else if (!isright && isActive)
+        else if (!isright && isActive && canUseShild)
         {
             shildSprite.sprite = Resources.Load("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString(), typeof(Sprite)) as Sprite;
             shildAni.SetBool("ShildOn", true);
             Debug.Log("2222");
         }
-        else if (!isActive)
+        else
         {
             shildSprite.sprite = Resources.Load("Null", typeof(Sprite)) as Sprite;
             shildAni.SetBool("ShildOn", false);
@@ -1274,7 +1278,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     public void AttackHeal(float takingDmg)
     {
         //int colorNum = 0;
-        
+        Debug.Log("자힐");
         float healAmount = takingDmg * blood;
         //PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, healAmount, colorNum);
         if (maxHpValue < hp + (takingDmg * DecreaseTakedHeal))
@@ -1307,7 +1311,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             barrierAmount -= finalDamage;
             shildRechargeTime = 1;
             PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, finalDamage, colorNum);
-            if (barrierAmount < 0)
+            if (barrierAmount <= 0)
             {
                 barrierAmount = 0;
                 canUseShild = false;

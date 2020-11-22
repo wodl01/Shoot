@@ -94,18 +94,16 @@ public class BulletScript : MonoBehaviour
         if (other.tag == "Ground" && isBullet) pv.RPC("DestroyRPC", RpcTarget.AllBuffered);
         if (!pv.IsMine && other.tag == "Player" && other.GetComponent<PhotonView>().IsMine)
         {
-
-            int colorNum = 0;
-
             float healAmount;
 
             other.GetComponent<Player>().Hit(finalDamage,1,true);
             if(player.isShilding == false)
             {
                 player.GetComponent<PhotonView>().RPC("AttackHeal", RpcTarget.AllBuffered, finalDamage);
+                healAmount = finalDamage * player.blood;
+                PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, healAmount, 0);
             }
-            healAmount = finalDamage * player.blood;
-            PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, healAmount, colorNum);
+            
             //버프주기
             other.GetComponent<Player>().buffScript.buffNum = buffCode;
             other.GetComponent<Player>().buffScript.Active = true;
@@ -116,6 +114,18 @@ public class BulletScript : MonoBehaviour
                 pv.RPC("DestroyRPC", RpcTarget.AllBuffered);
             }
             
+        }
+        if(other.tag == "Monster")
+        {
+            Debug.Log("djskalkjldasjdasfk");
+            float healAmount;
+            other.GetComponent<MonsterScript>().Hit(finalDamage, 1);
+            if (player.isShilding == false)
+            {
+                player.GetComponent<PhotonView>().RPC("AttackHeal", RpcTarget.AllBuffered, finalDamage);
+                healAmount = finalDamage * player.blood;
+                PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, healAmount, 0);
+            }
         }
         
     }
