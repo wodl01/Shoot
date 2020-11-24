@@ -16,6 +16,9 @@ public class Buff : MonoBehaviour
 
     public Animator darkEffectAni;
 
+    [SerializeField] int takingDmgPoison;
+    [SerializeField] float increase_takingDmgPoison_Time;
+
     bool once = true;
     private void Update()
     {
@@ -29,7 +32,16 @@ public class Buff : MonoBehaviour
 
             gameObject.SetActive(false);
         }
-       
+        if(buffNum == 0)
+        {
+            increase_takingDmgPoison_Time -= Time.deltaTime;
+            if(increase_takingDmgPoison_Time <= 0)
+            {
+                increase_takingDmgPoison_Time = 4;
+                takingDmgPoison += 1;
+
+            }
+        }
     }
 
 
@@ -41,6 +53,7 @@ public class Buff : MonoBehaviour
 
         if(buffNum == 0)
         {
+            takingDmgPoison = 1;
             StartCoroutine(poisonLv1());
             player.DecreaseTakedHeal = 0.8f;
 
@@ -79,12 +92,12 @@ public class Buff : MonoBehaviour
     {
         if(time > 0)
         {
-            if(Mathf.Round(player.maxHpValue * 0.03f) < player.hp && player.hp != 1)
+            if(takingDmgPoison < player.hp && player.hp != 1)
             {
-                player.Hit(player.maxHpValue * 0.03f, 2, false);
-                Debug.Log(player.maxHpValue * 0.03f + "111111111");
+                player.Hit(takingDmgPoison, 2, false);
+                Debug.Log(takingDmgPoison + "111111111");
             }
-            else if(Mathf.Round(player.maxHpValue * 0.03f) >= player.hp && player.hp != 1)
+            else if(takingDmgPoison >= player.hp && player.hp != 1)
             {
                 player.Hit(player.hp -1, 2, false);
                 Debug.Log(player.hp - 1 + "2222222222");
@@ -93,13 +106,30 @@ public class Buff : MonoBehaviour
             {
                 Debug.Log("3");
             }
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.2f);
 
             StartCoroutine(poisonLv1());
 
             
         }
-        
+        /*
+        if (Mathf.Round(player.maxHpValue * 0.03f) < player.hp && player.hp != 1)
+        {
+            player.Hit(player.maxHpValue * 0.03f, 2, false);
+            Debug.Log(player.maxHpValue * 0.03f + "111111111");
+        }
+        else if (Mathf.Round(player.maxHpValue * 0.03f) >= player.hp && player.hp != 1)
+        {
+            player.Hit(player.hp - 1, 2, false);
+            Debug.Log(player.hp - 1 + "2222222222");
+        }
+        else
+        {
+            Debug.Log("3");
+        }
+        yield return new WaitForSeconds(0.3f);
+
+        StartCoroutine(poisonLv1());*/
     }
 
 }

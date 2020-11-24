@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using Photon.Realtime;
 
 public class MonsterScript : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class MonsterScript : MonoBehaviour
     [SerializeField] Image hpImage;
     [SerializeField] PhotonView pv;
     [SerializeField] Canvas canvas;
+    public MonsterBuffScript MB;
 
     [SerializeField] float speed;
     [SerializeField] int monsterMaxHp;
@@ -53,18 +55,26 @@ public class MonsterScript : MonoBehaviour
                 ani.SetBool("IsMove", true);
             }
         }
+        else if(player == null)
+        {
+            
+            ani.SetBool("IsMove", false);
+        }
 
     }
+    [PunRPC]
     public void Hit(float takedDmg, int colorNum)
     {
+
         monsterHp -= Mathf.Round(takedDmg);
+        
         hpImage.fillAmount = monsterHp / monsterMaxHp;
         if(monsterHp <= 0)//몬스터 죽음
         {
             ani.SetBool("Die", true);
             
         }
-        PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, takedDmg, 1);
+        
     }
 
     public void CanMove()
@@ -81,5 +91,16 @@ public class MonsterScript : MonoBehaviour
     private void DestroyObRPC()
     {
         Destroy(gameObject);
+    }
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(hpImage.fillAmount);
+        }
+        else
+        {
+            hpImage.fillAmount = (float)stream.ReceiveNext();
+        }
     }
 }

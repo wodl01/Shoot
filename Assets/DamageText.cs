@@ -9,13 +9,9 @@ public class DamageText : MonoBehaviour
     [SerializeField] int inputNum;
     [SerializeField] Rigidbody2D rigid;
     [SerializeField] Text damage;
-    [SerializeField] Outline x;
-    [SerializeField] Outline y;
     [SerializeField] float xRange;
     [SerializeField] float maxHeight;
     [SerializeField] float minHeight;
-    [SerializeField] float unLookingStartTime;
-    [SerializeField] float unLooking;
     [SerializeField] Color damageColor;
     [SerializeField] Color healColor;
     [SerializeField] Color poisonColor;

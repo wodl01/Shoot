@@ -16,10 +16,6 @@ public class FloorCheck : MonoBehaviour
             {
                 player.isGround = true;
             }
-            else
-            {
-                player.isGround = false;
-            }
 
         }
         if (isUp)

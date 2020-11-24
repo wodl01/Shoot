@@ -5,8 +5,12 @@ ScriptsOnlyBuild:
     - BuffScript
     - BulletScript
     - DamageText
+    - FindPlayerScript
     - FloorCheck
     - GameManager
+    - Imote_Text
+    - MonsterAttack
+    - MonsterCanAttackRange
     - MonsterScript
     - NetworkManager
     - OneWayScript
@@ -99,6 +103,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 54
       Script: {instanceID: 0}
+    - Class: 58
+      Script: {instanceID: 0}
     - Class: 60
       Script: {instanceID: 0}
     - Class: 61
@@ -126,123 +132,131 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 622}
     - Class: 114
-      Script: {instanceID: 9368}
+      Script: {instanceID: 9288}
+    - Class: 114
+      Script: {instanceID: 9370}
     - Class: 114
       Script: {instanceID: 9388}
     - Class: 114
-      Script: {instanceID: 9404}
+      Script: {instanceID: 9392}
     - Class: 114
-      Script: {instanceID: 9414}
+      Script: {instanceID: 9408}
     - Class: 114
-      Script: {instanceID: 9460}
+      Script: {instanceID: 9418}
     - Class: 114
-      Script: {instanceID: 9484}
-    - Class: 114
-      Script: {instanceID: 9486}
+      Script: {instanceID: 9464}
     - Class: 114
       Script: {instanceID: 9488}
     - Class: 114
+      Script: {instanceID: 9490}
+    - Class: 114
       Script: {instanceID: 9492}
     - Class: 114
-      Script: {instanceID: 9494}
+      Script: {instanceID: 9496}
     - Class: 114
       Script: {instanceID: 9498}
     - Class: 114
-      Script: {instanceID: 9500}
-    - Class: 114
       Script: {instanceID: 9502}
+    - Class: 114
+      Script: {instanceID: 9504}
     - Class: 114
       Script: {instanceID: 9506}
     - Class: 114
-      Script: {instanceID: 9508}
+      Script: {instanceID: 9510}
     - Class: 114
-      Script: {instanceID: 9514}
+      Script: {instanceID: 9512}
     - Class: 114
       Script: {instanceID: 9518}
     - Class: 114
-      Script: {instanceID: 9532}
+      Script: {instanceID: 9522}
     - Class: 114
-      Script: {instanceID: 9534}
+      Script: {instanceID: 9536}
     - Class: 114
-      Script: {instanceID: 9540}
-    - Class: 114
-      Script: {instanceID: 9542}
+      Script: {instanceID: 9538}
     - Class: 114
       Script: {instanceID: 9544}
     - Class: 114
-      Script: {instanceID: 9640}
+      Script: {instanceID: 9546}
     - Class: 114
-      Script: {instanceID: 9672}
+      Script: {instanceID: 9548}
     - Class: 114
-      Script: {instanceID: 9674}
+      Script: {instanceID: 9644}
+    - Class: 114
+      Script: {instanceID: 9676}
     - Class: 114
       Script: {instanceID: 9678}
     - Class: 114
-      Script: {instanceID: 9724}
+      Script: {instanceID: 9682}
     - Class: 114
-      Script: {instanceID: 9770}
+      Script: {instanceID: 9728}
     - Class: 114
-      Script: {instanceID: 9776}
+      Script: {instanceID: 9774}
     - Class: 114
-      Script: {instanceID: 9864}
+      Script: {instanceID: 9780}
     - Class: 114
-      Script: {instanceID: 9898}
+      Script: {instanceID: 9868}
     - Class: 114
-      Script: {instanceID: 9940}
+      Script: {instanceID: 9902}
     - Class: 114
-      Script: {instanceID: 10016}
+      Script: {instanceID: 9944}
     - Class: 114
-      Script: {instanceID: 10028}
+      Script: {instanceID: 10020}
     - Class: 114
-      Script: {instanceID: 10172}
+      Script: {instanceID: 10032}
     - Class: 114
-      Script: {instanceID: 10230}
+      Script: {instanceID: 10064}
+    - Class: 114
+      Script: {instanceID: 10178}
     - Class: 114
       Script: {instanceID: 10236}
     - Class: 114
-      Script: {instanceID: 10248}
+      Script: {instanceID: 10242}
     - Class: 114
-      Script: {instanceID: 10256}
+      Script: {instanceID: 10254}
     - Class: 114
-      Script: {instanceID: 10298}
+      Script: {instanceID: 10262}
     - Class: 114
-      Script: {instanceID: 10378}
+      Script: {instanceID: 10304}
     - Class: 114
-      Script: {instanceID: 10430}
+      Script: {instanceID: 10384}
     - Class: 114
-      Script: {instanceID: 10432}
+      Script: {instanceID: 10436}
     - Class: 114
-      Script: {instanceID: 10492}
+      Script: {instanceID: 10438}
     - Class: 114
-      Script: {instanceID: 10502}
+      Script: {instanceID: 10498}
     - Class: 114
-      Script: {instanceID: 10532}
+      Script: {instanceID: 10508}
     - Class: 114
-      Script: {instanceID: 10554}
+      Script: {instanceID: 10538}
     - Class: 114
-      Script: {instanceID: 10618}
+      Script: {instanceID: 10560}
     - Class: 114
-      Script: {instanceID: 10652}
+      Script: {instanceID: 10624}
     - Class: 114
-      Script: {instanceID: 10682}
+      Script: {instanceID: 10658}
     - Class: 114
-      Script: {instanceID: 10700}
+      Script: {instanceID: 10688}
     - Class: 114
-      Script: {instanceID: 10708}
+      Script: {instanceID: 10706}
     - Class: 114
-      Script: {instanceID: 10720}
+      Script: {instanceID: 10714}
     - Class: 114
-      Script: {instanceID: 10918}
+      Script: {instanceID: 10726}
     - Class: 114
-      Script: {instanceID: 11154}
+      Script: {instanceID: 10924}
     - Class: 114
-      Script: {instanceID: 11158}
+      Script: {instanceID: 11160}
     - Class: 114
-      Script: {instanceID: 11196}
+      Script: {instanceID: 11164}
     - Class: 114
-      Script: {instanceID: 11248}
+      Script: {instanceID: 11202}
     - Class: 114
-      Script: {instanceID: 11262}
+      Script: {instanceID: 11254}
+    - Class: 114
+      Script: {instanceID: 11268}
+    - Class: 114
+      Script: {instanceID: 17276}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -284,6 +298,12 @@ ScriptsOnlyBuild:
     - Class: 1839735485
       Script: {instanceID: 0}
   scriptHashData:
+  - hash:
+      serializedVersion: 2
+      Hash: 3e999a72bc56148a16ffda0f893ac8c0
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: FindPlayerScript
   - hash:
       serializedVersion: 2
       Hash: 80d2851602cb4bcb6f559596c5eb955b
@@ -370,7 +390,7 @@ ScriptsOnlyBuild:
     className: PhotonStatsGui
   - hash:
       serializedVersion: 2
-      Hash: 7d704d15e7b050b176eb735d9c1e4e3c
+      Hash: 540942d5095dbb8393f6f2506be8c1e7
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: DamageText
@@ -404,6 +424,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TMP_ScrollbarEventHandler
+  - hash:
+      serializedVersion: 2
+      Hash: 3e999a72bc56148a16ffda0f893ac8c0
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: MonsterAttack
   - hash:
       serializedVersion: 2
       Hash: bd4c580f02d31d4be48d7a47440392c4
@@ -1108,7 +1134,7 @@ ScriptsOnlyBuild:
     className: PunPlayerScores
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: c2c3bc5046352dae9d3f0225649a21e0
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: MonsterScript
@@ -1208,6 +1234,12 @@ ScriptsOnlyBuild:
     assemblyName: Cinemachine.dll
     namespaceName: Cinemachine
     className: CinemachinePOV
+  - hash:
+      serializedVersion: 2
+      Hash: b24622d4df2ac7c6a2b9042a8c57732c
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: MonsterCanAttackRange
   - hash:
       serializedVersion: 2
       Hash: f941c3a384168571b7d90f58ec4986bc
@@ -1738,7 +1770,7 @@ ScriptsOnlyBuild:
     className: SendRateField
   - hash:
       serializedVersion: 2
-      Hash: 7a151d0562cd94c14675c38ac3c15a85
+      Hash: eacb144eed7050c03905a1734b6e7931
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Buff
@@ -1894,7 +1926,7 @@ ScriptsOnlyBuild:
     className: CinemachineInputProvider
   - hash:
       serializedVersion: 2
-      Hash: a42d13f70241c6dcb4d055f37508a5c6
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ShildScript
@@ -2198,6 +2230,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
+  - hash:
+      serializedVersion: 2
+      Hash: b21ea23e307159e9d7f06126b8403cb3
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: Imote_Text
   platform: 19
   scenePathNames:
   - Assets/Scenes/SampleScene.unity

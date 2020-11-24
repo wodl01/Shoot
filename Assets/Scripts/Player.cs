@@ -1254,6 +1254,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     void JumpRPC()
     {
         //rigid.velocity = Vector2.zero;
+        isGround = false;
         rigid.AddForce(Vector2.up * jumpPow);
     }
 
@@ -1277,63 +1278,74 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void AttackHeal(float takingDmg)
     {
-        //int colorNum = 0;
+
+        if (pv.IsMine)
+        {
+                    //int colorNum = 0;
         Debug.Log("자힐");
         float healAmount = takingDmg * blood;
-        //PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, healAmount, colorNum);
-        if (maxHpValue < hp + (takingDmg * DecreaseTakedHeal))
-        {
-            hp = maxHpValue;
-            Debug.Log("no");
+            if (maxHpValue < hp + (takingDmg * DecreaseTakedHeal))
+            {
+                hp = maxHpValue;
+                PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, healAmount, 0);
+                Debug.Log("no");
+            }
+            else
+            {
+                hp += healAmount * DecreaseTakedHeal;
+                PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, healAmount, 0);
+                Debug.Log("yes");
+            }
         }
-        else
-        {
-            hp += healAmount * DecreaseTakedHeal;
-            Debug.Log("yes");
-        }
+        
         
     }
    
     public void Hit(float takedDmg, int colorNum, bool canDecrease)
     {
-        float finalDamage;
-        if (canDecrease && !isShilding)
+        if (pv.IsMine)
         {
-            finalDamage = takedDmg / (1 + DecreaseTakedDamage);
-        }
-        else
-        {
-            finalDamage = takedDmg;
-        }
-        if (isShilding && canUseShild)
-        {
-            colorNum = 3;
-            barrierAmount -= finalDamage;
-            shildRechargeTime = 1;
-            PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, finalDamage, colorNum);
-            if (barrierAmount <= 0)
+            float finalDamage;
+            if (canDecrease && !isShilding)
             {
-                barrierAmount = 0;
-                canUseShild = false;
+                finalDamage = takedDmg / (1 + DecreaseTakedDamage);
+            }
+            else
+            {
+                finalDamage = takedDmg;
+            }
+            if (isShilding && canUseShild)//방패로 막았을때
+            {
+                colorNum = 3;
+                barrierAmount -= finalDamage;
+                shildRechargeTime = 1;
+                PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, finalDamage, colorNum);
+                if (barrierAmount <= 0)
+                {
+                    barrierAmount = 0;
+                    canUseShild = false;
+                    PhotonNetwork.Instantiate("ImoteText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC2", RpcTarget.All, 0, colorNum);
+                }
+            }
+            else
+            {
+                hp -= Mathf.Round(finalDamage);
+                PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, finalDamage, colorNum);
+            }
+
+
+
+            if (hp <= 0)
+            {
+                for (int i = 0; i < buffScript.buffs.Length; i++)
+                {
+                    buffScript.buffs[i].SetActive(false);
+                }
+                GameObject.Find("MainCanvas").transform.Find("RespawnPanel").gameObject.SetActive(true);
+                pv.RPC("DestroyRPC", RpcTarget.AllBuffered);
             }
         }
-        else
-        {
-            hp -= Mathf.Round(finalDamage);
-            PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, finalDamage, colorNum);
-        }
-
-
-
-        if (hp <= 0)
-        {
-            for (int i = 0; i < buffScript.buffs.Length; i++)
-            {
-                buffScript.buffs[i].SetActive(false);
-            }
-            GameObject.Find("Canvas").transform.Find("RespawnPanel").gameObject.SetActive(true);
-            pv.RPC("DestroyRPC", RpcTarget.AllBuffered);
-        }
+        
     }
 
     [PunRPC]//오브젝트 파괴

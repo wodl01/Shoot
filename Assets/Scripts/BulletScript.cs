@@ -95,13 +95,14 @@ public class BulletScript : MonoBehaviour
         if (!pv.IsMine && other.tag == "Player" && other.GetComponent<PhotonView>().IsMine)
         {
             float healAmount;
-
+            
             other.GetComponent<Player>().Hit(finalDamage,1,true);
-            if(player.isShilding == false)
+            Debug.Log("플래이어를 공격함");
+            if(player.isShilding == false)//피흡
             {
                 player.GetComponent<PhotonView>().RPC("AttackHeal", RpcTarget.AllBuffered, finalDamage);
                 healAmount = finalDamage * player.blood;
-                PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, healAmount, 0);
+                
             }
             
             //버프주기
@@ -115,16 +116,27 @@ public class BulletScript : MonoBehaviour
             }
             
         }
-        if(other.tag == "Monster")
+        if(player.pv.IsMine && other.tag == "Monster")
         {
-            Debug.Log("djskalkjldasjdasfk");
+            
             float healAmount;
-            other.GetComponent<MonsterScript>().Hit(finalDamage, 1);
-            if (player.isShilding == false)
+            other.GetComponent<PhotonView>().RPC("Hit", RpcTarget.AllBuffered, finalDamage, 1);
+            Debug.Log("몬스터를 공격함");
+            PhotonNetwork.Instantiate("DamageText", other.gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, finalDamage, 1);
+            if (player.isShilding == false)//피흡
             {
                 player.GetComponent<PhotonView>().RPC("AttackHeal", RpcTarget.AllBuffered, finalDamage);
                 healAmount = finalDamage * player.blood;
-                PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, healAmount, 0);
+                
+            }
+
+            other.GetComponent<MonsterScript>().MB.buffNum = buffCode;
+            other.GetComponent<MonsterScript>().MB.time = during;
+            other.GetComponent<MonsterScript>().MB.active = true;
+
+            if (isBullet)
+            {
+                pv.RPC("DestroyRPC", RpcTarget.AllBuffered);
             }
         }
         
@@ -164,12 +176,6 @@ public class BulletScript : MonoBehaviour
             player = py.GetComponent<Player>();
             if (player.pv.ViewID == pp)
             {
-
-
-
-                
-
-
                 Destroy(gameObject, 3f);
 
                 playerDamage = player.GetComponent<Player>().playerDamage;

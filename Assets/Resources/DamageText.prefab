@@ -84,7 +84,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 572
+  m_Text: 999
 --- !u!114 &8982828821345525158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,13 +136,9 @@ MonoBehaviour:
   inputNum: 0
   rigid: {fileID: 8982828821345525179}
   damage: {fileID: 8982828821345525159}
-  x: {fileID: 8982828821345525158}
-  y: {fileID: 8982828821345525158}
   xRange: 2
   maxHeight: 5
   minHeight: 2
-  unLookingStartTime: 0.5
-  unLooking: 0.5
   damageColor: {r: 1, g: 0.19339621, b: 0.19339621, a: 1}
   healColor: {r: 0.30545035, g: 1, b: 0.1745283, a: 1}
   poisonColor: {r: 0.7612462, g: 0, b: 1, a: 1}
