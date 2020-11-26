@@ -277,10 +277,10 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
         if (Input.GetKeyDown(KeyCode.U))
         {
-            GameObject damage = PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity);
+            //GameObject damage = PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity);
 
-            damage.transform.SetParent(DmgOB.transform);
-            damage.transform.localScale = new Vector3(1, 1, 1);
+            //damage.transform.SetParent(DmgOB.transform);
+            //damage.transform.localScale = new Vector3(1, 1, 1);
         }
 
 
@@ -1263,7 +1263,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         
         yield return new WaitForSeconds(5f);
         int colorNum = 0;
-        PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, clothesPlusHp * DecreaseTakedHeal, colorNum);
+        PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, clothesPlusHp * DecreaseTakedHeal, colorNum, true);
         if (maxHpValue < hp + (clothesPlusHp * DecreaseTakedHeal))//오버
         {
             hp = maxHpValue;
@@ -1287,13 +1287,13 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             if (maxHpValue < hp + (takingDmg * DecreaseTakedHeal))
             {
                 hp = maxHpValue;
-                PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, healAmount, 0);
+                PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, healAmount, 0, true);
                 Debug.Log("no");
             }
             else
             {
                 hp += healAmount * DecreaseTakedHeal;
-                PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, healAmount, 0);
+                PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, healAmount, 0, true);
                 Debug.Log("yes");
             }
         }
@@ -1319,18 +1319,18 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 colorNum = 3;
                 barrierAmount -= finalDamage;
                 shildRechargeTime = 1;
-                PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, finalDamage, colorNum);
+                PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, finalDamage, colorNum, false);
                 if (barrierAmount <= 0)
                 {
                     barrierAmount = 0;
                     canUseShild = false;
-                    PhotonNetwork.Instantiate("ImoteText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC2", RpcTarget.All, 0, colorNum);
+                    PhotonNetwork.Instantiate("ImoteText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC2", RpcTarget.All, 0, colorNum, false);
                 }
             }
-            else
+            else//그냥 맞았을때
             {
                 hp -= Mathf.Round(finalDamage);
-                PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, finalDamage, colorNum);
+                PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, finalDamage, colorNum, false);
             }
 
 

@@ -34,9 +34,16 @@ public class DamageText : MonoBehaviour
         Destroy(gameObject);
     }
     [PunRPC]
-    void ChangeTextRPC(float changeNum, int colornum)
+    void ChangeTextRPC(float changeNum, int colornum, bool plus)
     {
-        damage.text = Mathf.Round(changeNum).ToString();
+        if (plus)
+        {
+            damage.text = "+" + Mathf.Round(changeNum).ToString();
+        }
+        else
+        {
+            damage.text = "-" + Mathf.Round(changeNum).ToString();
+        }
         if(colornum == 0)
         {
             damage.color = healColor;

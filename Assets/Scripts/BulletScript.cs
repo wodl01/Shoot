@@ -120,9 +120,9 @@ public class BulletScript : MonoBehaviour
         {
             
             float healAmount;
-            other.GetComponent<PhotonView>().RPC("Hit", RpcTarget.AllBuffered, finalDamage, 1);
+            other.GetComponent<PhotonView>().RPC("Hit", RpcTarget.AllBuffered, player.pv.IsMine, finalDamage, 1);
             Debug.Log("몬스터를 공격함");
-            PhotonNetwork.Instantiate("DamageText", other.gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, finalDamage, 1);
+            
             if (player.isShilding == false)//피흡
             {
                 player.GetComponent<PhotonView>().RPC("AttackHeal", RpcTarget.AllBuffered, finalDamage);
@@ -132,7 +132,9 @@ public class BulletScript : MonoBehaviour
 
             other.GetComponent<MonsterScript>().MB.buffNum = buffCode;
             other.GetComponent<MonsterScript>().MB.time = during;
+            other.GetComponent<MonsterScript>().MB.isMyAttack = player.pv.IsMine;
             other.GetComponent<MonsterScript>().MB.active = true;
+
 
             if (isBullet)
             {

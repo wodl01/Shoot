@@ -16,16 +16,22 @@ public class MonsterScript : MonoBehaviour
     [SerializeField] PhotonView pv;
     [SerializeField] Canvas canvas;
     public MonsterBuffScript MB;
+    [SerializeField] bool ismyAttack;
 
     [SerializeField] float speed;
     [SerializeField] int monsterMaxHp;
-    [SerializeField] float monsterHp;
+    public float monsterHp;
     public int damage;
     private void Start()
     {
         StartCoroutine(Move());
 
 
+
+    }
+    [PunRPC]
+    void isSpawn()
+    {
 
     }
     IEnumerator Move()
@@ -63,16 +69,27 @@ public class MonsterScript : MonoBehaviour
 
     }
     [PunRPC]
-    public void Hit(float takedDmg, int colorNum)
+    public void Hit(bool myAttack ,float takedDmg, int colorNum)
     {
 
-        monsterHp -= Mathf.Round(takedDmg);
+        //ismyAttack = true;
+        if (myAttack)
+        {
+            PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, takedDmg, 1, false);
+        }
         
+        monsterHp -= Mathf.Round(takedDmg);
+
         hpImage.fillAmount = monsterHp / monsterMaxHp;
-        if(monsterHp <= 0)//몬스터 죽음
+        if (monsterHp <= 0)//몬스터 죽음
         {
             ani.SetBool("Die", true);
-            
+
+        }
+
+        else
+        {
+            //ismyAttack = false;
         }
         
     }

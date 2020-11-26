@@ -10,8 +10,10 @@ ScriptsOnlyBuild:
     - GameManager
     - Imote_Text
     - MonsterAttack
+    - MonsterBuffScript
     - MonsterCanAttackRange
     - MonsterScript
+    - MonsterSpawnManager
     - NetworkManager
     - OneWayScript
     - PassPlayerToTile
@@ -51,10 +53,8 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.TestListCacheData
@@ -250,13 +250,17 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11164}
     - Class: 114
-      Script: {instanceID: 11202}
+      Script: {instanceID: 11172}
     - Class: 114
-      Script: {instanceID: 11254}
+      Script: {instanceID: 11204}
     - Class: 114
-      Script: {instanceID: 11268}
+      Script: {instanceID: 11206}
     - Class: 114
-      Script: {instanceID: 17276}
+      Script: {instanceID: 11258}
+    - Class: 114
+      Script: {instanceID: 11272}
+    - Class: 114
+      Script: {instanceID: 23082}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -1134,7 +1138,7 @@ ScriptsOnlyBuild:
     className: PunPlayerScores
   - hash:
       serializedVersion: 2
-      Hash: c2c3bc5046352dae9d3f0225649a21e0
+      Hash: 8dcd6f8700a961800f7eac16c1cba19d
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: MonsterScript
@@ -2100,6 +2104,12 @@ ScriptsOnlyBuild:
     className: CinemachinePixelPerfect
   - hash:
       serializedVersion: 2
+      Hash: b1909b960c8b081e8482313424a633c9
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: MonsterBuffScript
+  - hash:
+      serializedVersion: 2
       Hash: c656dcc13ae391b68d594cc8f9c590b0
     assemblyName: PhotonUnityNetworking.Demos.dll
     namespaceName: Photon.Pun.Demo.Cockpit
@@ -2128,6 +2138,12 @@ ScriptsOnlyBuild:
     assemblyName: PhotonUnityNetworking.Utilities.dll
     namespaceName: Photon.Pun.UtilityScripts
     className: PlayerNumbering
+  - hash:
+      serializedVersion: 2
+      Hash: b21ea23e307159e9d7f06126b8403cb3
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: Imote_Text
   - hash:
       serializedVersion: 2
       Hash: f821b20b2c046e87d879258b23b0a569
@@ -2232,11 +2248,11 @@ ScriptsOnlyBuild:
     className: PlayableTrack
   - hash:
       serializedVersion: 2
-      Hash: b21ea23e307159e9d7f06126b8403cb3
+      Hash: bd9a43e28596e1e959cc894c51b3da7a
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: Imote_Text
+    className: MonsterSpawnManager
   platform: 19
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
-  playerPath: C:/Users/Administrator/Desktop/ShootTest/Shoot.exe
+  playerPath: D:/Shoot/Shoot/TestGamePlay/Shoot.exe
