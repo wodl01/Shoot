@@ -9,6 +9,7 @@ public class MonsterScript : MonoBehaviour
 {
     float randomTime;
     [SerializeField] bool canMove;
+    public bool isDie;
     public GameObject player;
     [SerializeField] Rigidbody2D monsterRigid;
     [SerializeField] Animator ani;
@@ -22,6 +23,8 @@ public class MonsterScript : MonoBehaviour
     [SerializeField] int monsterMaxHp;
     public float monsterHp;
     public int damage;
+    public int takingBuffNum;
+    public float during;
     private void Start()
     {
         StartCoroutine(Move());
@@ -75,7 +78,7 @@ public class MonsterScript : MonoBehaviour
         //ismyAttack = true;
         if (myAttack)
         {
-            PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, takedDmg, 1, false);
+            PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, takedDmg, colorNum, false);
         }
         
         monsterHp -= Mathf.Round(takedDmg);
@@ -84,6 +87,7 @@ public class MonsterScript : MonoBehaviour
         if (monsterHp <= 0)//몬스터 죽음
         {
             ani.SetBool("Die", true);
+            isDie = true;
 
         }
 

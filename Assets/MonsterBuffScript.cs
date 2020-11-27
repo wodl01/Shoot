@@ -47,6 +47,7 @@ public class MonsterBuffScript : MonoBehaviour
                 if (!isPoising)
                 {
                     poisonDmg = 1;
+                    increase_takingDmgPoison_Time = 4;
                     StartCoroutine(poison());
                 }
                 
@@ -67,6 +68,10 @@ public class MonsterBuffScript : MonoBehaviour
         else
         {
             isPoising = false;
+        }
+        if (MS.isDie)
+        {
+            poisontime = -10;
         }
     }
     IEnumerator poison()

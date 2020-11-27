@@ -17,8 +17,7 @@ public class BulletScript : MonoBehaviour
     public float playerBlood;
     public float bulletDamage;
     public float finalDamage;
-    public string playerName;
-    public int hitNum;
+    public int hitAmount;
     public float attackSpeed;
 
     [SerializeField] bool isRightGun;
@@ -95,8 +94,8 @@ public class BulletScript : MonoBehaviour
         if (!pv.IsMine && other.tag == "Player" && other.GetComponent<PhotonView>().IsMine)
         {
             float healAmount;
-            
-            other.GetComponent<Player>().Hit(finalDamage,1,true);
+
+            other.GetComponent<Player>().Hit(finalDamage, 1, true, true);
             Debug.Log("플래이어를 공격함");
             if(player.isShilding == false)//피흡
             {
@@ -104,9 +103,10 @@ public class BulletScript : MonoBehaviour
                 healAmount = finalDamage * player.blood;
                 
             }
-            
+            float finalduring = during * duringAbility;
             //버프주기
             other.GetComponent<Player>().buffScript.buffNum = buffCode;
+            other.GetComponent<Player>().buffScript.during = finalduring;
             other.GetComponent<Player>().buffScript.Active = true;
 
             
@@ -118,28 +118,33 @@ public class BulletScript : MonoBehaviour
         }
         if(player.pv.IsMine && other.tag == "Monster")
         {
-            
-            float healAmount;
-            other.GetComponent<PhotonView>().RPC("Hit", RpcTarget.AllBuffered, player.pv.IsMine, finalDamage, 1);
-            Debug.Log("몬스터를 공격함");
-            
-            if (player.isShilding == false)//피흡
+            if (!other.GetComponent<MonsterScript>().isDie)
             {
-                player.GetComponent<PhotonView>().RPC("AttackHeal", RpcTarget.AllBuffered, finalDamage);
-                healAmount = finalDamage * player.blood;
-                
+                float healAmount;
+                other.GetComponent<PhotonView>().RPC("Hit", RpcTarget.AllBuffered, player.pv.IsMine, finalDamage, 1);
+                Debug.Log("몬스터를 공격함");
+
+                if (player.isShilding == false)//피흡
+                {
+                    player.GetComponent<PhotonView>().RPC("AttackHeal", RpcTarget.AllBuffered, finalDamage);
+                    healAmount = finalDamage * player.blood;
+
+                }
+                float finalduring = during * duringAbility;
+
+                other.GetComponent<MonsterScript>().MB.buffNum = buffCode;
+                other.GetComponent<MonsterScript>().MB.time = finalduring;
+                other.GetComponent<MonsterScript>().MB.isMyAttack = player.pv.IsMine;
+                other.GetComponent<MonsterScript>().MB.active = true;
+
+                if (isBullet)
+                {
+                    pv.RPC("DestroyRPC", RpcTarget.AllBuffered);
+                }
+
             }
 
-            other.GetComponent<MonsterScript>().MB.buffNum = buffCode;
-            other.GetComponent<MonsterScript>().MB.time = during;
-            other.GetComponent<MonsterScript>().MB.isMyAttack = player.pv.IsMine;
-            other.GetComponent<MonsterScript>().MB.active = true;
 
-
-            if (isBullet)
-            {
-                pv.RPC("DestroyRPC", RpcTarget.AllBuffered);
-            }
         }
         
     }
@@ -183,7 +188,7 @@ public class BulletScript : MonoBehaviour
                 playerDamage = player.GetComponent<Player>().playerDamage;
                 duringAbility = player.GetComponent<Player>().duringAbility;
                 playerBlood = player.GetComponent<Player>().blood;
-                finalDamage = playerDamage * (1 + bulletDamage);
+                finalDamage = playerDamage * bulletDamage;
                 attackSpeed = player.attackSpeedAbility;
 
                 if (!isBullet)

@@ -16,7 +16,10 @@ public class MonsterAttack : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            other.GetComponent<Player>().Hit(damage, 1, true);
+            other.GetComponent<Player>().buffScript.buffNum = Ms.takingBuffNum;
+            other.GetComponent<Player>().buffScript.during = Ms.during;
+            other.GetComponent<Player>().buffScript.Active = true;
+            other.GetComponent<Player>().Hit(damage, 1, true, true);
         }
     }
 }

@@ -1301,7 +1301,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         
     }
    
-    public void Hit(float takedDmg, int colorNum, bool canDecrease)
+    public void Hit(float takedDmg, int colorNum, bool canDecrease, bool canShilding)
     {
         if (pv.IsMine)
         {
@@ -1314,7 +1314,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             {
                 finalDamage = takedDmg;
             }
-            if (isShilding && canUseShild)//방패로 막았을때
+            if (isShilding && canUseShild && canShilding)//방패로 막았을때
             {
                 colorNum = 3;
                 barrierAmount -= finalDamage;

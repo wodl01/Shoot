@@ -94,12 +94,12 @@ public class Buff : MonoBehaviour
         {
             if(takingDmgPoison < player.hp && player.hp != 1)
             {
-                player.Hit(takingDmgPoison, 2, false);
+                player.Hit(takingDmgPoison, 2, false, false);
                 Debug.Log(takingDmgPoison + "111111111");
             }
             else if(takingDmgPoison >= player.hp && player.hp != 1)
             {
-                player.Hit(player.hp -1, 2, false);
+                player.Hit(player.hp -1, 2, false, false);
                 Debug.Log(player.hp - 1 + "2222222222");
             }
             else

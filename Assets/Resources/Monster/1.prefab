@@ -438,6 +438,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canMove: 1
+  isDie: 0
   player: {fileID: 0}
   monsterRigid: {fileID: 4712380685752728067}
   ani: {fileID: 4712380685752728066}
@@ -953,8 +954,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4712380686595591158}
-  - component: {fileID: 4712380686595591112}
   - component: {fileID: 4712380686595591159}
+  - component: {fileID: 4712380686595591112}
   m_Layer: 0
   m_Name: LookingPlayer
   m_TagString: Untagged
@@ -976,19 +977,6 @@ Transform:
   m_Father: {fileID: 4712380685752728070}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4712380686595591112
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4712380686595591157}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9c19700288e5624fb3820769bab3727, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Ms: {fileID: 4712380685752728071}
 --- !u!58 &4712380686595591159
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1005,6 +993,19 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 5.3
+--- !u!114 &4712380686595591112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4712380686595591157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9c19700288e5624fb3820769bab3727, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Ms: {fileID: 4712380685752728071}
 --- !u!1 &4712380686607314165
 GameObject:
   m_ObjectHideFlags: 0
@@ -1172,8 +1173,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4712380686846832555}
-  - component: {fileID: 4712380686846832557}
   - component: {fileID: 4712380686846832556}
+  - component: {fileID: 4712380686846832557}
   m_Layer: 0
   m_Name: AttackRange
   m_TagString: Untagged
@@ -1195,19 +1196,6 @@ Transform:
   m_Father: {fileID: 4712380685752728070}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4712380686846832557
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4712380686846832554}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 566268d5a1620bc4cba85828f83a3165, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  monsterAni: {fileID: 4712380685752728066}
 --- !u!61 &4712380686846832556
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1234,6 +1222,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.83481, y: 1.082141}
   m_EdgeRadius: 0
+--- !u!114 &4712380686846832557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4712380686846832554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 566268d5a1620bc4cba85828f83a3165, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsterAni: {fileID: 4712380685752728066}
 --- !u!1 &4712380686865294519
 GameObject:
   m_ObjectHideFlags: 0
@@ -1360,6 +1361,8 @@ MonoBehaviour:
   time: 0
   poisontime: 0
   isPoising: 0
+  increase_takingDmgPoison_Time: 0
+  poisonDmg: 0
 --- !u!114 &922169467
 MonoBehaviour:
   m_ObjectHideFlags: 0

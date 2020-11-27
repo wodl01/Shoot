@@ -13131,7 +13131,7 @@ MonoBehaviour:
   spawnAttackObAmount2: 1
   spawnSkillObName: 
   spawnSkillObName2: 
-  duringAbility: 0
+  duringAbility: 1
   blood: 0.5
   DecreaseTakedDamage: 0
   DecreaseTakedHeal: 1
