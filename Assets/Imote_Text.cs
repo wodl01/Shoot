@@ -9,6 +9,7 @@ public class Imote_Text : MonoBehaviour
     [SerializeField] string[] inputMessage;
     [SerializeField] Rigidbody2D rigid;
     [SerializeField] Text imoteMessage;
+    [SerializeField] float upPow;
     [SerializeField] Color damageColor;
     [SerializeField] Color healColor;
     [SerializeField] Color poisonColor;
@@ -19,7 +20,7 @@ public class Imote_Text : MonoBehaviour
     bool once;
     private void Start()
     {
-        
+        rigid.velocity = new Vector2(0, upPow);
 
         gameObject.transform.SetParent(GameObject.FindGameObjectWithTag("DamageDummy").transform);
 

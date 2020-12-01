@@ -7,12 +7,18 @@ using Photon.Realtime;
 public class BulletScript : MonoBehaviour
 {
     public bool isBullet;
+    [SerializeField] float angle;
 
     public Player player;
     public PhotonView pv;
+    private AudioManager Audio;
+    [SerializeField] string sound0;
+    [SerializeField] string sound1;
+    [SerializeField] string sound2;
+    [SerializeField] string sound3;
+
     int dirNum;//방향
     public float bulletSpeed;
-
     public float playerDamage;
     public float playerBlood;
     public float bulletDamage;
@@ -96,7 +102,6 @@ public class BulletScript : MonoBehaviour
             float healAmount;
 
             other.GetComponent<Player>().Hit(finalDamage, 1, true, true);
-            Debug.Log("플래이어를 공격함");
             if(player.isShilding == false)//피흡
             {
                 player.GetComponent<PhotonView>().RPC("AttackHeal", RpcTarget.AllBuffered, finalDamage);
@@ -105,9 +110,13 @@ public class BulletScript : MonoBehaviour
             }
             float finalduring = during * duringAbility;
             //버프주기
-            other.GetComponent<Player>().buffScript.buffNum = buffCode;
-            other.GetComponent<Player>().buffScript.during = finalduring;
-            other.GetComponent<Player>().buffScript.Active = true;
+            if (!player.isShilding)
+            {
+                other.GetComponent<Player>().buffScript.buffNum = buffCode;
+                other.GetComponent<Player>().buffScript.during = finalduring;
+                other.GetComponent<Player>().buffScript.Active = true;
+            }
+            
 
             
             if (isBullet)
@@ -116,13 +125,12 @@ public class BulletScript : MonoBehaviour
             }
             
         }
-        if(player.pv.IsMine && other.tag == "Monster")
+        if(other.tag == "Monster")
         {
             if (!other.GetComponent<MonsterScript>().isDie)
             {
                 float healAmount;
-                other.GetComponent<PhotonView>().RPC("Hit", RpcTarget.AllBuffered, player.pv.IsMine, finalDamage, 1);
-                Debug.Log("몬스터를 공격함");
+                other.GetComponent<MonsterScript>().Hit(player.isMine, finalDamage, 0, 1);
 
                 if (player.isShilding == false)//피흡
                 {
@@ -131,39 +139,56 @@ public class BulletScript : MonoBehaviour
 
                 }
                 float finalduring = during * duringAbility;
-
-                other.GetComponent<MonsterScript>().MB.buffNum = buffCode;
-                other.GetComponent<MonsterScript>().MB.time = finalduring;
-                other.GetComponent<MonsterScript>().MB.isMyAttack = player.pv.IsMine;
-                other.GetComponent<MonsterScript>().MB.active = true;
-
+                if (!player.isShilding)
+                {
+                    other.GetComponent<MonsterScript>().MB.buffNum = buffCode;
+                    other.GetComponent<MonsterScript>().MB.time = finalduring;
+                    other.GetComponent<MonsterScript>().MB.isMyAttack = player.pv.IsMine;
+                    other.GetComponent<MonsterScript>().MB.active = true;
+                }
+                double rad = Mathf.Atan2(player.transform.position.y - other.gameObject.transform.position.y, player.transform.position.x - other.gameObject.transform.position.x);
+                double degree = (rad * 180) / Mathf.PI;
+                PhotonNetwork.Instantiate("HitEffect1", other.gameObject.transform.position, Quaternion.Euler(0, 0, (float)degree));
+                Debug.Log(degree);
                 if (isBullet)
                 {
                     pv.RPC("DestroyRPC", RpcTarget.AllBuffered);
                 }
-
             }
-
-
         }
-        
     }
     public void CanAttack()
     {
         if (isRightGun)
         {
             player.readyToAttack = true;
-            player.pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered,player.weaponNum);
+            player.pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered);
             pv.RPC("DestroyRPC", RpcTarget.AllBuffered);
         }
         else
         {
             player.readyToAttack2 = true;
-            player.pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered, player.weaponNum2);
+            player.pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered);
             pv.RPC("DestroyRPC", RpcTarget.AllBuffered);
         }
     }
 
+    public void Sound0()
+    {
+        Audio.Play(sound0);
+    }
+    public void Sound1()
+    {
+        Audio.Play(sound1);
+    }
+    public void Sound2()
+    {
+        Audio.Play(sound2);
+    }
+    public void Sound3()
+    {
+        Audio.Play(sound3);
+    }
 
 
     [PunRPC]
@@ -176,6 +201,7 @@ public class BulletScript : MonoBehaviour
         isRightGun = isRight;
 
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        Audio = FindObjectOfType<AudioManager>();
 
         foreach (GameObject py in players)
         {

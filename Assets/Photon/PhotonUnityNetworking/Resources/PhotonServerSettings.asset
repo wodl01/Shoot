@@ -58,6 +58,9 @@ MonoBehaviour:
   - DestroyObRPC
   - ChangeTextRPC2
   - isSpawn
+  - Play
+  - DestroyEffect
+  - HealEffectRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

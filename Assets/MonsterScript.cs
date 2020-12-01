@@ -17,6 +17,7 @@ public class MonsterScript : MonoBehaviour
     [SerializeField] PhotonView pv;
     [SerializeField] Canvas canvas;
     public MonsterBuffScript MB;
+    private AudioManager Audio;
     [SerializeField] bool ismyAttack;
 
     [SerializeField] float speed;
@@ -25,24 +26,18 @@ public class MonsterScript : MonoBehaviour
     public int damage;
     public int takingBuffNum;
     public float during;
-    private void Start()
+    [SerializeField] string[] takedSound;
+    [SerializeField] string[] monsterSound;
+    private void Awake()
     {
-        StartCoroutine(Move());
-
-
-
+        Audio = FindObjectOfType<AudioManager>();
     }
     [PunRPC]
     void isSpawn()
     {
 
     }
-    IEnumerator Move()
-    {
-        randomTime = Random.Range(1, 6);
 
-        yield return new WaitForSeconds(randomTime);
-    }
 
     private void Update()
     {
@@ -71,8 +66,8 @@ public class MonsterScript : MonoBehaviour
         }
 
     }
-    [PunRPC]
-    public void Hit(bool myAttack ,float takedDmg, int colorNum)
+    
+    public void Hit(bool myAttack ,float takedDmg, int takedSoundNum,int colorNum)
     {
 
         //ismyAttack = true;
@@ -82,7 +77,7 @@ public class MonsterScript : MonoBehaviour
         }
         
         monsterHp -= Mathf.Round(takedDmg);
-
+        Audio.Play(takedSound[takedSoundNum]);
         hpImage.fillAmount = monsterHp / monsterMaxHp;
         if (monsterHp <= 0)//몬스터 죽음
         {
@@ -101,12 +96,22 @@ public class MonsterScript : MonoBehaviour
     public void CanMove()
     {
         canMove = true;
-
     }
     public void StopMove()
     {
         canMove = false;
-
+    }
+    public void MonsterAttack()
+    {
+        Audio.Play(monsterSound[0]);
+    }
+    public void MonsterBeAttack()
+    {
+        Audio.Play(monsterSound[1]);
+    }
+    public void MonsterDie()
+    {
+        Audio.Play(monsterSound[2]);
     }
     [PunRPC]
     private void DestroyObRPC()

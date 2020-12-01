@@ -78,12 +78,12 @@ public class MonsterBuffScript : MonoBehaviour
     {
         if (poisonDmg < MS.monsterHp && MS.monsterHp != 1)
         {
-            MS.Hit(isMyAttack ,poisonDmg, 2);
+            MS.Hit(isMyAttack, poisonDmg, 1, 2);
             Debug.Log(poisonDmg + "111111111");
         }
         else if (poisonDmg >= MS.monsterHp && MS.monsterHp != 1)
         {
-            MS.Hit(isMyAttack ,MS.monsterHp - 1, 2);
+            MS.Hit(isMyAttack ,MS.monsterHp - 1, 1, 2);
             Debug.Log(MS.monsterHp - 1 + "2222222222");
         }
         else

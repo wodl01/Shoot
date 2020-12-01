@@ -18,6 +18,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     public GameManager gm;
     public Text nickNameText;
     public Image health;
+    public Image barrier;
     [SerializeField] GameObject damageText;
     [SerializeField] GameObject DmgOB;
     [SerializeField] SpriteRenderer weaponSpriteRender;
@@ -25,7 +26,20 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] SpriteRenderer clothesSpriteRender;
     [SerializeField] SpriteRenderer clothesDownSpriteRender;
     int clothesDownAniNum;
+    [SerializeField] ParticleSystem healParticle;
+    [SerializeField] ParticleSystem dashParticle1;
+    [SerializeField] ParticleSystem dashParticle2;
 
+    private AudioManager theAudio;
+    [SerializeField] PhotonView audioPV;
+    [SerializeField] string walkSound0;
+    [SerializeField] string walkSound1;
+    [SerializeField] string walkSound2;
+    [SerializeField] string walkSound3;
+
+    [SerializeField] float dashDoubleClickTime;
+    [SerializeField] float dashCoolTime;
+    [SerializeField] int dashPow;
 
     [SerializeField] Canvas canvas;
     [SerializeField] Text bulletText;
@@ -64,6 +78,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     /// <summary>
     /// ////////////////////////////////////////
     /// </summary>
+    /// 
+    [SerializeField] int saaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa;
     public float maxHpValue;
     public float hp;
 
@@ -147,11 +163,12 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     public int skillCode;
 
     [SerializeField] int attackDir;
+    [SerializeField] int saaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa;
     /// <summary>
     /// ////////////////////////////////////////////
     /// </summary>
     bool Once = true;
-
+    bool DashOnce = true;
 
     public bool left;
     public bool isBodySetUp;
@@ -168,10 +185,6 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     float dirY;
     void Awake()
     {
-        //this.gameObject.name = Random.Range(0, 999999).ToString();
-        //if( // 씬내에 같은 이름 있으면)
-        //   { // 다시 돌려줌 }
-
         gm = GameObject.Find("GameManager").GetComponent<GameManager>();
         gm.player = this;
 
@@ -188,6 +201,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             DmgOB = GameObject.Find("DamageDummy");
             buffScript.player = this;
             buffScript.darkAni = darkBuffAni;
+            theAudio = FindObjectOfType<AudioManager>();
+            audioPV = FindObjectOfType<AudioManager>().PV;
 
             Cm.Follow = transform;
             Cm.LookAt = transform;
@@ -195,8 +210,9 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             PPTT = GameObject.Find("OneWay").GetComponent<PassPlayerToTile>();
             PPTT.Player = this;
 
-            pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered, weaponNum);
-            pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered, weaponNum2);
+            
+
+            pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered);
 
             isMine = true;
 
@@ -235,7 +251,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
                 itemSpriteName = other.GetComponent<getitem>().weapon_number;
 
-                pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered, weaponNum);
+                
 
                 readyToAttack = true;
                 reLoadTime_P = item.reLoadTime;
@@ -277,10 +293,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
         if (Input.GetKeyDown(KeyCode.U))
         {
-            //GameObject damage = PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity);
 
-            //damage.transform.SetParent(DmgOB.transform);
-            //damage.transform.localScale = new Vector3(1, 1, 1);
         }
 
 
@@ -294,19 +307,75 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             {
                 rigid.velocity = new Vector2(speed * axis, rigid.velocity.y);
                 kickXX = 0;
+                DashOnce = true;
             }
             else
             {
-                rigid.velocity = new Vector2(speed * axis + kickXX, rigid.velocity.y);
+                if (Input.GetKey(KeyCode.A) && rigid.velocity.x > -4)
+                {
+                        rigid.AddForce(new Vector2(-6, 0));
+                }
+                if (Input.GetKey(KeyCode.D) && rigid.velocity.x < 4)
+                {
+                    rigid.AddForce(new Vector2(6, 0));
+                }
+                //rigid.velocity = new Vector2(speed * axis + kickXX, rigid.velocity.y);
+            }
+            if (Input.GetKeyDown(KeyCode.Space) && dashCoolTime < 0 && !isGround) 
+            {
+                
+                if(Input.GetKey(KeyCode.D))
+                {
+                    if (DashOnce)
+                    {
+                        DashOnce = false;
+                        
+                        rigid.velocity = new Vector2(0, 0);
+                        dashParticle2.Play();
+                        
+                    }
+                    
+                    rigid.AddForce(new Vector2(dashPow, 20));
+                }
+                else if(Input.GetKey(KeyCode.A))
+                {
+                    if (DashOnce)
+                    {
+                        DashOnce = false;
+                        rigid.velocity = new Vector2(0, 0);
+                        dashParticle1.Play();
+                    }
+                    rigid.AddForce(new Vector2(-dashPow, 20));
+                }
+                dashCoolTime = 1;
+            }
+            if (dashDoubleClickTime >= 0)
+            {
+                dashDoubleClickTime -= Time.deltaTime;
+            }
+            if(dashCoolTime >= 0)
+            {
+                dashCoolTime -= Time.deltaTime;
             }
             
-
             health.fillAmount = hp / maxHpValue;
-
+            if (isRightShild)
+            {
+                barrier.fillAmount = barrierAmount / barrierMax;
+            }
+            else
+            {
+                barrier.fillAmount = barrierAmount2 / barrierMax2;
+            }
+            
             if (axis != 0)
             {
                 ani.SetBool("IsMove", true);
-                pv.RPC("FlipXRPC", RpcTarget.AllBuffered, axis);
+                //if(readyToAttack && readyToAttack2)
+                //{
+                    pv.RPC("FlipXRPC", RpcTarget.AllBuffered, axis);
+                //}
+                
             }
             else
             {
@@ -516,371 +585,387 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
 
 
-            if (Input.GetMouseButtonDown(0) && weaponNum > 999 && ammo_P > 0 && readyToAttack && !isReload && !IsFullAuto_P)
+            if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.U))
             {
-                //총발사
-                bool isRight = true;
-                if (weaponSpecies == "OneHandGun")
+                if (weaponNum > 999 && ammo_P > 0 && readyToAttack && !isReload && !IsFullAuto_P)
                 {
-                    StartCoroutine(FireCoolTIme(isRight));
-                }
-                if (attackDir == 1)
-                {
-                    dirZ = 0;
-                    dirY = 0;
-                    kickXX = -kickX;
-                    Debug.Log("오늘쪽");
-                }
-                else if (attackDir == 2)
-                {
-                    dirZ = 0;
-                    dirY = 180;
-                    kickXX = kickX;
-
-                }
-                else if (attackDir == 3)
-                {
-                    if (left)
+                    //총발사
+                    bool isRight = true;
+                    if (weaponSpecies == "OneHandGun")
                     {
-                        dirZ = 90;
-                        dirY = -180;
+                        StartCoroutine(FireCoolTIme(isRight));
                     }
-                    else
+                    if (attackDir == 1)
                     {
-                        dirZ = 90;
+                        dirZ = 0;
                         dirY = 0;
+                        kickXX = -kickX;
+                        Debug.Log("오늘쪽");
                     }
-                    rigid.AddForce(new Vector2(0, -kickY));
-                    Debug.Log("위");
-                }
-                else if (attackDir == 4)
-                {
-                    if (left)
+                    else if (attackDir == 2)
                     {
-                        dirZ = -90;
-                        dirY = -180;
+                        dirZ = 0;
+                        dirY = 180;
+                        kickXX = kickX;
+
                     }
-                    else
+                    else if (attackDir == 3)
                     {
-                        dirZ = -90;
-                        dirY = 0;
+                        if (left)
+                        {
+                            dirZ = 90;
+                            dirY = -180;
+                        }
+                        else
+                        {
+                            dirZ = 90;
+                            dirY = 0;
+                        }
+                        rigid.AddForce(new Vector2(0, -kickY));
+                        Debug.Log("위");
                     }
-                    rigid.AddForce(new Vector2(0, kickY));
-                    Debug.Log("아래");
-                }
-
-
-
-                for (int i = 0; i < spawnAttackObAmount; i++)
-                {
-                    if (weaponNum > 999 && weaponNum < 2000)
+                    else if (attackDir == 4)
                     {
-                        PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString() + "A"/*이름 중요*/, shotPos.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread, dirZ + bulletSpread)))
-                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
-                        Debug.Log(dirZ);
+                        if (left)
+                        {
+                            dirZ = -90;
+                            dirY = -180;
+                        }
+                        else
+                        {
+                            dirZ = -90;
+                            dirY = 0;
+                        }
+                        rigid.AddForce(new Vector2(0, kickY));
+                        Debug.Log("아래");
                     }
-                    else if (weaponNum > 1999 && weaponNum < 3000)
+
+
+
+                    for (int i = 0; i < spawnAttackObAmount; i++)
                     {
-                        PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString() + "A"/*이름 중요*/, swingPos.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread, dirZ + bulletSpread)))
-                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
+                        if (weaponNum > 999 && weaponNum < 2000)
+                        {
+                            PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString() + "A"/*이름 중요*/, shotPos.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread, dirZ + bulletSpread)))
+                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
+                            Debug.Log(dirZ);
+                        }
+                        else if (weaponNum > 1999 && weaponNum < 3000)
+                        {
+                            PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString() + "A"/*이름 중요*/, swingPos.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread, dirZ + bulletSpread)))
+                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
+
+                        }
 
                     }
+                    if (weaponSpecies == "OneHandSword")
+                    {
+                        pv.RPC("EmptyWeaponSpriteRPC", RpcTarget.AllBuffered, isRight);
+                    }
+
+
+                    ammo_P -= 1;
+
+
+                    if (weaponNum >= 1000 && weaponNum < 2000)
+                    {
+                        bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
+                    }
+                    else if (weaponNum >= 2000 && weaponNum < 3000)
+                    {
+                        bulletText.text = "∞";
+                    }
+
+
+                    readyToAttack = false;
 
                 }
-                if (weaponSpecies == "OneHandSword")
-                {
-                    pv.RPC("EmptyWeaponSpriteRPC", RpcTarget.AllBuffered, isRight);
-                }
-
-
-                ammo_P -= 1;
-
-
-                if (weaponNum >= 1000 && weaponNum < 2000)
-                {
-                    bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
-                }
-                else if (weaponNum >= 2000 && weaponNum < 3000)
-                {
-                    bulletText.text = "∞";
-                }
-
-
-                readyToAttack = false;
 
             }
-            else if (Input.GetMouseButton(0) && weaponNum > 999 && ammo_P > 0 && readyToAttack && !isReload && IsFullAuto_P)
+            else if (Input.GetMouseButton(0) || Input.GetKeyDown(KeyCode.U))
             {
-                //자동총발사
-                bool isRight = true;
-                if (weaponSpecies == "OneHandGun")
+                if (weaponNum > 999 && ammo_P > 0 && readyToAttack && !isReload && IsFullAuto_P)
                 {
-                    StartCoroutine(FireCoolTIme(isRight));
-                }
-
-                if (attackDir == 1)
-                {
-                    dirZ = 0;
-                    dirY = 0;
-                    kickXX = -kickX;
-                    Debug.Log("오늘쪽");
-                }
-                else if (attackDir == 2)
-                {
-                    dirZ = 0;
-                    dirY = 180;
-                    kickXX = kickX;
-
-                }
-                else if (attackDir == 3)
-                {
-                    if (left)
+                    //자동총발사
+                    bool isRight = true;
+                    if (weaponSpecies == "OneHandGun")
                     {
-                        dirZ = 90;
-                        dirY = -180;
+                        StartCoroutine(FireCoolTIme(isRight));
                     }
-                    else
+
+                    if (attackDir == 1)
                     {
-                        dirZ = 90;
+                        dirZ = 0;
                         dirY = 0;
+                        kickXX = -kickX;
+                        Debug.Log("오늘쪽");
                     }
-                    rigid.AddForce(new Vector2(0, -kickY));
-                    Debug.Log("위");
-                }
-                else if (attackDir == 4)
-                {
-                    if (left)
+                    else if (attackDir == 2)
                     {
-                        dirZ = -90;
-                        dirY = -180;
+                        dirZ = 0;
+                        dirY = 180;
+                        kickXX = kickX;
+
                     }
-                    else
+                    else if (attackDir == 3)
                     {
-                        dirZ = -90;
-                        dirY = 0;
+                        if (left)
+                        {
+                            dirZ = 90;
+                            dirY = -180;
+                        }
+                        else
+                        {
+                            dirZ = 90;
+                            dirY = 0;
+                        }
+                        rigid.AddForce(new Vector2(0, -kickY));
+                        Debug.Log("위");
                     }
-                    rigid.AddForce(new Vector2(0, kickY));
-                    Debug.Log("아래");
-                }
-
-                for (int i = 0; i < spawnAttackObAmount; i++)
-                {
-                    if (weaponNum > 999 && weaponNum < 2000)
+                    else if (attackDir == 4)
                     {
-                        PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString() + "A"/*이름 중요*/, shotPos.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread, dirZ + bulletSpread)))
-                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
-
+                        if (left)
+                        {
+                            dirZ = -90;
+                            dirY = -180;
+                        }
+                        else
+                        {
+                            dirZ = -90;
+                            dirY = 0;
+                        }
+                        rigid.AddForce(new Vector2(0, kickY));
+                        Debug.Log("아래");
                     }
-                    else if (weaponNum > 1999 && weaponNum < 3000)
+
+                    for (int i = 0; i < spawnAttackObAmount; i++)
                     {
-                        PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString() + "A"/*이름 중요*/, swingPos.transform.position, Quaternion.Euler(0, 0, Random.Range(dirZ - bulletSpread, dirZ + bulletSpread)))
-                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
+                        if (weaponNum > 999 && weaponNum < 2000)
+                        {
+                            PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString() + "A"/*이름 중요*/, shotPos.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread, dirZ + bulletSpread)))
+                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
 
+                        }
+                        else if (weaponNum > 1999 && weaponNum < 3000)
+                        {
+                            PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString() + "A"/*이름 중요*/, swingPos.transform.position, Quaternion.Euler(0, 0, Random.Range(dirZ - bulletSpread, dirZ + bulletSpread)))
+                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
+
+                        }
                     }
-                }
 
-                if (weaponSpecies == "OneHandSword")
-                {
-                    pv.RPC("EmptyWeaponSpriteRPC", RpcTarget.AllBuffered, isRight);
-                }
-                ammo_P -= 1;
+                    if (weaponSpecies == "OneHandSword")
+                    {
+                        pv.RPC("EmptyWeaponSpriteRPC", RpcTarget.AllBuffered, isRight);
+                    }
+                    ammo_P -= 1;
 
 
-                if (weaponNum >= 1000 && weaponNum < 2000)
-                {
-                    bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
-                }
-                else if (weaponNum >= 2000 && weaponNum < 3000)
-                {
-                    bulletText.text = "∞";
-                }
+                    if (weaponNum >= 1000 && weaponNum < 2000)
+                    {
+                        bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
+                    }
+                    else if (weaponNum >= 2000 && weaponNum < 3000)
+                    {
+                        bulletText.text = "∞";
+                    }
 
-                readyToAttack = false;
+                    readyToAttack = false;
+
+                }
 
             }
 
 
-            if (Input.GetMouseButtonDown(1) && weaponNum2 > 999 && ammo_P2 > 0 && readyToAttack2 && !isReload2 && !IsFullAuto_P2)
+            if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.U))
             {
-                //반대쪽총발사
-                bool isRight = false;
-                if (weaponSpecies2 == "OneHandGun")
+                if (weaponNum2 > 999 && ammo_P2 > 0 && readyToAttack2 && !isReload2 && !IsFullAuto_P2)
                 {
-                    StartCoroutine(FireCoolTIme(isRight));
-                }
-                if (attackDir == 1)
-                {
-                    dirZ = 0;
-                    dirY = 0;
-                    kickXX = -kickX;
-                    Debug.Log("오늘쪽");
-                }
-                else if (attackDir == 2)
-                {
-                    dirZ = 0;
-                    dirY = 180;
-                    kickXX = kickX;
-
-                }
-                else if (attackDir == 3)
-                {
-                    if (left)
+                    //반대쪽총발사
+                    bool isRight = false;
+                    if (weaponSpecies2 == "OneHandGun")
                     {
-                        dirZ = 90;
-                        dirY = -180;
+                        StartCoroutine(FireCoolTIme(isRight));
                     }
-                    else
+                    if (attackDir == 1)
                     {
-                        dirZ = 90;
+                        dirZ = 0;
                         dirY = 0;
+                        kickXX = -kickX;
+                        Debug.Log("오늘쪽");
                     }
-                    rigid.AddForce(new Vector2(0, -kickY));
-                    Debug.Log("위");
-                }
-                else if (attackDir == 4)
-                {
-                    if (left)
+                    else if (attackDir == 2)
                     {
-                        dirZ = -90;
-                        dirY = -180;
+                        dirZ = 0;
+                        dirY = 180;
+                        kickXX = kickX;
+
                     }
-                    else
+                    else if (attackDir == 3)
                     {
-                        dirZ = -90;
-                        dirY = 0;
+                        if (left)
+                        {
+                            dirZ = 90;
+                            dirY = -180;
+                        }
+                        else
+                        {
+                            dirZ = 90;
+                            dirY = 0;
+                        }
+                        rigid.AddForce(new Vector2(0, -kickY));
+                        Debug.Log("위");
                     }
-                    rigid.AddForce(new Vector2(0, kickY));
-                    Debug.Log("아래");
-                }
-
-
-
-                for (int i = 0; i < spawnAttackObAmount; i++)
-                {
-
-                    if (weaponNum2 > 999 && weaponNum2 < 2000)
+                    else if (attackDir == 4)
                     {
-                        PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString() + "A"/*이름 중요*/, shotPos2.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread2, dirZ + bulletSpread2)))
-                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
-
+                        if (left)
+                        {
+                            dirZ = -90;
+                            dirY = -180;
+                        }
+                        else
+                        {
+                            dirZ = -90;
+                            dirY = 0;
+                        }
+                        rigid.AddForce(new Vector2(0, kickY));
+                        Debug.Log("아래");
                     }
-                    else if (weaponNum2 > 1999 && weaponNum2 < 3000)
+
+
+
+                    for (int i = 0; i < spawnAttackObAmount; i++)
                     {
-                        PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString() + "A"/*이름 중요*/, swingPos2.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread2, dirZ + bulletSpread2)))
-                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
 
+                        if (weaponNum2 > 999 && weaponNum2 < 2000)
+                        {
+                            PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString() + "A"/*이름 중요*/, shotPos2.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread2, dirZ + bulletSpread2)))
+                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
+
+                        }
+                        else if (weaponNum2 > 1999 && weaponNum2 < 3000)
+                        {
+                            PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString() + "A"/*이름 중요*/, swingPos2.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread2, dirZ + bulletSpread2)))
+                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
+
+                        }
                     }
-                }
 
-                if (weaponSpecies2 == "OneHandSword")
-                {
-                    pv.RPC("EmptyWeaponSpriteRPC", RpcTarget.AllBuffered, isRight);
-                }
-                ammo_P2 -= 1;
+                    if (weaponSpecies2 == "OneHandSword")
+                    {
+                        pv.RPC("EmptyWeaponSpriteRPC", RpcTarget.AllBuffered, isRight);
+                    }
+                    ammo_P2 -= 1;
 
-                if (weaponNum2 >= 1000 && weaponNum2 < 2000)
-                {
-                    bulletText2.text = ammo_P2.ToString() + "/" + maximumAmmo_P2.ToString();
-                }
-                else if (weaponNum2 >= 2000 && weaponNum2 < 3000)
-                {
-                    bulletText2.text = "∞";
-                }
+                    if (weaponNum2 >= 1000 && weaponNum2 < 2000)
+                    {
+                        bulletText2.text = ammo_P2.ToString() + "/" + maximumAmmo_P2.ToString();
+                    }
+                    else if (weaponNum2 >= 2000 && weaponNum2 < 3000)
+                    {
+                        bulletText2.text = "∞";
+                    }
 
 
-                readyToAttack2 = false;
+                    readyToAttack2 = false;
+
+                }
 
             }
-            else if (Input.GetMouseButton(1) && weaponNum2 > 999 && ammo_P2 > 0 && readyToAttack2 && !isReload2 && IsFullAuto_P2)
+            else if (Input.GetMouseButton(1) || Input.GetKeyDown(KeyCode.U))
             {
-                //반대쪽연속총발사
-                bool isRight = false;
-                if (weaponSpecies2 == "OneHandGun")
+                if(weaponNum2 > 999 && ammo_P2 > 0 && readyToAttack2 && !isReload2 && IsFullAuto_P2)
                 {
-                    StartCoroutine(FireCoolTIme(isRight));
-                }
-                if (attackDir == 1)
-                {
-                    dirZ = 0;
-                    dirY = 0;
-                    kickXX = -kickX;
-                    Debug.Log("오늘쪽");
-                }
-                else if (attackDir == 2)
-                {
-                    dirZ = 0;
-                    dirY = 180;
-                    kickXX = kickX;
-
-                }
-                else if (attackDir == 3)
-                {
-                    if (left)
+                    //반대쪽연속총발사
+                    bool isRight = false;
+                    if (weaponSpecies2 == "OneHandGun")
                     {
-                        dirZ = 90;
-                        dirY = -180;
+                        StartCoroutine(FireCoolTIme(isRight));
                     }
-                    else
+                    if (attackDir == 1)
                     {
-                        dirZ = 90;
+                        dirZ = 0;
                         dirY = 0;
+                        kickXX = -kickX;
+                        Debug.Log("오늘쪽");
                     }
-                    rigid.AddForce(new Vector2(0, -kickY));
-                    Debug.Log("위");
-                }
-                else if (attackDir == 4)
-                {
-                    if (left)
+                    else if (attackDir == 2)
                     {
-                        dirZ = -90;
-                        dirY = -180;
+                        dirZ = 0;
+                        dirY = 180;
+                        kickXX = kickX;
+
                     }
-                    else
+                    else if (attackDir == 3)
                     {
-                        dirZ = -90;
-                        dirY = 0;
+                        if (left)
+                        {
+                            dirZ = 90;
+                            dirY = -180;
+                        }
+                        else
+                        {
+                            dirZ = 90;
+                            dirY = 0;
+                        }
+                        rigid.AddForce(new Vector2(0, -kickY));
+                        Debug.Log("위");
                     }
-                    rigid.AddForce(new Vector2(0, kickY));
-                    Debug.Log("아래");
-                }
-
-                for (int i = 0; i < spawnAttackObAmount; i++)
-                {
-
-                    if (weaponNum2 > 999 && weaponNum2 < 2000)
+                    else if (attackDir == 4)
                     {
-                        PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString() + "A"/*이름 중요*/, shotPos2.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread2, dirZ + bulletSpread2)))
-                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
-
+                        if (left)
+                        {
+                            dirZ = -90;
+                            dirY = -180;
+                        }
+                        else
+                        {
+                            dirZ = -90;
+                            dirY = 0;
+                        }
+                        rigid.AddForce(new Vector2(0, kickY));
+                        Debug.Log("아래");
                     }
-                    else if (weaponNum2 > 1999 && weaponNum2 < 3000)
+
+                    for (int i = 0; i < spawnAttackObAmount; i++)
                     {
-                        PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString() + "A"/*이름 중요*/, swingPos2.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread2, dirZ + bulletSpread2)))
-                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
 
+                        if (weaponNum2 > 999 && weaponNum2 < 2000)
+                        {
+                            PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString() + "A"/*이름 중요*/, shotPos2.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread2, dirZ + bulletSpread2)))
+                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
+
+                        }
+                        else if (weaponNum2 > 1999 && weaponNum2 < 3000)
+                        {
+                            PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString() + "A"/*이름 중요*/, swingPos2.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread2, dirZ + bulletSpread2)))
+                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
+
+                        }
                     }
+
+                    if (weaponSpecies2 == "OneHandSword")
+                    {
+                        pv.RPC("EmptyWeaponSpriteRPC", RpcTarget.AllBuffered, isRight);
+                    }
+                    ammo_P2 -= 1;
+
+
+
+
+                    if (weaponNum2 >= 1000 && weaponNum2 < 2000)
+                    {
+                        bulletText2.text = ammo_P2.ToString() + "/" + maximumAmmo_P2.ToString();
+                    }
+                    else if (weaponNum2 >= 2000 && weaponNum2 < 3000)
+                    {
+                        bulletText2.text = "∞";
+                    }
+
+
+                    readyToAttack2 = false;
+
                 }
-
-                if (weaponSpecies2 == "OneHandSword")
-                {
-                    pv.RPC("EmptyWeaponSpriteRPC", RpcTarget.AllBuffered, isRight);
-                }
-                ammo_P2 -= 1;
-
-
-
-
-                if (weaponNum2 >= 1000 && weaponNum2 < 2000)
-                {
-                    bulletText2.text = ammo_P2.ToString() + "/" + maximumAmmo_P2.ToString();
-                }
-                else if (weaponNum2 >= 2000 && weaponNum2 < 3000)
-                {
-                    bulletText2.text = "∞";
-                }
-
-
-                readyToAttack2 = false;
 
             }
 
@@ -913,13 +998,14 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 //방패
                 if (weaponNum >= 3000 && weaponNum < 5000)
                 {
-                    bool active = true;
+                    
 
                     
                     isShilding = true;
                     shildRechargeTime = 1;
                     
                     isRightShild = true;
+
                     pv.RPC("ShildShape", RpcTarget.AllBuffered, isShilding, isRightShild);
                 }
 
@@ -930,18 +1016,20 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 //반대쪽 방패
                 if (weaponNum2 >= 3000 && weaponNum2 < 5000)
                 {
-                    bool active = true;
+                    
                     isShilding = true;
                     shildRechargeTime = 1;
                     isRightShild = false;
+
                     pv.RPC("ShildShape", RpcTarget.AllBuffered, isShilding, isRightShild);
                 }
             }
             else
             {
-                bool active = false;
-                pv.RPC("ShildShape", RpcTarget.AllBuffered, isShilding, isRightShild);
+
                 isShilding = false;
+                pv.RPC("ShildShape", RpcTarget.AllBuffered, isShilding, isRightShild);
+
             }
         
             if (reLoadingTime >= 0 && isReload)
@@ -965,6 +1053,15 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 if(barrierAmount > barrierMax)
                 {
                     barrierAmount = barrierMax;
+                    canUseShild = true;
+                }
+                if (weaponNum >= 3000 && weaponNum < 5000 && barrierAmount2 < barrierMax2)
+                {
+                    barrierAmount2 += barrierMax2 * shildChargeMaxTime;
+                }
+                if (barrierAmount2 > barrierMax2)
+                {
+                    barrierAmount2 = barrierMax2;
                     canUseShild = true;
                 }
             }
@@ -1032,7 +1129,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     weaponNum = 0;
                     itemSpriteName = "Null";
 
-                    pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered, weaponNum);
+                    
 
                     ammo_P = 0;
                     maximumAmmo_P = 0;
@@ -1061,11 +1158,34 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     {
         isBodySetUp = true;
         bodyUp.transform.position = upPosOB.transform.position;
+
+        int temp = Random.Range(1, 4);
+        switch (temp)
+        {
+            case 1:
+                audioPV.RPC("Play", RpcTarget.AllBuffered, walkSound0);
+                //theAudio.Play(walkSound0);
+                break;
+            case 2:
+                audioPV.RPC("Play", RpcTarget.AllBuffered, walkSound1);
+                //theAudio.Play(walkSound1);
+                break;
+            case 3:
+                audioPV.RPC("Play", RpcTarget.AllBuffered, walkSound2);
+                //theAudio.Play(walkSound2);
+                break;
+            case 4:
+                audioPV.RPC("Play", RpcTarget.AllBuffered, walkSound3);
+                //theAudio.Play(walkSound3);
+                break;
+        }
     }
     public void BodySetDown()
     {
         isBodySetUp = false;
         bodyUp.transform.position = downPosOB.transform.position;
+
+
     }
     public void ClothesDownAni0()//1
     {
@@ -1133,7 +1253,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     }
     
     [PunRPC]
-    public void ChangeWeaponSpriteRPC(int itemSpriteName)
+    public void ChangeWeaponSpriteRPC()
     {
         if(weaponNum >= 1000 && weaponNum2 > 1000)
         {
@@ -1171,23 +1291,26 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void ShildShape(bool isActive, bool isright)
     {
-        if (isright && isActive && canUseShild)
+        if (isright && isActive)
         {
             shildSprite.sprite = Resources.Load("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString(), typeof(Sprite)) as Sprite;
+            barrier.sprite = Resources.Load("BarrierBar" + "0",typeof(Sprite)) as Sprite;
             shildAni.SetBool("ShildOn", true);
-            Debug.Log("1111");
+
         }
-        else if (!isright && isActive && canUseShild)
+        else if (!isright && isActive)
         {
             shildSprite.sprite = Resources.Load("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString(), typeof(Sprite)) as Sprite;
+            barrier.sprite = Resources.Load("BarrierBar" + "0", typeof(Sprite)) as Sprite;
             shildAni.SetBool("ShildOn", true);
-            Debug.Log("2222");
+
         }
         else
         {
             shildSprite.sprite = Resources.Load("Null", typeof(Sprite)) as Sprite;
+            barrier.sprite = Resources.Load("Null", typeof(Sprite)) as Sprite;
             shildAni.SetBool("ShildOn", false);
-            Debug.Log("3333");
+
         }
     }
     IEnumerator FireCoolTIme(bool isright)
@@ -1224,7 +1347,6 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         else if (attackDir == 3) dir = 1;
         else if (attackDir == 4) dir = 2;
         clothesSpriteRender.sprite = Resources.Load(clothesNum + "Clothe" + "/" + dir, typeof(Sprite)) as Sprite;
-        Debug.Log(clothesNum + "Clothe" + "/" + dir);
         
 
     }
@@ -1263,6 +1385,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         
         yield return new WaitForSeconds(5f);
         int colorNum = 0;
+        pv.RPC("HealEffectRPC", RpcTarget.AllBuffered);
         PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, clothesPlusHp * DecreaseTakedHeal, colorNum, true);
         if (maxHpValue < hp + (clothesPlusHp * DecreaseTakedHeal))//오버
         {
@@ -1274,6 +1397,11 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         }
 
         StartCoroutine(ClothesHeal());
+    }
+    [PunRPC]
+    void HealEffectRPC()
+    {
+        healParticle.Play();
     }
     [PunRPC]
     public void AttackHeal(float takingDmg)
@@ -1314,7 +1442,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             {
                 finalDamage = takedDmg;
             }
-            if (isShilding && canUseShild && canShilding)//방패로 막았을때
+            if (isRightShild && isShilding && canUseShild && canShilding)//방패로 막았을때
             {
                 colorNum = 3;
                 barrierAmount -= finalDamage;
@@ -1324,7 +1452,20 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 {
                     barrierAmount = 0;
                     canUseShild = false;
-                    PhotonNetwork.Instantiate("ImoteText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC2", RpcTarget.All, 0, colorNum, false);
+                    PhotonNetwork.Instantiate("ImoteText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC2", RpcTarget.All, 0, colorNum);
+                }
+            }
+            else if (!isRightShild && isShilding && canUseShild && canShilding)//방패로 막았을때
+            {
+                colorNum = 3;
+                barrierAmount2 -= finalDamage;
+                shildRechargeTime = 1;
+                PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, finalDamage, colorNum, false);
+                if (barrierAmount2 <= 0)
+                {
+                    barrierAmount2 = 0;
+                    canUseShild = false;
+                    PhotonNetwork.Instantiate("ImoteText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC2", RpcTarget.All, 0, colorNum);
                 }
             }
             else//그냥 맞았을때

@@ -1,6 +1,7 @@
 ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
+    - AudioManager
     - Buff
     - BuffScript
     - BulletScript
@@ -8,6 +9,7 @@ ScriptsOnlyBuild:
     - FindPlayerScript
     - FloorCheck
     - GameManager
+    - HitEffect
     - Imote_Text
     - MonsterAttack
     - MonsterBuffScript
@@ -119,6 +121,10 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 81
       Script: {instanceID: 0}
+    - Class: 82
+      Script: {instanceID: 0}
+    - Class: 83
+      Script: {instanceID: 0}
     - Class: 90
       Script: {instanceID: 0}
     - Class: 91
@@ -194,73 +200,77 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 9780}
     - Class: 114
-      Script: {instanceID: 9868}
+      Script: {instanceID: 9826}
     - Class: 114
-      Script: {instanceID: 9902}
+      Script: {instanceID: 9870}
     - Class: 114
-      Script: {instanceID: 9944}
+      Script: {instanceID: 9904}
     - Class: 114
-      Script: {instanceID: 10020}
+      Script: {instanceID: 9946}
     - Class: 114
-      Script: {instanceID: 10032}
+      Script: {instanceID: 10022}
     - Class: 114
-      Script: {instanceID: 10064}
+      Script: {instanceID: 10034}
     - Class: 114
-      Script: {instanceID: 10178}
+      Script: {instanceID: 10066}
     - Class: 114
-      Script: {instanceID: 10236}
+      Script: {instanceID: 10180}
     - Class: 114
-      Script: {instanceID: 10242}
+      Script: {instanceID: 10238}
     - Class: 114
-      Script: {instanceID: 10254}
+      Script: {instanceID: 10244}
     - Class: 114
-      Script: {instanceID: 10262}
+      Script: {instanceID: 10256}
     - Class: 114
-      Script: {instanceID: 10304}
+      Script: {instanceID: 10264}
     - Class: 114
-      Script: {instanceID: 10384}
+      Script: {instanceID: 10306}
     - Class: 114
-      Script: {instanceID: 10436}
+      Script: {instanceID: 10310}
     - Class: 114
-      Script: {instanceID: 10438}
+      Script: {instanceID: 10388}
     - Class: 114
-      Script: {instanceID: 10498}
+      Script: {instanceID: 10440}
     - Class: 114
-      Script: {instanceID: 10508}
+      Script: {instanceID: 10442}
     - Class: 114
-      Script: {instanceID: 10538}
+      Script: {instanceID: 10502}
     - Class: 114
-      Script: {instanceID: 10560}
+      Script: {instanceID: 10512}
     - Class: 114
-      Script: {instanceID: 10624}
+      Script: {instanceID: 10542}
     - Class: 114
-      Script: {instanceID: 10658}
+      Script: {instanceID: 10564}
     - Class: 114
-      Script: {instanceID: 10688}
+      Script: {instanceID: 10628}
     - Class: 114
-      Script: {instanceID: 10706}
+      Script: {instanceID: 10662}
     - Class: 114
-      Script: {instanceID: 10714}
+      Script: {instanceID: 10676}
     - Class: 114
-      Script: {instanceID: 10726}
+      Script: {instanceID: 10694}
     - Class: 114
-      Script: {instanceID: 10924}
+      Script: {instanceID: 10712}
     - Class: 114
-      Script: {instanceID: 11160}
+      Script: {instanceID: 10720}
     - Class: 114
-      Script: {instanceID: 11164}
+      Script: {instanceID: 10732}
     - Class: 114
-      Script: {instanceID: 11172}
+      Script: {instanceID: 10930}
     - Class: 114
-      Script: {instanceID: 11204}
+      Script: {instanceID: 11166}
     - Class: 114
-      Script: {instanceID: 11206}
+      Script: {instanceID: 11170}
     - Class: 114
-      Script: {instanceID: 11258}
+      Script: {instanceID: 11178}
     - Class: 114
-      Script: {instanceID: 11272}
+      Script: {instanceID: 11210}
     - Class: 114
-      Script: {instanceID: 23082}
+      Script: {instanceID: 11212}
+    - Class: 114
+      Script: {instanceID: 11264}
+    - Class: 114
+      Script: {instanceID: 11278}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -1054,6 +1064,12 @@ ScriptsOnlyBuild:
     className: TabViewManager
   - hash:
       serializedVersion: 2
+      Hash: 2e944cf565d63cdd10a0af6b91455187
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: AudioManager
+  - hash:
+      serializedVersion: 2
       Hash: 00274a21279f5cb831ce20f895049e38
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
@@ -1138,7 +1154,7 @@ ScriptsOnlyBuild:
     className: PunPlayerScores
   - hash:
       serializedVersion: 2
-      Hash: 8dcd6f8700a961800f7eac16c1cba19d
+      Hash: 05bb4ac448d44f153c2dceb04470c392
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: MonsterScript
@@ -1462,6 +1478,12 @@ ScriptsOnlyBuild:
     className: slidr
   - hash:
       serializedVersion: 2
+      Hash: 1f7197c0f6a6e829cb51c1acd7a79966
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: HitEffect
+  - hash:
+      serializedVersion: 2
       Hash: c656dcc13ae391b68d594cc8f9c590b0
     assemblyName: PhotonUnityNetworking.Demos.dll
     namespaceName: Photon.Pun.Demo.Cockpit
@@ -1546,7 +1568,7 @@ ScriptsOnlyBuild:
     className: NickNameField
   - hash:
       serializedVersion: 2
-      Hash: 149602b346c2a433552b23e210613b5a
+      Hash: d52fe137cb4a1f531e30e075b7510339
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: BulletScript
@@ -1766,6 +1788,12 @@ ScriptsOnlyBuild:
     assemblyName: PhotonUnityNetworking.Demos.dll
     namespaceName: Photon.Pun.Demo.Cockpit
     className: PropertyCell
+  - hash:
+      serializedVersion: 2
+      Hash: bd9a43e28596e1e959cc894c51b3da7a
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: MonsterSpawnManager
   - hash:
       serializedVersion: 2
       Hash: cba6cca6bb3290c4c00d709cf63843db
@@ -2104,7 +2132,7 @@ ScriptsOnlyBuild:
     className: CinemachinePixelPerfect
   - hash:
       serializedVersion: 2
-      Hash: b1909b960c8b081e8482313424a633c9
+      Hash: bd93ccb04c99f46a6264ce105de99dcd
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: MonsterBuffScript
@@ -2140,7 +2168,7 @@ ScriptsOnlyBuild:
     className: PlayerNumbering
   - hash:
       serializedVersion: 2
-      Hash: b21ea23e307159e9d7f06126b8403cb3
+      Hash: 3ec416965c1321008dcaf7d6cda38724
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Imote_Text
@@ -2230,7 +2258,7 @@ ScriptsOnlyBuild:
     className: CountOfRoomsProperty
   - hash:
       serializedVersion: 2
-      Hash: 807b8672c17c8f64ea5d41d6ad677361
+      Hash: 8046b3d8587871c9e3e506a62c12152e
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player
@@ -2246,12 +2274,6 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
-  - hash:
-      serializedVersion: 2
-      Hash: bd9a43e28596e1e959cc894c51b3da7a
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: MonsterSpawnManager
   platform: 19
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
