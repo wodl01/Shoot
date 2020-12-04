@@ -61,10 +61,8 @@ public class MonsterScript : MonoBehaviour
         }
         else if(player == null)
         {
-            
             ani.SetBool("IsMove", false);
         }
-
     }
     
     public void Hit(bool myAttack ,float takedDmg, int takedSoundNum,int colorNum)
@@ -84,13 +82,7 @@ public class MonsterScript : MonoBehaviour
             ani.SetBool("Die", true);
             isDie = true;
 
-        }
-
-        else
-        {
-            //ismyAttack = false;
-        }
-        
+        } 
     }
 
     public void CanMove()

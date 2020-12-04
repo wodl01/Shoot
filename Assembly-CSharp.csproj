@@ -103,13 +103,11 @@
     <None Include="Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.xml" />
     <None Include="Assets\Photon\PhotonLibs\changes-library.txt" />
     <None Include="Assets\Photon\PhotonUnityNetworking\link.xml" />
-    <None Include="Assets\Resources 1\MyItemText.txt" />
     <None Include="Assets\Photon\PhotonLibs\Photon3Unity3D.xml" />
     <None Include="Assets\JsonDotNet\link.xml" />
     <None Include="Assets\Resources\ItemDataBase.txt" />
     <None Include="Assets\Photon\PhotonUnityNetworking\readme.txt" />
     <None Include="Assets\Resources\MyItemText.txt" />
-    <None Include="Assets\Resources 1\ItemDataBase.txt" />
     <None Include="Assets\Photon\PhotonUnityNetworking\changelog.txt" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>D:/Shoot/Shoot/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>

@@ -8969,7 +8969,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.0000030243382, y: -0.00005029209}
+  m_AnchoredPosition: {x: 0.0000030243382, y: 0.000016916014}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &392317410
@@ -16892,12 +16892,12 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 2d6a2ddad791a4043bc07b5dcb3a293b, type: 3}
     volumn: 1
     loop: 0
-  - soundName: Damage1
-    clip: {fileID: 8300000, guid: df0b383d3c312f34981971c02fcecd73, type: 3}
+  - soundName: Explosion0
+    clip: {fileID: 8300000, guid: 8196f72bf7c807f4a9544d1fa6a084a5, type: 3}
     volumn: 1
     loop: 0
-  - soundName: Damage1
-    clip: {fileID: 8300000, guid: df0b383d3c312f34981971c02fcecd73, type: 3}
+  - soundName: GunFire0
+    clip: {fileID: 8300000, guid: 805bbe4812a59804393d5a5c56825536, type: 3}
     volumn: 1
     loop: 0
 --- !u!4 &1569278558

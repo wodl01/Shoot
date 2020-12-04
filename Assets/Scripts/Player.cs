@@ -36,6 +36,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] string walkSound1;
     [SerializeField] string walkSound2;
     [SerializeField] string walkSound3;
+    [SerializeField] string weaponShotSound1;
+    [SerializeField] string weaponShotSound2;
 
     [SerializeField] float dashDoubleClickTime;
     [SerializeField] float dashCoolTime;
@@ -212,7 +214,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
             
 
-            pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered);
+            pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered, true);
+            pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered, false);
 
             isMine = true;
 
@@ -647,13 +650,13 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                         if (weaponNum > 999 && weaponNum < 2000)
                         {
                             PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString() + "A"/*이름 중요*/, shotPos.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread, dirZ + bulletSpread)))
-                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
+                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, this.pv.ViewID, isRight);
                             Debug.Log(dirZ);
                         }
                         else if (weaponNum > 1999 && weaponNum < 3000)
                         {
                             PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString() + "A"/*이름 중요*/, swingPos.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread, dirZ + bulletSpread)))
-                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
+                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, this.pv.ViewID, isRight);
 
                         }
 
@@ -663,7 +666,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                         pv.RPC("EmptyWeaponSpriteRPC", RpcTarget.AllBuffered, isRight);
                     }
 
-
+                    theAudio.Play(weaponShotSound1);
                     ammo_P -= 1;
 
 
@@ -743,13 +746,13 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                         if (weaponNum > 999 && weaponNum < 2000)
                         {
                             PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString() + "A"/*이름 중요*/, shotPos.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread, dirZ + bulletSpread)))
-                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
+                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, this.pv.ViewID, isRight);
 
                         }
                         else if (weaponNum > 1999 && weaponNum < 3000)
                         {
                             PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString() + "A"/*이름 중요*/, swingPos.transform.position, Quaternion.Euler(0, 0, Random.Range(dirZ - bulletSpread, dirZ + bulletSpread)))
-                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
+                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, this.pv.ViewID, isRight);
 
                         }
                     }
@@ -758,6 +761,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     {
                         pv.RPC("EmptyWeaponSpriteRPC", RpcTarget.AllBuffered, isRight);
                     }
+                    theAudio.Play(weaponShotSound1);
                     ammo_P -= 1;
 
 
@@ -840,13 +844,13 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                         if (weaponNum2 > 999 && weaponNum2 < 2000)
                         {
                             PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString() + "A"/*이름 중요*/, shotPos2.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread2, dirZ + bulletSpread2)))
-                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
+                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, this.pv.ViewID, isRight);
 
                         }
                         else if (weaponNum2 > 1999 && weaponNum2 < 3000)
                         {
                             PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString() + "A"/*이름 중요*/, swingPos2.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread2, dirZ + bulletSpread2)))
-                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
+                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, this.pv.ViewID, isRight);
 
                         }
                     }
@@ -855,6 +859,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     {
                         pv.RPC("EmptyWeaponSpriteRPC", RpcTarget.AllBuffered, isRight);
                     }
+                    theAudio.Play(weaponShotSound2);
                     ammo_P2 -= 1;
 
                     if (weaponNum2 >= 1000 && weaponNum2 < 2000)
@@ -933,13 +938,13 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                         if (weaponNum2 > 999 && weaponNum2 < 2000)
                         {
                             PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString() + "A"/*이름 중요*/, shotPos2.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread2, dirZ + bulletSpread2)))
-                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
+                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, this.pv.ViewID, isRight);
 
                         }
                         else if (weaponNum2 > 1999 && weaponNum2 < 3000)
                         {
                             PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString() + "A"/*이름 중요*/, swingPos2.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread2, dirZ + bulletSpread2)))
-                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, attackDir, this.pv.ViewID, isRight);
+                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, this.pv.ViewID, isRight);
 
                         }
                     }
@@ -948,6 +953,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     {
                         pv.RPC("EmptyWeaponSpriteRPC", RpcTarget.AllBuffered, isRight);
                     }
+                    theAudio.Play(weaponShotSound2);
                     ammo_P2 -= 1;
 
 
@@ -1253,40 +1259,26 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     }
     
     [PunRPC]
-    public void ChangeWeaponSpriteRPC()
+    public void ChangeWeaponSpriteRPC(bool isright)
     {
-        if(weaponNum >= 1000 && weaponNum2 > 1000)
-        {
-            //무기Sprite바꿈
-            weaponSpriteRender.sprite = Resources.Load("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString(), typeof(Sprite)) as Sprite;
-
-
-            weaponSpriteRender2.sprite = Resources.Load("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString(), typeof(Sprite)) as Sprite;
-
-        }
-        else if (weaponNum >= 1000 && weaponNum2 < 1000)
+        if(isright && weaponNum >= 1000)
         {
             weaponSpriteRender.sprite = Resources.Load("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString(), typeof(Sprite)) as Sprite;
-
         }
-        else if(weaponNum < 1000 && weaponNum2 >= 1000)
-        {
-            weaponSpriteRender2.sprite = Resources.Load("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString(), typeof(Sprite)) as Sprite;
-
-        }
-        else
+        else if(isright && weaponNum == 0)
         {
             weaponSpriteRender.sprite = Resources.Load("Null", typeof(Sprite)) as Sprite;
+        }
+        if(!isright && weaponNum2 >= 1000)
+        {
+            weaponSpriteRender2.sprite = Resources.Load("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString(), typeof(Sprite)) as Sprite;
+        }
+        else if(!isright && weaponNum2 == 0)
+        {
             weaponSpriteRender2.sprite = Resources.Load("Null", typeof(Sprite)) as Sprite;
         }
-        if (weaponNum >= 1000 && weaponNum < 2000)
-        {
-            bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
-        }
-        else if (weaponNum >= 2000 && weaponNum < 3000)
-        {
-            bulletText.text = "∞";
-        }
+        
+        
     }
     [PunRPC]
     public void ShildShape(bool isActive, bool isright)

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 493115050675736992}
   - component: {fileID: 6863377485437895564}
   m_Layer: 0
-  m_Name: Bullet2
+  m_Name: 1001A
   m_TagString: AttackOB
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -165,14 +165,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isBullet: 1
+  isSword: 0
+  isDamaging: 1
+  isEffect: 0
+  weaponNum: 1001
   player: {fileID: 0}
   pv: {fileID: 493115050675736992}
+  sound0: 
+  sound1: 
+  sound2: 
+  sound3: 
   bulletSpeed: 17
   playerDamage: 0
   playerBlood: 0
   bulletDamage: 0
   finalDamage: 0
-  bulletRigid: {fileID: 8333840253154644444}
+  hitAmount: 0
+  attackSpeed: 0
+  isRightGun: 0
+  playerViewId: 0
+  ani: {fileID: 0}
   buffCode: 0
   during: 0
   duringAbility: 0

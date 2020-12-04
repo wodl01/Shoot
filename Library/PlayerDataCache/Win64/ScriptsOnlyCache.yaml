@@ -55,8 +55,10 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.TestListCacheData
@@ -1478,7 +1480,7 @@ ScriptsOnlyBuild:
     className: slidr
   - hash:
       serializedVersion: 2
-      Hash: 1f7197c0f6a6e829cb51c1acd7a79966
+      Hash: 36e01d22c20d6cb181f365a10c686c68
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: HitEffect
@@ -1568,7 +1570,7 @@ ScriptsOnlyBuild:
     className: NickNameField
   - hash:
       serializedVersion: 2
-      Hash: d52fe137cb4a1f531e30e075b7510339
+      Hash: 023a36f22a291a59c4cd554c5c6586a4
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: BulletScript
@@ -2258,7 +2260,7 @@ ScriptsOnlyBuild:
     className: CountOfRoomsProperty
   - hash:
       serializedVersion: 2
-      Hash: 8046b3d8587871c9e3e506a62c12152e
+      Hash: 25dd2c667c0522fd262b7a055902b723
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player

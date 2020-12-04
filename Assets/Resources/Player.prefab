@@ -22682,6 +22682,8 @@ MonoBehaviour:
   walkSound1: Walk1
   walkSound2: Walk2
   walkSound3: Walk3
+  weaponShotSound1: 
+  weaponShotSound2: GunFire0
   dashDoubleClickTime: 0
   dashCoolTime: 0
   dashPow: 320
@@ -22734,9 +22736,9 @@ MonoBehaviour:
   isGround: 1
   speed: 4
   weaponNum: 2000
-  weaponNum2: 2000
+  weaponNum2: 1002
   weaponSpecies: OneHandSword
-  weaponSpecies2: OneHandSword
+  weaponSpecies2: OneHandGun
   clothesNum: 1
   plusMaxHp: 0
   clothesPlusHp: 20
@@ -22755,7 +22757,7 @@ MonoBehaviour:
   ammo_P: 100
   ammo_P2: 100
   IsFullAuto_P: 0
-  IsFullAuto_P2: 1
+  IsFullAuto_P2: 0
   readyToAttack: 1
   readyToAttack2: 1
   shotDelay: 0.5

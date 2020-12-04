@@ -165,18 +165,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isBullet: 1
+  isDamaging: 1
+  isEffect: 0
+  weaponNum: 1000
   player: {fileID: 0}
   pv: {fileID: 493115050675736992}
+  sound0: 
+  sound1: 
+  sound2: 
+  sound3: 
   bulletSpeed: 32.11
   playerDamage: 0
   playerBlood: 0
-  bulletDamage: 0.2
+  bulletDamage: 2
   finalDamage: 0
-  playerName: 
-  hitNum: 0
+  hitAmount: 0
   attackSpeed: 0
   isRightGun: 0
-  bulletRigid: {fileID: 5331436597969886933}
   ani: {fileID: 0}
   buffCode: 0
   during: 0
