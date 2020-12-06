@@ -218,6 +218,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered, false);
 
             isMine = true;
+            gameObject.tag = "MyPlayer";
 
             StartCoroutine(ClothesHeal());
         }

@@ -15,6 +15,7 @@ TagManager:
   - DamageDummy
   - Monster
   - PassingGround
+  - MyPlayer
   layers:
   - Default
   - TransparentFX

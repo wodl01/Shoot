@@ -16,7 +16,9 @@ public class BulletScript : MonoBehaviour
     [SerializeField] bool flyingEffectTrue;
 
     public Player player;
+    [SerializeField] Animator ani;
     public PhotonView pv;
+    [SerializeField] Guided_Bullet gb;
     private AudioManager Audio;
     [SerializeField] int takingSoundNum;
     [SerializeField] string sound0;
@@ -31,11 +33,13 @@ public class BulletScript : MonoBehaviour
     public float finalDamage;
     public int hitAmount;
     public float attackSpeed;
+    [SerializeField] int rotateSpeed;
+    [SerializeField] bool isGuided;
 
     [SerializeField] bool isRightGun;
     [SerializeField] int playerViewId;
 
-    [SerializeField] Animator ani;
+    float angle;
 
     int dirX;
     int dirY;
@@ -47,7 +51,7 @@ public class BulletScript : MonoBehaviour
 
     private void Update()
     {
-        //transform.Translate(new Vector3(dirX,dirY,0) * bulletSpeed * Time.deltaTime);
+
         if (isSword)
         {
             if (isRightGun)
@@ -131,7 +135,8 @@ public class BulletScript : MonoBehaviour
                     }
                     double rad = Mathf.Atan2(player.transform.position.y - other.gameObject.transform.position.y, player.transform.position.x - other.gameObject.transform.position.x);
                     double degree = (rad * 180) / Mathf.PI;
-                    
+
+
                     PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + "HitEffect", other.gameObject.transform.position, Quaternion.Euler(0, 0, (float)degree));
 
                 }
@@ -184,7 +189,7 @@ public class BulletScript : MonoBehaviour
 
         isRightGun = isRight;
 
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        GameObject[] players = GameObject.FindGameObjectsWithTag("MyPlayer");
         Audio = FindObjectOfType<AudioManager>();
 
         foreach (GameObject py in players)
@@ -201,6 +206,11 @@ public class BulletScript : MonoBehaviour
                 finalDamage = playerDamage * bulletDamage;
                 attackSpeed = player.attackSpeedAbility;
                 playerViewId = pp;
+
+                if (isGuided)
+                {
+                    gb.rotateSpeed = rotateSpeed;
+                }
 
                 if (flyingEffectTrue)
                 {
@@ -222,6 +232,11 @@ public class BulletScript : MonoBehaviour
         {
             PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + "DestroyEffect", gameObject.transform.position, Quaternion.identity)
                 .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, playerViewId, isRightGun);
+        }
+        else if (!isEffect && player.pv.IsMine)
+        {
+            PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + "DestroyEffect", gameObject.transform.position, Quaternion.identity);
+                
         }
         Destroy(gameObject);
     }

@@ -22718,7 +22718,7 @@ MonoBehaviour:
   saaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa: 0
   maxHpValue: 10000
   hp: 10000
-  playerDamage: 10
+  playerDamage: 1
   isLookUp: 0
   shotPos: {fileID: 5540588587113956563}
   shotPos2: {fileID: 2320627683909967439}
@@ -22735,9 +22735,9 @@ MonoBehaviour:
   jumpPow: 275
   isGround: 1
   speed: 4
-  weaponNum: 2000
+  weaponNum: 1000
   weaponNum2: 1002
-  weaponSpecies: OneHandSword
+  weaponSpecies: OneHandGun
   weaponSpecies2: OneHandGun
   clothesNum: 1
   plusMaxHp: 0
@@ -22752,15 +22752,15 @@ MonoBehaviour:
   bulletSpread2: 0
   kickX: 0
   kickY: 0
-  maximumAmmo_P: 0
-  maximumAmmo_P2: 0
-  ammo_P: 100
+  maximumAmmo_P: 100
+  maximumAmmo_P2: 100
+  ammo_P: 1000
   ammo_P2: 100
-  IsFullAuto_P: 0
+  IsFullAuto_P: 1
   IsFullAuto_P2: 0
   readyToAttack: 1
   readyToAttack2: 1
-  shotDelay: 0.5
+  shotDelay: 0.1
   shotDelay2: 0
   attackSpeedAbility: 1
   reLoadTime_P: 0
