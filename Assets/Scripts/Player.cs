@@ -16,6 +16,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     public SpriteRenderer sprite;
     public PhotonView pv;
     public GameManager gm;
+    [SerializeField] DamageTextManager dtm;
     public Text nickNameText;
     public Image health;
     public Image barrier;
@@ -113,7 +114,38 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] float speed;
 
 
-    
+    public int skillNum;
+    [SerializeField] Image skillThumbnail;
+    [SerializeField] Image skillCoolThumbnail;
+    [SerializeField] Text skillAmountText;
+    public int skillAmount;
+    public int skillMax;
+    public float skillTime;
+    public float skillRechargeTime;
+    public int skill2Num;
+    [SerializeField] Image skill2Thumbnail;
+    [SerializeField] Image skill2CoolThumbnail;
+    [SerializeField] Text skill2AmountText;
+    public int skill2Amount;
+    public int skill2Max;
+    public float skill2Time;
+    public float skill2RechargeTime;
+    public int ultimateNum;
+    [SerializeField] Image ultimateThumbnail;
+    [SerializeField] Image ultimateCoolThumbnail;
+    [SerializeField] Text ultimateAmountText;
+    public int ultimateAmount;
+    public float ultimateTime;
+    public float ultimateRechargeTime;
+    public float skillkickX;//2
+    public float skillkickY;//200
+    public float skill2kickX;//2
+    public float skill2kickY;//200
+    public float ulitimatekickX;//2
+    public float ulitimatekickY;//2
+    public float skillSpread;
+    public float skill2Spread;
+    public float ulitimateSpread;
     public int weaponNum;
     public int weaponNum2;
     [SerializeField] string weaponSpecies;
@@ -121,8 +153,6 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] int clothesNum;
     [SerializeField] int plusMaxHp;
     [SerializeField] float clothesPlusHp;
-    public int attackCode;
-    public int attackCode2;
     [SerializeField] GameObject[] bullet;
     public float bulletSpread;
     public float bulletSpread2;
@@ -162,8 +192,6 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     public string itemSpriteName; 
     itemScript item;
 
-    public int skillCode;
-
     [SerializeField] int attackDir;
     [SerializeField] int saaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa;
     /// <summary>
@@ -201,6 +229,10 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             bulletText2 = GameObject.FindGameObjectWithTag("BulletText2").GetComponent<Text>();
             buffScript = GameObject.FindGameObjectWithTag("BuffPanel").GetComponent<BuffScript>();
             DmgOB = GameObject.Find("DamageDummy");
+            skillThumbnail = GameObject.Find("Skill1").GetComponent<Image>();
+            skillCoolThumbnail = GameObject.Find("Skill1Cool").GetComponent<Image>();
+            skillAmountText = GameObject.Find("Skill1Amount").GetComponent<Text>();
+
             buffScript.player = this;
             buffScript.darkAni = darkBuffAni;
             theAudio = FindObjectOfType<AudioManager>();
@@ -212,13 +244,13 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             PPTT = GameObject.Find("OneWay").GetComponent<PassPlayerToTile>();
             PPTT.Player = this;
 
-            
+
 
             pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered, true);
             pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered, false);
+            skillThumbnail.sprite = Resources.Load("Skill" + "/" + skillNum.ToString() + "Skill" + "/" + "Thumnail"/*이름 중요*/, typeof(Sprite)) as Sprite;
 
             isMine = true;
-            gameObject.tag = "MyPlayer";
 
             StartCoroutine(ClothesHeal());
         }
@@ -281,10 +313,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 Debug.Log("2");
                 cooltime = 2;
             }
-            
         }
-        
-        
     }
 
     void Update()
@@ -604,7 +633,6 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                         dirZ = 0;
                         dirY = 0;
                         kickXX = -kickX;
-                        Debug.Log("오늘쪽");
                     }
                     else if (attackDir == 2)
                     {
@@ -626,7 +654,6 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                             dirY = 0;
                         }
                         rigid.AddForce(new Vector2(0, -kickY));
-                        Debug.Log("위");
                     }
                     else if (attackDir == 4)
                     {
@@ -641,7 +668,6 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                             dirY = 0;
                         }
                         rigid.AddForce(new Vector2(0, kickY));
-                        Debug.Log("아래");
                     }
 
 
@@ -702,7 +728,6 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                         dirZ = 0;
                         dirY = 0;
                         kickXX = -kickX;
-                        Debug.Log("오늘쪽");
                     }
                     else if (attackDir == 2)
                     {
@@ -724,7 +749,6 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                             dirY = 0;
                         }
                         rigid.AddForce(new Vector2(0, -kickY));
-                        Debug.Log("위");
                     }
                     else if (attackDir == 4)
                     {
@@ -739,7 +763,6 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                             dirY = 0;
                         }
                         rigid.AddForce(new Vector2(0, kickY));
-                        Debug.Log("아래");
                     }
 
                     for (int i = 0; i < spawnAttackObAmount; i++)
@@ -797,7 +820,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                         dirZ = 0;
                         dirY = 0;
                         kickXX = -kickX;
-                        Debug.Log("오늘쪽");
+
                     }
                     else if (attackDir == 2)
                     {
@@ -819,7 +842,6 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                             dirY = 0;
                         }
                         rigid.AddForce(new Vector2(0, -kickY));
-                        Debug.Log("위");
                     }
                     else if (attackDir == 4)
                     {
@@ -834,7 +856,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                             dirY = 0;
                         }
                         rigid.AddForce(new Vector2(0, kickY));
-                        Debug.Log("아래");
+
                     }
 
 
@@ -893,7 +915,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                         dirZ = 0;
                         dirY = 0;
                         kickXX = -kickX;
-                        Debug.Log("오늘쪽");
+
                     }
                     else if (attackDir == 2)
                     {
@@ -915,7 +937,6 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                             dirY = 0;
                         }
                         rigid.AddForce(new Vector2(0, -kickY));
-                        Debug.Log("위");
                     }
                     else if (attackDir == 4)
                     {
@@ -930,7 +951,6 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                             dirY = 0;
                         }
                         rigid.AddForce(new Vector2(0, kickY));
-                        Debug.Log("아래");
                     }
 
                     for (int i = 0; i < spawnAttackObAmount; i++)
@@ -971,6 +991,66 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
 
                     readyToAttack2 = false;
+
+                }
+
+            }
+            if (Input.GetKeyDown(KeyCode.Q) && skillAmount > 0)
+            {
+                if (skillNum > 999)
+                {
+                    //1번스킬
+                    bool isRight = false;
+                    if (attackDir == 1)
+                    {
+                        dirZ = 0;
+                        dirY = 0;
+                        kickXX = -skillkickX;
+
+                    }
+                    else if (attackDir == 2)
+                    {
+                        dirZ = 0;
+                        dirY = 180;
+                        kickXX = skillkickX;
+
+                    }
+                    else if (attackDir == 3)
+                    {
+                        if (left)
+                        {
+                            dirZ = 90;
+                            dirY = -180;
+                        }
+                        else
+                        {
+                            dirZ = 90;
+                            dirY = 0;
+                        }
+                        kickY = skillkickY;
+                        rigid.AddForce(new Vector2(0, -kickY));
+                    }
+                    else if (attackDir == 4)
+                    {
+                        if (left)
+                        {
+                            dirZ = -90;
+                            dirY = -180;
+                        }
+                        else
+                        {
+                            dirZ = -90;
+                            dirY = 0;
+                        }
+                        kickY = skillkickY;
+                        rigid.AddForce(new Vector2(0, kickY));
+
+                    }
+                    PhotonNetwork.Instantiate("Skill" + "/" + skillNum.ToString() + "Skill" + "/" + skillNum.ToString()/*이름 중요*/, shotPos2.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - skillSpread, dirZ + skillSpread)))
+                                            .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, this.pv.ViewID, isRight);
+                    skillAmount -= 1;
+                    skillAmountText.text = skillAmount.ToString();
+
 
                 }
 
@@ -1072,6 +1152,22 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     canUseShild = true;
                 }
             }
+            
+            if(skillNum > 999 && skillTime > 0 && skillAmount != skillMax)
+            {
+                skillTime -= Time.deltaTime;
+                skillCoolThumbnail.fillAmount = skillTime / skillRechargeTime;
+            }
+            else if(skillNum > 999 && skillTime < 0)
+            {
+                skillTime = skillRechargeTime;
+                if(skillAmount != skillMax)
+                {
+                    skillAmount += 1;
+                    skillAmountText.text = skillAmount.ToString();
+                }
+            }
+
             if (weaponNum >= 3000)
             {
                 
@@ -1125,33 +1221,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
             }
 
-            if (Input.GetKeyDown(KeyCode.Q) && !isReload)
-            {
-                //자신이 가지고있는 "무기" 버림
-                if (weaponNum > 0)
-                {
-                    PhotonNetwork.Instantiate(weaponNum.ToString() + "weapon", gameObject.transform.position, Quaternion.identity).GetComponent<itemScript>().ammo = ammo_P;
-
-                    weaponSpriteRender.sprite = null;
-                    weaponNum = 0;
-                    itemSpriteName = "Null";
-
-                    
-
-                    ammo_P = 0;
-                    maximumAmmo_P = 0;
-
-                    if (weaponNum >= 1000 && weaponNum < 2000)
-                    {
-                        bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
-                    }
-                    else if (weaponNum >= 2000 && weaponNum < 3000)
-                    {
-                        bulletText.text = "∞";
-                    }
-
-                }
-            }
+            
             if (Input.GetKeyDown(KeyCode.E))
             {
                 
@@ -1464,6 +1534,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             else//그냥 맞았을때
             {
                 hp -= Mathf.Round(finalDamage);
+
                 PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, finalDamage, colorNum, false);
             }
 

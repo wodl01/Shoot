@@ -17,6 +17,7 @@ public class MonsterScript : MonoBehaviour
     [SerializeField] PhotonView pv;
     [SerializeField] Canvas canvas;
     public MonsterBuffScript MB;
+    [SerializeField] DamageTextManager dtm;
     private AudioManager Audio;
     [SerializeField] bool ismyAttack;
 
@@ -31,6 +32,7 @@ public class MonsterScript : MonoBehaviour
     private void Awake()
     {
         Audio = FindObjectOfType<AudioManager>();
+        dtm = FindObjectOfType<DamageTextManager>();
     }
     [PunRPC]
     void isSpawn()
@@ -63,15 +65,18 @@ public class MonsterScript : MonoBehaviour
         {
             ani.SetBool("IsMove", false);
         }
+
     }
-    
+    [PunRPC]
     public void Hit(bool myAttack ,float takedDmg, int takedSoundNum,int colorNum)
     {
 
         //ismyAttack = true;
         if (myAttack)
         {
-            PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, takedDmg, colorNum, false);
+            Debug.Log(myAttack);
+            dtm.DamageTextSpawn(gameObject ,takedDmg, colorNum, false);
+            //PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, takedDmg, colorNum, false);
         }
         
         monsterHp -= Mathf.Round(takedDmg);

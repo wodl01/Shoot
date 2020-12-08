@@ -15,7 +15,7 @@ TagManager:
   - DamageDummy
   - Monster
   - PassingGround
-  - MyPlayer
+  - GuidedRange
   layers:
   - Default
   - TransparentFX

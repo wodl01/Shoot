@@ -22665,6 +22665,7 @@ MonoBehaviour:
   sprite: {fileID: 8718485723460494867}
   pv: {fileID: 7692282945783129204}
   gm: {fileID: 0}
+  dtm: {fileID: 0}
   nickNameText: {fileID: 1021918189707896180}
   health: {fileID: 1972586464137781081}
   barrier: {fileID: 8191028231938571518}
@@ -22735,6 +22736,38 @@ MonoBehaviour:
   jumpPow: 275
   isGround: 1
   speed: 4
+  skillNum: 1000
+  skillThumbnail: {fileID: 0}
+  skillCoolThumbnail: {fileID: 0}
+  skillAmountText: {fileID: 0}
+  skillAmount: 0
+  skillMax: 5
+  skillTime: 1
+  skillRechargeTime: 2
+  skill2Num: 0
+  skill2Thumbnail: {fileID: 0}
+  skill2CoolThumbnail: {fileID: 0}
+  skill2AmountText: {fileID: 0}
+  skill2Amount: 0
+  skill2Max: 0
+  skill2Time: 0
+  skill2RechargeTime: 0
+  ultimateNum: 0
+  ultimateThumbnail: {fileID: 0}
+  ultimateCoolThumbnail: {fileID: 0}
+  ultimateAmountText: {fileID: 0}
+  ultimateAmount: 0
+  ultimateTime: 0
+  ultimateRechargeTime: 0
+  skillkickX: 0
+  skillkickY: 0
+  skill2kickX: 0
+  skill2kickY: 0
+  ulitimatekickX: 0
+  ulitimatekickY: 0
+  skillSpread: 0
+  skill2Spread: 0
+  ulitimateSpread: 0
   weaponNum: 1000
   weaponNum2: 1002
   weaponSpecies: OneHandGun
@@ -22742,16 +22775,14 @@ MonoBehaviour:
   clothesNum: 1
   plusMaxHp: 0
   clothesPlusHp: 20
-  attackCode: 0
-  attackCode2: 0
   bullet:
   - {fileID: 8075715940360838214, guid: 22d8839269ea03142a9d36d8704c3fe0, type: 3}
   - {fileID: 8075715940360838214, guid: 899c30488fc4b67448c8fc2c68cf5199, type: 3}
   - {fileID: 8075715940360838214, guid: 73ebb022b09bc1f4ea871b5cfa5f855b, type: 3}
   bulletSpread: 0
   bulletSpread2: 0
-  kickX: 0
-  kickY: 0
+  kickX: 100
+  kickY: 100
   maximumAmmo_P: 100
   maximumAmmo_P2: 100
   ammo_P: 1000
@@ -22782,7 +22813,6 @@ MonoBehaviour:
   shildAni: {fileID: 7489789118732945068}
   isRightShild: 0
   itemSpriteName: 
-  skillCode: 0
   attackDir: 0
   saaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa: 0
   left: 0

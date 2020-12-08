@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Photon.Pun;
 public class Guided_Bullet : MonoBehaviour
 {
     [SerializeField] GameObject bullet;
@@ -12,7 +12,11 @@ public class Guided_Bullet : MonoBehaviour
     public int bulletDir;
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.gameObject.tag == "Player" || other.gameObject.tag == "Monster")
+        if(other.gameObject.tag == "Monster")
+        {
+            target = other.gameObject;
+        }
+        if (other.gameObject.tag == "Player" && other.gameObject.GetComponent<PhotonView>().ViewID != playerViewId)
         {
             target = other.gameObject;
         }

@@ -6,9 +6,11 @@ ScriptsOnlyBuild:
     - BuffScript
     - BulletScript
     - DamageText
+    - DamageTextManager
     - FindPlayerScript
     - FloorCheck
     - GameManager
+    - Guided_Bullet
     - HitEffect
     - Imote_Text
     - MonsterAttack
@@ -206,73 +208,77 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 9870}
     - Class: 114
-      Script: {instanceID: 9904}
+      Script: {instanceID: 9902}
     - Class: 114
-      Script: {instanceID: 9946}
+      Script: {instanceID: 9906}
     - Class: 114
-      Script: {instanceID: 10022}
+      Script: {instanceID: 9948}
     - Class: 114
-      Script: {instanceID: 10034}
+      Script: {instanceID: 10024}
     - Class: 114
-      Script: {instanceID: 10066}
+      Script: {instanceID: 10036}
     - Class: 114
-      Script: {instanceID: 10180}
+      Script: {instanceID: 10068}
     - Class: 114
-      Script: {instanceID: 10238}
+      Script: {instanceID: 10182}
     - Class: 114
-      Script: {instanceID: 10244}
+      Script: {instanceID: 10240}
     - Class: 114
-      Script: {instanceID: 10256}
+      Script: {instanceID: 10246}
     - Class: 114
-      Script: {instanceID: 10264}
+      Script: {instanceID: 10258}
     - Class: 114
-      Script: {instanceID: 10306}
+      Script: {instanceID: 10266}
     - Class: 114
-      Script: {instanceID: 10310}
+      Script: {instanceID: 10308}
     - Class: 114
-      Script: {instanceID: 10388}
+      Script: {instanceID: 10312}
     - Class: 114
-      Script: {instanceID: 10440}
+      Script: {instanceID: 10390}
     - Class: 114
       Script: {instanceID: 10442}
     - Class: 114
-      Script: {instanceID: 10502}
+      Script: {instanceID: 10444}
     - Class: 114
-      Script: {instanceID: 10512}
+      Script: {instanceID: 10504}
     - Class: 114
-      Script: {instanceID: 10542}
+      Script: {instanceID: 10514}
     - Class: 114
-      Script: {instanceID: 10564}
+      Script: {instanceID: 10544}
     - Class: 114
-      Script: {instanceID: 10628}
+      Script: {instanceID: 10566}
     - Class: 114
-      Script: {instanceID: 10662}
+      Script: {instanceID: 10630}
     - Class: 114
-      Script: {instanceID: 10676}
+      Script: {instanceID: 10664}
     - Class: 114
-      Script: {instanceID: 10694}
+      Script: {instanceID: 10678}
     - Class: 114
-      Script: {instanceID: 10712}
+      Script: {instanceID: 10696}
     - Class: 114
-      Script: {instanceID: 10720}
+      Script: {instanceID: 10714}
     - Class: 114
-      Script: {instanceID: 10732}
+      Script: {instanceID: 10722}
     - Class: 114
-      Script: {instanceID: 10930}
+      Script: {instanceID: 10734}
     - Class: 114
-      Script: {instanceID: 11166}
+      Script: {instanceID: 10932}
     - Class: 114
-      Script: {instanceID: 11170}
+      Script: {instanceID: 11168}
     - Class: 114
-      Script: {instanceID: 11178}
+      Script: {instanceID: 11172}
     - Class: 114
-      Script: {instanceID: 11210}
+      Script: {instanceID: 11180}
     - Class: 114
       Script: {instanceID: 11212}
     - Class: 114
-      Script: {instanceID: 11264}
+      Script: {instanceID: 11214}
     - Class: 114
-      Script: {instanceID: 11278}
+      Script: {instanceID: 11266}
+    - Class: 114
+      Script: {instanceID: 11280}
+    - Class: 114
+      Script: {instanceID: 83444}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -1108,6 +1114,12 @@ ScriptsOnlyBuild:
     className: CinemachineFreeLook
   - hash:
       serializedVersion: 2
+      Hash: 78385d3f9f5e50f6feed054d41e9d29a
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: Guided_Bullet
+  - hash:
+      serializedVersion: 2
       Hash: 0927e41b46e1bd11671f9b5adda4b832
     assemblyName: PhotonUnityNetworking.dll
     namespaceName: Photon.Pun
@@ -1156,7 +1168,7 @@ ScriptsOnlyBuild:
     className: PunPlayerScores
   - hash:
       serializedVersion: 2
-      Hash: 05bb4ac448d44f153c2dceb04470c392
+      Hash: ee4b5860b6cc19fe7c094f02e5f62686
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: MonsterScript
@@ -1570,7 +1582,7 @@ ScriptsOnlyBuild:
     className: NickNameField
   - hash:
       serializedVersion: 2
-      Hash: 023a36f22a291a59c4cd554c5c6586a4
+      Hash: 97d585d485871e42fb0706babed436ae
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: BulletScript
@@ -2260,7 +2272,7 @@ ScriptsOnlyBuild:
     className: CountOfRoomsProperty
   - hash:
       serializedVersion: 2
-      Hash: 25dd2c667c0522fd262b7a055902b723
+      Hash: 3017d5f1d7e093f7df31da762534c4f9
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player
@@ -2276,6 +2288,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
+  - hash:
+      serializedVersion: 2
+      Hash: 1f7197c0f6a6e829cb51c1acd7a79966
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: DamageTextManager
   platform: 19
   scenePathNames:
   - Assets/Scenes/SampleScene.unity

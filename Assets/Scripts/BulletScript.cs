@@ -7,6 +7,8 @@ using Photon.Realtime;
 public class BulletScript : MonoBehaviour
 {
     public bool isBullet;
+    [SerializeField] bool isSkillAttack;
+    [SerializeField] bool isWeaponAttack;
     public bool isSword;
     [SerializeField] bool isDamaging;
     [SerializeField] bool isEffect;
@@ -14,6 +16,9 @@ public class BulletScript : MonoBehaviour
     [SerializeField] string flyingEffectName;
     [SerializeField] float cycle;
     [SerializeField] bool flyingEffectTrue;
+    [SerializeField] bool hitEffectTrue;
+    [SerializeField] bool destroyEffectTrue;
+    [SerializeField] bool isAttackSpeed;
 
     public Player player;
     [SerializeField] Animator ani;
@@ -30,6 +35,7 @@ public class BulletScript : MonoBehaviour
     public float playerDamage;
     public float playerBlood;
     public float bulletDamage;
+    [SerializeField] float plusBlood;awsddddddddddd//여기!!
     public float finalDamage;
     public int hitAmount;
     public float attackSpeed;
@@ -101,8 +107,15 @@ public class BulletScript : MonoBehaviour
                 }
                 double rad = Mathf.Atan2(player.transform.position.y - other.gameObject.transform.position.y, player.transform.position.x - other.gameObject.transform.position.x);
                 double degree = (rad * 180) / Mathf.PI;
-
-                PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + "HitEffect", other.gameObject.transform.position, Quaternion.Euler(0, 0, (float)degree));
+                if (hitEffectTrue && isWeaponAttack)
+                {
+                    PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + "HitEffect", other.gameObject.transform.position, Quaternion.Euler(0, 0, (float)degree));
+                }
+                else if(hitEffectTrue && isSkillAttack)
+                {
+                    PhotonNetwork.Instantiate("Skill" + "/" + weaponNum.ToString() + "Skill" + "/" + "HitEffect", other.gameObject.transform.position, Quaternion.Euler(0, 0, (float)degree));
+                    
+                }
 
             }
             if (isBullet)
@@ -110,20 +123,20 @@ public class BulletScript : MonoBehaviour
                 pv.RPC("DestroyRPC", RpcTarget.AllBuffered);
             }
         }
-        if(other.tag == "Monster")
+        if(other.tag == "Monster" && player.pv.IsMine)
         {
             if (!other.GetComponent<MonsterScript>().isDie)
             {
                 if (isDamaging)
                 {
                     float healAmount;
-                    other.GetComponent<MonsterScript>().Hit(player.isMine, finalDamage, takingSoundNum, 1);
-
+                    Debug.Log(player.pv.IsMine);
+                    //other.GetComponent<MonsterScript>().Hit(player.isMine, finalDamage, takingSoundNum, 1);
+                    other.GetComponent<PhotonView>().RPC("Hit", RpcTarget.AllBuffered, player.isMine, finalDamage, takingSoundNum, 1);
                     if (player.isShilding == false)//피흡
                     {
                         player.GetComponent<PhotonView>().RPC("AttackHeal", RpcTarget.AllBuffered, finalDamage);
                         healAmount = finalDamage * player.blood;
-
                     }
                     float finalduring = during * duringAbility;
                     if (!player.isShilding)
@@ -136,8 +149,15 @@ public class BulletScript : MonoBehaviour
                     double rad = Mathf.Atan2(player.transform.position.y - other.gameObject.transform.position.y, player.transform.position.x - other.gameObject.transform.position.x);
                     double degree = (rad * 180) / Mathf.PI;
 
-
-                    PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + "HitEffect", other.gameObject.transform.position, Quaternion.Euler(0, 0, (float)degree));
+                    if (hitEffectTrue && isWeaponAttack)
+                    {
+                        PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + "HitEffect", other.gameObject.transform.position, Quaternion.Euler(0, 0, (float)degree));
+                    }
+                    else if (hitEffectTrue && isSkillAttack)
+                    {
+                        PhotonNetwork.Instantiate("Skill" + "/" + weaponNum.ToString() + "Skill" + "/" + "HitEffect", other.gameObject.transform.position, Quaternion.Euler(0, 0, (float)degree));
+                        Debug.Log("맞는 이펙트");
+                    }
 
                 }
                 if (isBullet)
@@ -189,12 +209,11 @@ public class BulletScript : MonoBehaviour
 
         isRightGun = isRight;
 
-        GameObject[] players = GameObject.FindGameObjectsWithTag("MyPlayer");
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         Audio = FindObjectOfType<AudioManager>();
 
         foreach (GameObject py in players)
         {
-
             player = py.GetComponent<Player>();
             if (player.pv.ViewID == pp)
             {
@@ -209,6 +228,7 @@ public class BulletScript : MonoBehaviour
 
                 if (isGuided)
                 {
+                    gb.playerViewId = pp;
                     gb.rotateSpeed = rotateSpeed;
                 }
 
@@ -217,7 +237,7 @@ public class BulletScript : MonoBehaviour
                     StartCoroutine(effectCycle());
                 }
 
-                if (isSword)
+                if (isAttackSpeed)
                 {
                     ani.SetFloat("AttackSpeed", attackSpeed);
                 }
@@ -228,15 +248,33 @@ public class BulletScript : MonoBehaviour
     [PunRPC]
     void DestroyRPC()
     {
-        if (!isDamaging && player.pv.IsMine)
+        if (isWeaponAttack && destroyEffectTrue)
         {
-            PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + "DestroyEffect", gameObject.transform.position, Quaternion.identity)
-                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, playerViewId, isRightGun);
+            if (player.pv.IsMine)
+            {
+                PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + "DestroyEffect", gameObject.transform.position, Quaternion.identity)
+                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, playerViewId, isRightGun);
+                Debug.Log("사라짐");
+            }
+            else if (!isEffect && destroyEffectTrue && player.pv.IsMine)
+            {
+                PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + "DestroyEffect", gameObject.transform.position, Quaternion.identity);
+                Debug.Log("사라짐");
+            }
         }
-        else if (!isEffect && player.pv.IsMine)
+        else if (isSkillAttack && destroyEffectTrue)
         {
-            PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + "DestroyEffect", gameObject.transform.position, Quaternion.identity);
-                
+            if (player.pv.IsMine)
+            {
+                PhotonNetwork.Instantiate("Skill" + "/" + weaponNum.ToString() + "Skill" + "/" + "DestroyEffect", gameObject.transform.position, Quaternion.identity)
+                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, playerViewId, isRightGun);
+                Debug.Log("사라짐");
+            }
+            else if (!isEffect && destroyEffectTrue && player.pv.IsMine)
+            {
+                PhotonNetwork.Instantiate("Skill" + "/" + weaponNum.ToString() + "Skill" + "/" + "DestroyEffect", gameObject.transform.position, Quaternion.identity);
+                Debug.Log("사라짐");
+            }
         }
         Destroy(gameObject);
     }

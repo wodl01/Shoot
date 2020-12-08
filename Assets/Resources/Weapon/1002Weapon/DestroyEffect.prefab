@@ -166,7 +166,9 @@ MonoBehaviour:
   cycle: 0
   flyingEffectTrue: 0
   player: {fileID: 0}
+  ani: {fileID: 0}
   pv: {fileID: 8890542652158268926}
+  gb: {fileID: 0}
   takingSoundNum: 0
   sound0: Explosion0
   sound1: 
@@ -179,9 +181,10 @@ MonoBehaviour:
   finalDamage: 0
   hitAmount: 0
   attackSpeed: 0
+  rotateSpeed: 0
+  isGuided: 0
   isRightGun: 0
   playerViewId: 0
-  ani: {fileID: 0}
   buffCode: 0
   during: 0
   duringAbility: 0

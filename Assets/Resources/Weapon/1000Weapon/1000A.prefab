@@ -102,6 +102,7 @@ GameObject:
   - component: {fileID: 493115050675736992}
   - component: {fileID: 6863377485437895564}
   - component: {fileID: 7850122944930281584}
+  - component: {fileID: 8584025969354431227}
   m_Layer: 0
   m_Name: 1000A
   m_TagString: AttackOB
@@ -216,7 +217,8 @@ MonoBehaviour:
   observableSearch: 2
   Synchronization: 3
   OwnershipTransfer: 0
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 8584025969354431227}
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -233,6 +235,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isBullet: 1
+  isSkillAttack: 0
+  isWeaponAttack: 0
   isSword: 0
   isDamaging: 1
   isEffect: 0
@@ -240,6 +244,9 @@ MonoBehaviour:
   flyingEffectName: 
   cycle: 0
   flyingEffectTrue: 0
+  hitEffectTrue: 0
+  destroyEffectTrue: 0
+  isAttackSpeed: 0
   player: {fileID: 0}
   ani: {fileID: 0}
   pv: {fileID: 493115050675736992}
@@ -249,18 +256,18 @@ MonoBehaviour:
   sound1: 
   sound2: 
   sound3: 
-  bulletSpeed: 32.11
+  bulletSpeed: 65.53
   playerDamage: 0
   playerBlood: 0
   bulletDamage: 2
   finalDamage: 0
   hitAmount: 0
   attackSpeed: 0
-  rotateSpeed: 300
+  rotateSpeed: 600
   isGuided: 1
   isRightGun: 0
   playerViewId: 0
-  buffCode: 0
+  buffCode: 3
   during: 0
   duringAbility: 0
 --- !u!50 &7850122944930281584
@@ -284,3 +291,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &8584025969354431227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8075715940360838214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0

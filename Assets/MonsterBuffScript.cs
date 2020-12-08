@@ -25,12 +25,10 @@ public class MonsterBuffScript : MonoBehaviour
         {
 
             player = py.GetComponent<Player>();
-            /*if (player.pv.ViewID == pp)
-            {
-                Destroy(gameObject, 3f);
-
-                return;
-            }*/
+            //if (player.pv.ViewID == py)
+            //{
+            //    return;
+            //}
         }
     }
     private void Update()

@@ -14,7 +14,6 @@ public class HitEffect : MonoBehaviour
         {
             gameObject.transform.localRotation = Quaternion.Euler(0, 0, Random.Range(0, 360));
         }
-        
     }
     public void DestroyEffect()
     {
