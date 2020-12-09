@@ -405,6 +405,7 @@ MonoBehaviour:
   flyingEffectTrue: 0
   hitEffectTrue: 1
   destroyEffectTrue: 0
+  destroyEffectAttack: 0
   isAttackSpeed: 0
   player: {fileID: 0}
   ani: {fileID: 0}
@@ -419,6 +420,7 @@ MonoBehaviour:
   playerDamage: 0
   playerBlood: 0
   bulletDamage: 1
+  bulletBlood: 3
   finalDamage: 0
   hitAmount: 0
   attackSpeed: 2

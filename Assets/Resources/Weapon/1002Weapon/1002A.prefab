@@ -166,7 +166,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isBullet: 1
   isSkillAttack: 0
-  isWeaponAttack: 0
+  isWeaponAttack: 1
   isSword: 0
   isDamaging: 0
   isEffect: 0
@@ -174,8 +174,9 @@ MonoBehaviour:
   flyingEffectName: Smoke
   cycle: 0.07
   flyingEffectTrue: 1
-  hitEffectTrue: 0
-  destroyEffectTrue: 0
+  hitEffectTrue: 1
+  destroyEffectTrue: 1
+  destroyEffectAttack: 1
   isAttackSpeed: 0
   player: {fileID: 0}
   ani: {fileID: 0}
@@ -190,6 +191,7 @@ MonoBehaviour:
   playerDamage: 0
   playerBlood: 0
   bulletDamage: 0
+  bulletBlood: 0
   finalDamage: 0
   hitAmount: 0
   attackSpeed: 0

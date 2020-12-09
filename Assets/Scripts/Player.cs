@@ -19,6 +19,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] DamageTextManager dtm;
     public Text nickNameText;
     public Image health;
+    [SerializeField] Image backHealth;
+    bool isBackHealthActive;
     public Image barrier;
     [SerializeField] GameObject damageText;
     [SerializeField] GameObject DmgOB;
@@ -98,9 +100,6 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
     public int spawnAttackObAmount;
     public int spawnAttackObAmount2;
-
-    public string spawnSkillObName;
-    public string spawnSkillObName2;
 
     public float duringAbility;
 
@@ -229,9 +228,14 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             bulletText2 = GameObject.FindGameObjectWithTag("BulletText2").GetComponent<Text>();
             buffScript = GameObject.FindGameObjectWithTag("BuffPanel").GetComponent<BuffScript>();
             DmgOB = GameObject.Find("DamageDummy");
+
             skillThumbnail = GameObject.Find("Skill1").GetComponent<Image>();
             skillCoolThumbnail = GameObject.Find("Skill1Cool").GetComponent<Image>();
             skillAmountText = GameObject.Find("Skill1Amount").GetComponent<Text>();
+
+            skill2Thumbnail = GameObject.Find("Skill2").GetComponent<Image>();
+            skill2CoolThumbnail = GameObject.Find("Skill2Cool").GetComponent<Image>();
+            skill2AmountText = GameObject.Find("Skill2Amount").GetComponent<Text>();
 
             buffScript.player = this;
             buffScript.darkAni = darkBuffAni;
@@ -248,7 +252,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
             pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered, true);
             pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered, false);
-            skillThumbnail.sprite = Resources.Load("Skill" + "/" + skillNum.ToString() + "Skill" + "/" + "Thumnail"/*이름 중요*/, typeof(Sprite)) as Sprite;
+
+            SkillSprite();
 
             isMine = true;
 
@@ -257,7 +262,11 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
     }
 
-    
+    void SkillSprite()
+    {
+        skillThumbnail.sprite = Resources.Load("Skill" + "/" + skillNum.ToString() + "Skill" + "/" + "Thumnail"/*이름 중요*/, typeof(Sprite)) as Sprite;
+        skill2Thumbnail.sprite = Resources.Load("Skill" + "/" + skill2Num.ToString() + "Skill" + "/" + "Thumnail"/*이름 중요*/, typeof(Sprite)) as Sprite;
+    }
 
     private void OnTriggerStay2D(Collider2D other)
     {
@@ -324,15 +333,22 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             cooltime -= Time.deltaTime;
         }
 
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-
-        }
 
 
 
         if (pv.IsMine)
         {
+            if (isBackHealthActive)
+            {
+                backHealth.fillAmount = Mathf.Lerp(backHealth.fillAmount, health.fillAmount, Time.deltaTime * 10);
+                if (health.fillAmount >= backHealth.fillAmount - 0.01f)
+                {
+                    isBackHealthActive = false;
+                    backHealth.fillAmount = health.fillAmount;
+                }
+            }
+
+
             //움직임
             float axis = Input.GetAxisRaw("Horizontal");
             //Vector3 move = new Vector3(axis, 0, 0);
@@ -1050,10 +1066,64 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                                             .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, this.pv.ViewID, isRight);
                     skillAmount -= 1;
                     skillAmountText.text = skillAmount.ToString();
-
-
                 }
+            }
+            if (Input.GetKeyDown(KeyCode.E) && skill2Amount > 0)
+            {
+                if (skill2Num > 999)
+                {
+                    //1번스킬
+                    bool isRight = false;
+                    if (attackDir == 1)
+                    {
+                        dirZ = 0;
+                        dirY = 0;
+                        kickXX = -skill2kickX;
 
+                    }
+                    else if (attackDir == 2)
+                    {
+                        dirZ = 0;
+                        dirY = 180;
+                        kickXX = skill2kickX;
+
+                    }
+                    else if (attackDir == 3)
+                    {
+                        if (left)
+                        {
+                            dirZ = 90;
+                            dirY = -180;
+                        }
+                        else
+                        {
+                            dirZ = 90;
+                            dirY = 0;
+                        }
+                        kickY = skill2kickY;
+                        rigid.AddForce(new Vector2(0, -kickY));
+                    }
+                    else if (attackDir == 4)
+                    {
+                        if (left)
+                        {
+                            dirZ = -90;
+                            dirY = -180;
+                        }
+                        else
+                        {
+                            dirZ = -90;
+                            dirY = 0;
+                        }
+                        kickY = skill2kickY;
+                        rigid.AddForce(new Vector2(0, kickY));
+
+                    }
+                    PhotonNetwork.Instantiate("Skill" + "/" + skill2Num.ToString() + "Skill" + "/" + skill2Num.ToString()/*이름 중요*/, shotPos2.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - skill2Spread, dirZ + skill2Spread)))
+                                            .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, this.pv.ViewID, isRight);
+                    skill2Amount -= 1;
+                    skill2AmountText.text = skill2Amount.ToString();
+                }
             }
 
             if (Input.GetKeyDown(KeyCode.R)|| ammo_P == 0)
@@ -1064,7 +1134,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     isReload = true;
                     reLoadOB.SetActive(true);
                     reLoadBarOB.SetActive(true);
-                    pv.RPC("ReloadWeaponSpriteRPC", RpcTarget.AllBuffered, itemSpriteName);
+
                     //PhotonNetwork.Instantiate(weaponNum.ToString() + "_Clip", weaponReloadSpawn.transform.position, Quaternion.identity);
                 }
             }
@@ -1076,7 +1146,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     isReload2 = true;
                     reLoadOB.SetActive(true);
                     reLoadBarOB.SetActive(true);
-                    pv.RPC("ReloadWeaponSpriteRPC", RpcTarget.AllBuffered, itemSpriteName);
+
                     //PhotonNetwork.Instantiate(weaponNum2.ToString() + "_Clip", weaponReloadSpawn2.transform.position, Quaternion.identity);
                 }
             }
@@ -1165,6 +1235,20 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 {
                     skillAmount += 1;
                     skillAmountText.text = skillAmount.ToString();
+                }
+            }
+            if (skill2Num > 999 && skill2Time > 0 && skill2Amount != skill2Max)
+            {
+                skill2Time -= Time.deltaTime;
+                skill2CoolThumbnail.fillAmount = skill2Time / skill2RechargeTime;
+            }
+            else if (skill2Num > 999 && skill2Time < 0)
+            {
+                skill2Time = skill2RechargeTime;
+                if (skill2Amount != skill2Max)
+                {
+                    skill2Amount += 1;
+                    skill2AmountText.text = skill2Amount.ToString();
                 }
             }
 
@@ -1419,21 +1503,6 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         clothesDownSpriteRender.sprite = Resources.Load(clothesNum + "Clothe" + "/" + num, typeof(Sprite)) as Sprite;
     }
 
-    /*[PunRPC]
-    void ReloadWeaponSpriteRPC(string itemSpriteName)
-    {
-        if (weaponNum > 0)
-        {
-            //무기Sprite바꿈
-            weaponSpriteRender.sprite = Resources.Load(itemSpriteName + "_RE", typeof(Sprite)) as Sprite;
-        }
-        else
-        {
-            weaponSpriteRender.sprite = Resources.Load(itemSpriteName + "_RE", typeof(Sprite)) as Sprite;
-        }
-    }*/
-
-
 
     [PunRPC]
     void JumpRPC()
@@ -1456,7 +1525,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         }
         else
         {
-            hp += clothesPlusHp * DecreaseTakedHeal;
+            hp += Mathf.Round(clothesPlusHp * DecreaseTakedHeal);
         }
 
         StartCoroutine(ClothesHeal());
@@ -1467,25 +1536,23 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         healParticle.Play();
     }
     [PunRPC]
-    public void AttackHeal(float takingDmg)
+    public void AttackHeal(float healAmount)
     {
 
         if (pv.IsMine)
         {
                     //int colorNum = 0;
         Debug.Log("자힐");
-        float healAmount = takingDmg * blood;
-            if (maxHpValue < hp + (takingDmg * DecreaseTakedHeal))
+        float finalHealAmount = healAmount * blood;
+            if (maxHpValue < hp + (finalHealAmount * DecreaseTakedHeal))
             {
                 hp = maxHpValue;
                 PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, healAmount, 0, true);
-                Debug.Log("no");
             }
             else
             {
-                hp += healAmount * DecreaseTakedHeal;
+                hp += Mathf.Round(finalHealAmount * DecreaseTakedHeal);
                 PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, healAmount, 0, true);
-                Debug.Log("yes");
             }
         }
         
@@ -1534,7 +1601,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             else//그냥 맞았을때
             {
                 hp -= Mathf.Round(finalDamage);
-
+                Invoke("BackActive", 0.3f);
                 PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, finalDamage, colorNum, false);
             }
 
@@ -1550,8 +1617,13 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 pv.RPC("DestroyRPC", RpcTarget.AllBuffered);
             }
         }
-        
     }
+
+    void BackActive()
+    {
+        isBackHealthActive = true;
+    }
+
 
     [PunRPC]//오브젝트 파괴
     void DestroyRPC() => Destroy(gameObject);
@@ -1565,13 +1637,13 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
         {
             stream.SendNext(transform.position);
             stream.SendNext(health.fillAmount);
-            //stream.SendNext(weaponSpriteRender.name);
+            stream.SendNext(backHealth.fillAmount);
         }
         else
         {
             curPos = (Vector3)stream.ReceiveNext();
             health.fillAmount = (float)stream.ReceiveNext();
-            //weaponSpriteRender.name = (string)stream.ReceiveNext();
+            backHealth.fillAmount = (float)stream.ReceiveNext();
         }
     }
 

@@ -14,6 +14,7 @@ public class MonsterScript : MonoBehaviour
     [SerializeField] Rigidbody2D monsterRigid;
     [SerializeField] Animator ani;
     [SerializeField] Image hpImage;
+    [SerializeField] Image backHpImage;
     [SerializeField] PhotonView pv;
     [SerializeField] Canvas canvas;
     public MonsterBuffScript MB;
@@ -29,6 +30,8 @@ public class MonsterScript : MonoBehaviour
     public float during;
     [SerializeField] string[] takedSound;
     [SerializeField] string[] monsterSound;
+
+    [SerializeField] bool once;
     private void Awake()
     {
         Audio = FindObjectOfType<AudioManager>();
@@ -65,7 +68,10 @@ public class MonsterScript : MonoBehaviour
         {
             ani.SetBool("IsMove", false);
         }
-
+        if (once)
+        {
+            pv.RPC("BackHpImageRPC", RpcTarget.AllBuffered);
+        }
     }
     [PunRPC]
     public void Hit(bool myAttack ,float takedDmg, int takedSoundNum,int colorNum)
@@ -74,7 +80,6 @@ public class MonsterScript : MonoBehaviour
         //ismyAttack = true;
         if (myAttack)
         {
-            Debug.Log(myAttack);
             dtm.DamageTextSpawn(gameObject ,takedDmg, colorNum, false);
             //PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, takedDmg, colorNum, false);
         }
@@ -82,12 +87,29 @@ public class MonsterScript : MonoBehaviour
         monsterHp -= Mathf.Round(takedDmg);
         Audio.Play(takedSound[takedSoundNum]);
         hpImage.fillAmount = monsterHp / monsterMaxHp;
+        Invoke("OnceTrue", 0.3f);
+
         if (monsterHp <= 0)//몬스터 죽음
         {
             ani.SetBool("Die", true);
             isDie = true;
 
         } 
+    }
+
+    void OnceTrue()
+    {
+        once = true;
+    }
+    [PunRPC]
+    void BackHpImageRPC()
+    {
+        backHpImage.fillAmount = Mathf.Lerp(backHpImage.fillAmount, hpImage.fillAmount, Time.deltaTime * 10);
+        if (hpImage.fillAmount >= backHpImage.fillAmount - 0.01f)
+        {
+            once = false;
+            backHpImage.fillAmount = hpImage.fillAmount;
+        }
     }
 
     public void CanMove()

@@ -18,6 +18,7 @@ public class BulletScript : MonoBehaviour
     [SerializeField] bool flyingEffectTrue;
     [SerializeField] bool hitEffectTrue;
     [SerializeField] bool destroyEffectTrue;
+    [SerializeField] bool destroyEffectAttack;
     [SerializeField] bool isAttackSpeed;
 
     public Player player;
@@ -35,7 +36,7 @@ public class BulletScript : MonoBehaviour
     public float playerDamage;
     public float playerBlood;
     public float bulletDamage;
-    [SerializeField] float plusBlood;awsddddddddddd//여기!!
+    [SerializeField] float bulletBlood;
     public float finalDamage;
     public int hitAmount;
     public float attackSpeed;
@@ -94,7 +95,7 @@ public class BulletScript : MonoBehaviour
                 if (player.isShilding == false)//피흡
                 {
                     player.GetComponent<PhotonView>().RPC("AttackHeal", RpcTarget.AllBuffered, finalDamage);
-                    healAmount = finalDamage * player.blood;
+                    healAmount = finalDamage * player.blood * bulletBlood;
 
                 }
                 float finalduring = during * duringAbility;
@@ -135,8 +136,8 @@ public class BulletScript : MonoBehaviour
                     other.GetComponent<PhotonView>().RPC("Hit", RpcTarget.AllBuffered, player.isMine, finalDamage, takingSoundNum, 1);
                     if (player.isShilding == false)//피흡
                     {
-                        player.GetComponent<PhotonView>().RPC("AttackHeal", RpcTarget.AllBuffered, finalDamage);
-                        healAmount = finalDamage * player.blood;
+                        healAmount = finalDamage * player.blood * bulletBlood;
+                        player.GetComponent<PhotonView>().RPC("AttackHeal", RpcTarget.AllBuffered, healAmount);
                     }
                     float finalduring = during * duringAbility;
                     if (!player.isShilding)
@@ -250,13 +251,13 @@ public class BulletScript : MonoBehaviour
     {
         if (isWeaponAttack && destroyEffectTrue)
         {
-            if (player.pv.IsMine)
+            if (destroyEffectAttack && player.pv.IsMine)
             {
                 PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + "DestroyEffect", gameObject.transform.position, Quaternion.identity)
                     .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, playerViewId, isRightGun);
                 Debug.Log("사라짐");
             }
-            else if (!isEffect && destroyEffectTrue && player.pv.IsMine)
+            else if (!destroyEffectAttack && player.pv.IsMine)
             {
                 PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + "DestroyEffect", gameObject.transform.position, Quaternion.identity);
                 Debug.Log("사라짐");
@@ -264,13 +265,13 @@ public class BulletScript : MonoBehaviour
         }
         else if (isSkillAttack && destroyEffectTrue)
         {
-            if (player.pv.IsMine)
+            if (destroyEffectAttack && player.pv.IsMine)
             {
                 PhotonNetwork.Instantiate("Skill" + "/" + weaponNum.ToString() + "Skill" + "/" + "DestroyEffect", gameObject.transform.position, Quaternion.identity)
                     .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, playerViewId, isRightGun);
                 Debug.Log("사라짐");
             }
-            else if (!isEffect && destroyEffectTrue && player.pv.IsMine)
+            else if (!destroyEffectAttack && player.pv.IsMine)
             {
                 PhotonNetwork.Instantiate("Skill" + "/" + weaponNum.ToString() + "Skill" + "/" + "DestroyEffect", gameObject.transform.position, Quaternion.identity);
                 Debug.Log("사라짐");
