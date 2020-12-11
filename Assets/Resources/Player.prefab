@@ -1351,7 +1351,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 11.8
+      scalar: 11
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -11045,6 +11045,8 @@ GameObject:
   - component: {fileID: 5758045288693226121}
   - component: {fileID: 4952398062400714207}
   - component: {fileID: 1646137278685632499}
+  - component: {fileID: 2991953909932274971}
+  - component: {fileID: 1229674634183278678}
   m_Layer: 0
   m_Name: Weapon2
   m_TagString: Untagged
@@ -11105,7 +11107,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 13
-  m_Sprite: {fileID: 214395473140791520, guid: ada54e4fc9427e242be21013e4fd44aa, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -11136,6 +11138,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   ObservedComponents:
   - {fileID: 1646137278685632499}
+  - {fileID: 1229674634183278678}
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -11154,6 +11157,58 @@ MonoBehaviour:
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
+--- !u!95 &2991953909932274971
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4465836194479106539}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 76a95c676166b394c880df58b96ddb77, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1229674634183278678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4465836194479106539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 9
+    SynchronizeType: 1
+    Name: Fire
+  - Type: 4
+    SynchronizeType: 1
+    Name: LookUp
+  - Type: 4
+    SynchronizeType: 1
+    Name: LookDown
+  - Type: 4
+    SynchronizeType: 1
+    Name: LookMid
+  - Type: 4
+    SynchronizeType: 1
+    Name: AlWays
+  m_SynchronizeLayers:
+  - SynchronizeType: 0
+    LayerIndex: 0
 --- !u!1 &4527915272866417660
 GameObject:
   m_ObjectHideFlags: 0
@@ -16682,6 +16737,8 @@ GameObject:
   - component: {fileID: 6233064764733165331}
   - component: {fileID: 448166734707772901}
   - component: {fileID: 7385896107954449238}
+  - component: {fileID: 1252509844859732063}
+  - component: {fileID: 6498352249807962831}
   m_Layer: 0
   m_Name: Weapon1
   m_TagString: Untagged
@@ -16696,7 +16753,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6283619966136588253}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.045, y: 0.12190001, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -16742,8 +16799,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 8
-  m_Sprite: {fileID: -469738134670642733, guid: ada54e4fc9427e242be21013e4fd44aa,
-    type: 3}
+  m_Sprite: {fileID: 21300000, guid: 571bc3f4eeac21f4fb437e4da057d516, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -16751,7 +16807,7 @@ SpriteRenderer:
   m_Size: {x: 4.1875, y: 3.03125}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &448166734707772901
@@ -16774,6 +16830,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   ObservedComponents:
   - {fileID: 7385896107954449238}
+  - {fileID: 6498352249807962831}
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -16792,6 +16849,58 @@ MonoBehaviour:
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
+--- !u!95 &1252509844859732063
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6283619966136588253}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 76a95c676166b394c880df58b96ddb77, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &6498352249807962831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6283619966136588253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 9
+    SynchronizeType: 1
+    Name: Fire
+  - Type: 4
+    SynchronizeType: 1
+    Name: LookUp
+  - Type: 4
+    SynchronizeType: 1
+    Name: LookDown
+  - Type: 4
+    SynchronizeType: 1
+    Name: LookMid
+  - Type: 4
+    SynchronizeType: 1
+    Name: AlWays
+  m_SynchronizeLayers:
+  - SynchronizeType: 0
+    LayerIndex: 0
 --- !u!1 &6371117719054322329
 GameObject:
   m_ObjectHideFlags: 0
@@ -22737,6 +22846,8 @@ MonoBehaviour:
   isMine: 0
   rigid: {fileID: 2702320065895277710}
   ani: {fileID: 2899828837297106475}
+  weapon1FireAni: {fileID: 1252509844859732063}
+  weapon2FireAni: {fileID: 2991953909932274971}
   sprite: {fileID: 8718485723460494867}
   pv: {fileID: 7692282945783129204}
   gm: {fileID: 0}
@@ -22754,6 +22865,18 @@ MonoBehaviour:
   healParticle: {fileID: 8212085461079624931}
   dashParticle1: {fileID: 2494115259305859497}
   dashParticle2: {fileID: 2341810058472326663}
+  skillThumbnail: {fileID: 0}
+  skillCoolThumbnail: {fileID: 0}
+  skillAmountText: {fileID: 0}
+  skill1Effect: {fileID: 0}
+  skill2Thumbnail: {fileID: 0}
+  skill2CoolThumbnail: {fileID: 0}
+  skill2AmountText: {fileID: 0}
+  skill2Effect: {fileID: 0}
+  ultimateThumbnail: {fileID: 0}
+  ultimateCoolThumbnail: {fileID: 0}
+  ultimateAmountText: {fileID: 0}
+  ultimateEffect: {fileID: 0}
   audioPV: {fileID: 0}
   walkSound0: Walk0
   walkSound1: Walk1
@@ -22809,27 +22932,19 @@ MonoBehaviour:
   DecreaseTakedHeal: 1
   jumpPow: 275
   isGround: 1
+  canJump: 0
   speed: 4
   skillNum: 1000
-  skillThumbnail: {fileID: 0}
-  skillCoolThumbnail: {fileID: 0}
-  skillAmountText: {fileID: 0}
   skillAmount: 0
   skillMax: 5
   skillTime: 1
   skillRechargeTime: 2
   skill2Num: 1000
-  skill2Thumbnail: {fileID: 0}
-  skill2CoolThumbnail: {fileID: 0}
-  skill2AmountText: {fileID: 0}
   skill2Amount: 0
   skill2Max: 5
   skill2Time: 1
   skill2RechargeTime: 2
   ultimateNum: 0
-  ultimateThumbnail: {fileID: 0}
-  ultimateCoolThumbnail: {fileID: 0}
-  ultimateAmountText: {fileID: 0}
   ultimateAmount: 0
   ultimateTime: 0
   ultimateRechargeTime: 0

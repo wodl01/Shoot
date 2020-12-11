@@ -13,6 +13,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     
     public Rigidbody2D rigid;
     public Animator ani;
+    [SerializeField] Animator weapon1FireAni;
+    [SerializeField] Animator weapon2FireAni;
     public SpriteRenderer sprite;
     public PhotonView pv;
     public GameManager gm;
@@ -32,6 +34,18 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] ParticleSystem healParticle;
     [SerializeField] ParticleSystem dashParticle1;
     [SerializeField] ParticleSystem dashParticle2;
+    [SerializeField] Image skillThumbnail;
+    [SerializeField] Image skillCoolThumbnail;
+    [SerializeField] Text skillAmountText;
+    [SerializeField] Animator skill1Effect;
+    [SerializeField] Image skill2Thumbnail;
+    [SerializeField] Image skill2CoolThumbnail;
+    [SerializeField] Text skill2AmountText;
+    [SerializeField] Animator skill2Effect;
+    [SerializeField] Image ultimateThumbnail;
+    [SerializeField] Image ultimateCoolThumbnail;
+    [SerializeField] Text ultimateAmountText;
+    [SerializeField] Animator ultimateEffect;
 
     private AudioManager theAudio;
     [SerializeField] PhotonView audioPV;
@@ -110,29 +124,24 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
     [SerializeField] float jumpPow;
     public bool isGround;
+    public bool canJump;
     [SerializeField] float speed;
 
 
     public int skillNum;
-    [SerializeField] Image skillThumbnail;
-    [SerializeField] Image skillCoolThumbnail;
-    [SerializeField] Text skillAmountText;
+
     public int skillAmount;
     public int skillMax;
     public float skillTime;
     public float skillRechargeTime;
     public int skill2Num;
-    [SerializeField] Image skill2Thumbnail;
-    [SerializeField] Image skill2CoolThumbnail;
-    [SerializeField] Text skill2AmountText;
+
     public int skill2Amount;
     public int skill2Max;
     public float skill2Time;
     public float skill2RechargeTime;
     public int ultimateNum;
-    [SerializeField] Image ultimateThumbnail;
-    [SerializeField] Image ultimateCoolThumbnail;
-    [SerializeField] Text ultimateAmountText;
+
     public int ultimateAmount;
     public float ultimateTime;
     public float ultimateRechargeTime;
@@ -254,6 +263,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             pv.RPC("ChangeWeaponSpriteRPC", RpcTarget.AllBuffered, false);
 
             SkillSprite();
+            skill1Effect = GameObject.Find("Skill1Effect").GetComponent<Animator>();
+            skill2Effect = GameObject.Find("Skill2Effect").GetComponent<Animator>();
 
             isMine = true;
 
@@ -420,31 +431,22 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             if (axis != 0)
             {
                 ani.SetBool("IsMove", true);
-                //if(readyToAttack && readyToAttack2)
-                //{
-                    pv.RPC("FlipXRPC", RpcTarget.AllBuffered, axis);
-                //}
-                
+                pv.RPC("FlipXRPC", RpcTarget.AllBuffered, axis);
             }
             else
             {
                 ani.SetBool("IsMove", false);
-
             }
 
             if (rigid.velocity.y < 0)
             {
                 ani.SetBool("IsFalling", true);
-
             }
             else
             {
                 ani.SetBool("IsFalling", false);
-
             }
 
-            //isGround = Physics2D.OverlapCircle((Vector2)transform.position + new Vector2(0, -0.25f), didi, 1 << LayerMask.NameToLayer("Ground"));
-            //ani.SetBool("IsGround", isGround);
             
             ani.SetBool("IsGround", isGround);
             if (Input.GetKeyDown(KeyCode.Space) && isGround && !Input.GetKey(KeyCode.S)) pv.RPC("JumpRPC", RpcTarget.All);
@@ -456,6 +458,12 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 attackDir = 3;
                 bodyUpAni.SetBool("IsLookUp", true);
                 bodyUpAni.SetBool("IsLookInfront", false);
+                weapon1FireAni.SetBool("LookUp", true);
+                weapon1FireAni.SetBool("LookMid", false);
+                weapon1FireAni.SetBool("LookDown", false);
+                weapon2FireAni.SetBool("LookUp", true);
+                weapon2FireAni.SetBool("LookMid", false);
+                weapon2FireAni.SetBool("LookDown", false);
                 pv.RPC("ClotheUpChange", RpcTarget.All,attackDir);
                 if (!left)
                 {
@@ -512,12 +520,18 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
                 }
             }
-            else if (!Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S))
+            if (!Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S))
             {
                 //아래를봄
                 attackDir = 4;
                 bodyUpAni.SetBool("IsLookUp", false);
                 bodyUpAni.SetBool("IsLookInfront", false);
+                weapon1FireAni.SetBool("LookUp", false);
+                weapon1FireAni.SetBool("LookMid", false);
+                weapon1FireAni.SetBool("LookDown", true);
+                weapon2FireAni.SetBool("LookUp", false);
+                weapon2FireAni.SetBool("LookMid", false);
+                weapon2FireAni.SetBool("LookDown", true);
                 pv.RPC("ClotheUpChange", RpcTarget.All,attackDir);
                 if (!left)
                 {
@@ -570,10 +584,16 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     }
                 }
             }
-            else
+            if(!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
             {
                 //중간
                 bodyUpAni.SetBool("IsLookInfront", true);
+                weapon1FireAni.SetBool("LookUp", false);
+                weapon1FireAni.SetBool("LookMid", true);
+                weapon1FireAni.SetBool("LookDown", false);
+                weapon2FireAni.SetBool("LookUp", false);
+                weapon2FireAni.SetBool("LookMid", true);
+                weapon2FireAni.SetBool("LookDown", false);
                 pv.RPC("ClotheUpChange", RpcTarget.All,attackDir);
                 if (left)
                 {
@@ -648,41 +668,35 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     {
                         dirZ = 0;
                         dirY = 0;
-                        kickXX = -kickX;
+                        Debug.Log("1111");
+                        if (rigid.velocity.x > -8)
+                        {
+                            rigid.AddForce(new Vector2(-kickX, 0));
+                        }
+
                     }
                     else if (attackDir == 2)
                     {
                         dirZ = 0;
                         dirY = 180;
-                        kickXX = kickX;
-
+                        Debug.Log("2222");
+                        if (rigid.velocity.x < 8)
+                        {
+                            rigid.AddForce(new Vector2(kickX, 0));
+                        }
                     }
                     else if (attackDir == 3)
                     {
-                        if (left)
-                        {
-                            dirZ = 90;
-                            dirY = -180;
-                        }
-                        else
-                        {
-                            dirZ = 90;
-                            dirY = 0;
-                        }
+                        Debug.Log("3333");
+                        dirZ = 90;
+                        dirY = -180;
                         rigid.AddForce(new Vector2(0, -kickY));
                     }
                     else if (attackDir == 4)
                     {
-                        if (left)
-                        {
-                            dirZ = -90;
-                            dirY = -180;
-                        }
-                        else
-                        {
-                            dirZ = -90;
-                            dirY = 0;
-                        }
+                        Debug.Log("4444");
+                        dirZ = -90;
+                        dirY = 0;
                         rigid.AddForce(new Vector2(0, kickY));
                     }
 
@@ -694,7 +708,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                         {
                             PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString() + "A"/*이름 중요*/, shotPos.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread, dirZ + bulletSpread)))
                                                     .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, this.pv.ViewID, isRight);
-                            Debug.Log(dirZ);
+
                         }
                         else if (weaponNum > 1999 && weaponNum < 3000)
                         {
@@ -743,41 +757,30 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     {
                         dirZ = 0;
                         dirY = 0;
-                        kickXX = -kickX;
+                        if (rigid.velocity.x > -8)
+                        {
+                            rigid.AddForce(new Vector2(-kickX, 0));
+                        }
                     }
                     else if (attackDir == 2)
                     {
                         dirZ = 0;
                         dirY = 180;
-                        kickXX = kickX;
-
+                        if (rigid.velocity.x < 8)
+                        {
+                            rigid.AddForce(new Vector2(kickX, 0));
+                        }
                     }
                     else if (attackDir == 3)
                     {
-                        if (left)
-                        {
-                            dirZ = 90;
-                            dirY = -180;
-                        }
-                        else
-                        {
-                            dirZ = 90;
-                            dirY = 0;
-                        }
+                        dirZ = 90;
+                        dirY = -180;
                         rigid.AddForce(new Vector2(0, -kickY));
                     }
                     else if (attackDir == 4)
                     {
-                        if (left)
-                        {
-                            dirZ = -90;
-                            dirY = -180;
-                        }
-                        else
-                        {
-                            dirZ = -90;
-                            dirY = 0;
-                        }
+                        dirZ = -90;
+                        dirY = 0;
                         rigid.AddForce(new Vector2(0, kickY));
                     }
 
@@ -796,7 +799,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
                         }
                     }
-
+                    weapon1FireAni.SetTrigger("Fire");
                     if (weaponSpecies == "OneHandSword")
                     {
                         pv.RPC("EmptyWeaponSpriteRPC", RpcTarget.AllBuffered, isRight);
@@ -835,44 +838,31 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     {
                         dirZ = 0;
                         dirY = 0;
-                        kickXX = -kickX;
-
+                        if (rigid.velocity.x > -8)
+                        {
+                            rigid.AddForce(new Vector2(-kickX, 0));
+                        }
                     }
                     else if (attackDir == 2)
                     {
                         dirZ = 0;
                         dirY = 180;
-                        kickXX = kickX;
-
+                        if (rigid.velocity.x < 8)
+                        {
+                            rigid.AddForce(new Vector2(kickX, 0));
+                        }
                     }
                     else if (attackDir == 3)
                     {
-                        if (left)
-                        {
-                            dirZ = 90;
-                            dirY = -180;
-                        }
-                        else
-                        {
-                            dirZ = 90;
-                            dirY = 0;
-                        }
+                        dirZ = 90;
+                        dirY = -180;
                         rigid.AddForce(new Vector2(0, -kickY));
                     }
                     else if (attackDir == 4)
                     {
-                        if (left)
-                        {
-                            dirZ = -90;
-                            dirY = -180;
-                        }
-                        else
-                        {
-                            dirZ = -90;
-                            dirY = 0;
-                        }
+                        dirZ = -90;
+                        dirY = 0;
                         rigid.AddForce(new Vector2(0, kickY));
-
                     }
 
 
@@ -893,7 +883,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
                         }
                     }
-
+                    weapon2FireAni.SetTrigger("Fire");
                     if (weaponSpecies2 == "OneHandSword")
                     {
                         pv.RPC("EmptyWeaponSpriteRPC", RpcTarget.AllBuffered, isRight);
@@ -930,42 +920,30 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     {
                         dirZ = 0;
                         dirY = 0;
-                        kickXX = -kickX;
-
+                        if (rigid.velocity.x > -8)
+                        {
+                            rigid.AddForce(new Vector2(-kickX, 0));
+                        }
                     }
                     else if (attackDir == 2)
                     {
                         dirZ = 0;
                         dirY = 180;
-                        kickXX = kickX;
-
+                        if (rigid.velocity.x < 8)
+                        {
+                            rigid.AddForce(new Vector2(kickX, 0));
+                        }
                     }
                     else if (attackDir == 3)
                     {
-                        if (left)
-                        {
-                            dirZ = 90;
-                            dirY = -180;
-                        }
-                        else
-                        {
-                            dirZ = 90;
-                            dirY = 0;
-                        }
+                        dirZ = 90;
+                        dirY = -180;
                         rigid.AddForce(new Vector2(0, -kickY));
                     }
                     else if (attackDir == 4)
                     {
-                        if (left)
-                        {
-                            dirZ = -90;
-                            dirY = -180;
-                        }
-                        else
-                        {
-                            dirZ = -90;
-                            dirY = 0;
-                        }
+                        dirZ = -90;
+                        dirY = 0;
                         rigid.AddForce(new Vector2(0, kickY));
                     }
 
@@ -1031,6 +1009,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                         kickXX = skillkickX;
 
                     }
+
                     else if (attackDir == 3)
                     {
                         if (left)
@@ -1090,34 +1069,17 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     }
                     else if (attackDir == 3)
                     {
-                        if (left)
-                        {
-                            dirZ = 90;
-                            dirY = -180;
-                        }
-                        else
-                        {
-                            dirZ = 90;
-                            dirY = 0;
-                        }
+                        dirZ = 90;
+                        dirY = -180;
                         kickY = skill2kickY;
                         rigid.AddForce(new Vector2(0, -kickY));
                     }
                     else if (attackDir == 4)
                     {
-                        if (left)
-                        {
-                            dirZ = -90;
-                            dirY = -180;
-                        }
-                        else
-                        {
-                            dirZ = -90;
-                            dirY = 0;
-                        }
+                        dirZ = -90;
+                        dirY = 0;
                         kickY = skill2kickY;
                         rigid.AddForce(new Vector2(0, kickY));
-
                     }
                     PhotonNetwork.Instantiate("Skill" + "/" + skill2Num.ToString() + "Skill" + "/" + skill2Num.ToString()/*이름 중요*/, shotPos2.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - skill2Spread, dirZ + skill2Spread)))
                                             .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, this.pv.ViewID, isRight);
@@ -1235,6 +1197,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 {
                     skillAmount += 1;
                     skillAmountText.text = skillAmount.ToString();
+                    skill1Effect.SetTrigger("Trigger");
                 }
             }
             if (skill2Num > 999 && skill2Time > 0 && skill2Amount != skill2Max)
@@ -1249,6 +1212,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                 {
                     skill2Amount += 1;
                     skill2AmountText.text = skill2Amount.ToString();
+                    skill2Effect.SetTrigger("Trigger");
                 }
             }
 
@@ -1403,7 +1367,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             gameObject.transform.localScale = new Vector3(1, 1, 1);
 
         }
-        else
+        else if(axis == 1)
         {
             left = false;
 
@@ -1541,17 +1505,18 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
         if (pv.IsMine)
         {
-                    //int colorNum = 0;
-        Debug.Log("자힐");
+
         float finalHealAmount = healAmount * blood;
             if (maxHpValue < hp + (finalHealAmount * DecreaseTakedHeal))
             {
                 hp = maxHpValue;
+                healParticle.Play();
                 PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, healAmount, 0, true);
             }
             else
             {
                 hp += Mathf.Round(finalHealAmount * DecreaseTakedHeal);
+                healParticle.Play();
                 PhotonNetwork.Instantiate("DamageText", gameObject.transform.position, Quaternion.identity).GetComponent<PhotonView>().RPC("ChangeTextRPC", RpcTarget.All, healAmount, 0, true);
             }
         }

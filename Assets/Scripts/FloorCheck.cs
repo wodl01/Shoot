@@ -14,9 +14,11 @@ public class FloorCheck : MonoBehaviour
         {
             if (collision.tag == "Ground" || collision.tag == "PassingGround")
             {
-                player.isGround = true;
+                if(player.rigid.velocity.y <= 0)
+                {
+                    player.isGround = true;
+                }
             }
-
         }
         if (isUp)
         {
@@ -30,5 +32,18 @@ public class FloorCheck : MonoBehaviour
             }
         }
         
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (!isUp)
+        {
+            if (collision.tag == "Ground" || collision.tag == "PassingGround")
+            {
+                if (player.rigid.velocity.y > 0)
+                {
+                    player.isGround = false;
+                }
+            }
+        }
     }
 }

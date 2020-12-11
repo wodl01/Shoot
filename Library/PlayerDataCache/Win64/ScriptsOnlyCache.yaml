@@ -264,21 +264,21 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10932}
     - Class: 114
-      Script: {instanceID: 11168}
+      Script: {instanceID: 11126}
     - Class: 114
-      Script: {instanceID: 11172}
+      Script: {instanceID: 11170}
     - Class: 114
-      Script: {instanceID: 11180}
+      Script: {instanceID: 11174}
     - Class: 114
-      Script: {instanceID: 11212}
+      Script: {instanceID: 11182}
     - Class: 114
       Script: {instanceID: 11214}
     - Class: 114
-      Script: {instanceID: 11266}
+      Script: {instanceID: 11216}
     - Class: 114
-      Script: {instanceID: 11280}
+      Script: {instanceID: 11268}
     - Class: 114
-      Script: {instanceID: 83444}
+      Script: {instanceID: 11282}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -1168,7 +1168,7 @@ ScriptsOnlyBuild:
     className: PunPlayerScores
   - hash:
       serializedVersion: 2
-      Hash: ee4b5860b6cc19fe7c094f02e5f62686
+      Hash: b51f22f676130db54502d6859ef60778
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: MonsterScript
@@ -1582,7 +1582,7 @@ ScriptsOnlyBuild:
     className: NickNameField
   - hash:
       serializedVersion: 2
-      Hash: 97d585d485871e42fb0706babed436ae
+      Hash: 770f9b3ac46f07a8993027664758ed8b
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: BulletScript
@@ -2080,6 +2080,12 @@ ScriptsOnlyBuild:
     className: SlotRacerSplashScreen
   - hash:
       serializedVersion: 2
+      Hash: 1f7197c0f6a6e829cb51c1acd7a79966
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: DamageTextManager
+  - hash:
+      serializedVersion: 2
       Hash: d1f07c9e64b7817e6271f80bb03de25f
     assemblyName: PhotonUnityNetworking.Demos.dll
     namespaceName: Photon.Pun.Demo.PunBasics
@@ -2272,7 +2278,7 @@ ScriptsOnlyBuild:
     className: CountOfRoomsProperty
   - hash:
       serializedVersion: 2
-      Hash: 3017d5f1d7e093f7df31da762534c4f9
+      Hash: 77d6269f8964dd5f0d20d487f9794ca9
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player
@@ -2288,12 +2294,6 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
-  - hash:
-      serializedVersion: 2
-      Hash: 1f7197c0f6a6e829cb51c1acd7a79966
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: DamageTextManager
   platform: 19
   scenePathNames:
   - Assets/Scenes/SampleScene.unity

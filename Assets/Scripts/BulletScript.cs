@@ -131,7 +131,6 @@ public class BulletScript : MonoBehaviour
                 if (isDamaging)
                 {
                     float healAmount;
-                    Debug.Log(player.pv.IsMine);
                     //other.GetComponent<MonsterScript>().Hit(player.isMine, finalDamage, takingSoundNum, 1);
                     other.GetComponent<PhotonView>().RPC("Hit", RpcTarget.AllBuffered, player.isMine, finalDamage, takingSoundNum, 1);
                     if (player.isShilding == false)//피흡
@@ -255,12 +254,10 @@ public class BulletScript : MonoBehaviour
             {
                 PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + "DestroyEffect", gameObject.transform.position, Quaternion.identity)
                     .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, playerViewId, isRightGun);
-                Debug.Log("사라짐");
             }
             else if (!destroyEffectAttack && player.pv.IsMine)
             {
                 PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + "DestroyEffect", gameObject.transform.position, Quaternion.identity);
-                Debug.Log("사라짐");
             }
         }
         else if (isSkillAttack && destroyEffectTrue)
@@ -269,12 +266,10 @@ public class BulletScript : MonoBehaviour
             {
                 PhotonNetwork.Instantiate("Skill" + "/" + weaponNum.ToString() + "Skill" + "/" + "DestroyEffect", gameObject.transform.position, Quaternion.identity)
                     .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, playerViewId, isRightGun);
-                Debug.Log("사라짐");
             }
             else if (!destroyEffectAttack && player.pv.IsMine)
             {
                 PhotonNetwork.Instantiate("Skill" + "/" + weaponNum.ToString() + "Skill" + "/" + "DestroyEffect", gameObject.transform.position, Quaternion.identity);
-                Debug.Log("사라짐");
             }
         }
         Destroy(gameObject);
