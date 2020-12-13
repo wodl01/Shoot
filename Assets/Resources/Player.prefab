@@ -22958,9 +22958,12 @@ MonoBehaviour:
   skill2Spread: 0
   ulitimateSpread: 0
   weaponNum: 1000
-  weaponNum2: 1002
+  weaponNum2: 2000
   weaponSpecies: OneHandGun
-  weaponSpecies2: OneHandGun
+  weaponSpecies2: OneHandSword
+  isChargingWeapon: 1
+  isChargingWeapon2: 1
+  isCharging: 0
   clothesNum: 1
   plusMaxHp: 0
   clothesPlusHp: 20
@@ -22976,7 +22979,7 @@ MonoBehaviour:
   maximumAmmo_P2: 100
   ammo_P: 100
   ammo_P2: 100
-  IsFullAuto_P: 1
+  IsFullAuto_P: 0
   IsFullAuto_P2: 0
   readyToAttack: 1
   readyToAttack2: 1
@@ -23010,6 +23013,8 @@ MonoBehaviour:
   cooltime2: 0
   PPTT: {fileID: 0}
   isFallen: 0
+  dirZ: 0
+  dirY: 0
 --- !u!61 &2861500382264977899
 BoxCollider2D:
   m_ObjectHideFlags: 0

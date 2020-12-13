@@ -12,7 +12,7 @@ public class Guided_Bullet : MonoBehaviour
     public int bulletDir;
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.gameObject.tag == "Monster")
+        if(other.gameObject.tag == "Monster" && !other.GetComponent<MonsterScript>().isDie)
         {
             target = other.gameObject;
         }

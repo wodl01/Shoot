@@ -158,6 +158,9 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     public int weaponNum2;
     [SerializeField] string weaponSpecies;
     [SerializeField] string weaponSpecies2;
+    [SerializeField] bool isChargingWeapon;
+    [SerializeField] bool isChargingWeapon2;
+    public bool isCharging;
     [SerializeField] int clothesNum;
     [SerializeField] int plusMaxHp;
     [SerializeField] float clothesPlusHp;
@@ -169,8 +172,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     public float kickY;//200
     [SerializeField] int maximumAmmo_P;
     [SerializeField] int maximumAmmo_P2;
-    [SerializeField] int ammo_P;
-    [SerializeField] int ammo_P2;
+    public int ammo_P;
+    public int ammo_P2;
     [SerializeField] bool IsFullAuto_P;
     [SerializeField] bool IsFullAuto_P2;
     public bool readyToAttack;
@@ -200,7 +203,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
     public string itemSpriteName; 
     itemScript item;
 
-    [SerializeField] int attackDir;
+    public int attackDir;
     [SerializeField] int saaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa;
     /// <summary>
     /// ////////////////////////////////////////////
@@ -219,8 +222,8 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
     [SerializeField] PassPlayerToTile PPTT;
     public bool isFallen;
-    float dirZ;
-    float dirY;
+    public float dirZ;
+    public float dirY;
     void Awake()
     {
         gm = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -431,7 +434,9 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             if (axis != 0)
             {
                 ani.SetBool("IsMove", true);
+
                 pv.RPC("FlipXRPC", RpcTarget.AllBuffered, axis);
+
             }
             else
             {
@@ -656,7 +661,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
             if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.U))
             {
-                if (weaponNum > 999 && ammo_P > 0 && readyToAttack && !isReload && !IsFullAuto_P)
+                if (weaponNum > 999 && ammo_P > 0 && readyToAttack && !isReload && !IsFullAuto_P && !isCharging)
                 {
                     //총발사
                     bool isRight = true;
@@ -669,7 +674,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                         dirZ = 0;
                         dirY = 0;
                         Debug.Log("1111");
-                        if (rigid.velocity.x > -8)
+                        if (rigid.velocity.x > -8 && !isChargingWeapon)
                         {
                             rigid.AddForce(new Vector2(-kickX, 0));
                         }
@@ -680,7 +685,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                         dirZ = 0;
                         dirY = 180;
                         Debug.Log("2222");
-                        if (rigid.velocity.x < 8)
+                        if (rigid.velocity.x < 8 && !isChargingWeapon)
                         {
                             rigid.AddForce(new Vector2(kickX, 0));
                         }
@@ -690,32 +695,58 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                         Debug.Log("3333");
                         dirZ = 90;
                         dirY = -180;
-                        rigid.AddForce(new Vector2(0, -kickY));
+                        if (!isChargingWeapon)
+                        {
+                            rigid.AddForce(new Vector2(0, -kickY));
+                        }
+
                     }
                     else if (attackDir == 4)
                     {
                         Debug.Log("4444");
                         dirZ = -90;
                         dirY = 0;
-                        rigid.AddForce(new Vector2(0, kickY));
+                        if (!isChargingWeapon)
+                        {
+                            rigid.AddForce(new Vector2(0, kickY));
+                        }
                     }
 
 
 
                     for (int i = 0; i < spawnAttackObAmount; i++)
                     {
-                        if (weaponNum > 999 && weaponNum < 2000)
+                        if (isChargingWeapon)
                         {
-                            PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString() + "A"/*이름 중요*/, shotPos.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread, dirZ + bulletSpread)))
-                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, this.pv.ViewID, isRight);
+                            if (weaponNum > 999 && weaponNum < 2000)
+                            {
+                                PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + "Charger"/*이름 중요*/, shotPos.transform.position, Quaternion.identity)
+                                                        .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, this.pv.ViewID, isRight);
 
+                            }
+                            else if (weaponNum > 1999 && weaponNum < 3000)
+                            {
+                                PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + "Charger" + "A"/*이름 중요*/, swingPos.transform.position, Quaternion.identity)
+                                                        .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, this.pv.ViewID, isRight);
+
+                            }
                         }
-                        else if (weaponNum > 1999 && weaponNum < 3000)
+                        else
                         {
-                            PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString() + "A"/*이름 중요*/, swingPos.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread, dirZ + bulletSpread)))
-                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, this.pv.ViewID, isRight);
+                            if (weaponNum > 999 && weaponNum < 2000)
+                            {
+                                PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString() + "A"/*이름 중요*/, shotPos.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread, dirZ + bulletSpread)))
+                                                        .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, this.pv.ViewID, isRight, 1f);
 
+                            }
+                            else if (weaponNum > 1999 && weaponNum < 3000)
+                            {
+                                PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString() + "A"/*이름 중요*/, swingPos.transform.position, Quaternion.Euler(0, 0, Random.Range(dirZ - bulletSpread, dirZ + bulletSpread)))
+                                                        .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, this.pv.ViewID, isRight, 1f);
+
+                            }
                         }
+                        
 
                     }
                     if (weaponSpecies == "OneHandSword")
@@ -727,14 +758,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     ammo_P -= 1;
 
 
-                    if (weaponNum >= 1000 && weaponNum < 2000)
-                    {
-                        bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
-                    }
-                    else if (weaponNum >= 2000 && weaponNum < 3000)
-                    {
-                        bulletText.text = "∞";
-                    }
+                    
 
 
                     readyToAttack = false;
@@ -744,7 +768,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             }
             else if (Input.GetMouseButton(0) || Input.GetKeyDown(KeyCode.U))
             {
-                if (weaponNum > 999 && ammo_P > 0 && readyToAttack && !isReload && IsFullAuto_P)
+                if (weaponNum > 999 && ammo_P > 0 && readyToAttack && !isReload && IsFullAuto_P && !isCharging)
                 {
                     //자동총발사
                     bool isRight = true;
@@ -789,14 +813,13 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                         if (weaponNum > 999 && weaponNum < 2000)
                         {
                             PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString() + "A"/*이름 중요*/, shotPos.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread, dirZ + bulletSpread)))
-                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, this.pv.ViewID, isRight);
+                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, this.pv.ViewID, isRight, 1f);
 
                         }
                         else if (weaponNum > 1999 && weaponNum < 3000)
                         {
                             PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum.ToString() + "Weapon" + "/" + weaponNum.ToString() + "A"/*이름 중요*/, swingPos.transform.position, Quaternion.Euler(0, 0, Random.Range(dirZ - bulletSpread, dirZ + bulletSpread)))
-                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, this.pv.ViewID, isRight);
-
+                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, this.pv.ViewID, isRight, 1f);
                         }
                     }
                     weapon1FireAni.SetTrigger("Fire");
@@ -808,14 +831,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     ammo_P -= 1;
 
 
-                    if (weaponNum >= 1000 && weaponNum < 2000)
-                    {
-                        bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
-                    }
-                    else if (weaponNum >= 2000 && weaponNum < 3000)
-                    {
-                        bulletText.text = "∞";
-                    }
+                    
 
                     readyToAttack = false;
 
@@ -826,7 +842,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
             if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.U))
             {
-                if (weaponNum2 > 999 && ammo_P2 > 0 && readyToAttack2 && !isReload2 && !IsFullAuto_P2)
+                if (weaponNum2 > 999 && ammo_P2 > 0 && readyToAttack2 && !isReload2 && !IsFullAuto_P2 && !isCharging)
                 {
                     //반대쪽총발사
                     bool isRight = false;
@@ -870,17 +886,31 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     for (int i = 0; i < spawnAttackObAmount; i++)
                     {
 
-                        if (weaponNum2 > 999 && weaponNum2 < 2000)
+                        if (isChargingWeapon2)
                         {
-                            PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString() + "A"/*이름 중요*/, shotPos2.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread2, dirZ + bulletSpread2)))
-                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, this.pv.ViewID, isRight);
-
+                            if (weaponNum2 > 999 && weaponNum2 < 2000)
+                            {
+                                PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + "Charger"/*이름 중요*/, shotPos2.transform.position, Quaternion.identity)
+                                                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, this.pv.ViewID, isRight);
+                            }
+                            else if (weaponNum2 > 1999 && weaponNum2 < 3000)
+                            {
+                                PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + "Charger"/*이름 중요*/, swingPos2.transform.position, Quaternion.identity)
+                                                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, this.pv.ViewID, isRight);
+                            }
                         }
-                        else if (weaponNum2 > 1999 && weaponNum2 < 3000)
+                        else
                         {
-                            PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString() + "A"/*이름 중요*/, swingPos2.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread2, dirZ + bulletSpread2)))
-                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, this.pv.ViewID, isRight);
-
+                            if (weaponNum2 > 999 && weaponNum2 < 2000)
+                            {
+                                PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString() + "A"/*이름 중요*/, shotPos2.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread2, dirZ + bulletSpread2)))
+                                                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, this.pv.ViewID, isRight, 1f);
+                            }
+                            else if (weaponNum2 > 1999 && weaponNum2 < 3000)
+                            {
+                                PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString() + "A"/*이름 중요*/, swingPos2.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread2, dirZ + bulletSpread2)))
+                                                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, this.pv.ViewID, isRight, 1f);
+                            }
                         }
                     }
                     weapon2FireAni.SetTrigger("Fire");
@@ -891,14 +921,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                     theAudio.Play(weaponShotSound2);
                     ammo_P2 -= 1;
 
-                    if (weaponNum2 >= 1000 && weaponNum2 < 2000)
-                    {
-                        bulletText2.text = ammo_P2.ToString() + "/" + maximumAmmo_P2.ToString();
-                    }
-                    else if (weaponNum2 >= 2000 && weaponNum2 < 3000)
-                    {
-                        bulletText2.text = "∞";
-                    }
+                    
 
 
                     readyToAttack2 = false;
@@ -908,7 +931,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             }
             else if (Input.GetMouseButton(1) || Input.GetKeyDown(KeyCode.U))
             {
-                if(weaponNum2 > 999 && ammo_P2 > 0 && readyToAttack2 && !isReload2 && IsFullAuto_P2)
+                if(weaponNum2 > 999 && ammo_P2 > 0 && readyToAttack2 && !isReload2 && IsFullAuto_P2 && !isCharging)
                 {
                     //반대쪽연속총발사
                     bool isRight = false;
@@ -953,14 +976,12 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
                         if (weaponNum2 > 999 && weaponNum2 < 2000)
                         {
                             PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString() + "A"/*이름 중요*/, shotPos2.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread2, dirZ + bulletSpread2)))
-                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, this.pv.ViewID, isRight);
-
+                                                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, this.pv.ViewID, isRight, 1f);
                         }
                         else if (weaponNum2 > 1999 && weaponNum2 < 3000)
                         {
                             PhotonNetwork.Instantiate("Weapon" + "/" + weaponNum2.ToString() + "Weapon" + "/" + weaponNum2.ToString() + "A"/*이름 중요*/, swingPos2.transform.position, Quaternion.Euler(0, dirY, Random.Range(dirZ - bulletSpread2, dirZ + bulletSpread2)))
-                                                    .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, this.pv.ViewID, isRight);
-
+                                                                                .GetComponent<PhotonView>().RPC("BulletDirRPC", RpcTarget.All, this.pv.ViewID, isRight, 1f);
                         }
                     }
 
@@ -974,14 +995,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
 
 
 
-                    if (weaponNum2 >= 1000 && weaponNum2 < 2000)
-                    {
-                        bulletText2.text = ammo_P2.ToString() + "/" + maximumAmmo_P2.ToString();
-                    }
-                    else if (weaponNum2 >= 2000 && weaponNum2 < 3000)
-                    {
-                        bulletText2.text = "∞";
-                    }
+                    
 
 
                     readyToAttack2 = false;
@@ -1228,7 +1242,16 @@ public class Player : MonoBehaviourPunCallbacks, IPunObservable
             }
             reLoadBar.value = reLoadingTime / reLoadTime_P;
 
-            if(reLoadingTime < 0 && isReload)
+            if (weaponNum >= 1000 && weaponNum < 2000)
+            {
+                bulletText.text = ammo_P.ToString() + "/" + maximumAmmo_P.ToString();
+            }
+            else if (weaponNum >= 2000 && weaponNum < 3000)
+            {
+                bulletText.text = "∞";
+            }
+
+            if (reLoadingTime < 0 && isReload)
             {
                 isReload = false;
                 reLoadingTime = reLoadTime_P;

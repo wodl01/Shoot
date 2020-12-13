@@ -202,7 +202,7 @@ public class BulletScript : MonoBehaviour
 
 
     [PunRPC]
-    void BulletDirRPC(int pp, bool isRight)
+    void BulletDirRPC(int pp, bool isRight, float chargeDMG, float chargeScale)
     {
         //playerName = pp;
         //Debug.Log(pp);
@@ -219,10 +219,11 @@ public class BulletScript : MonoBehaviour
             {
                 Destroy(gameObject, 3f);
 
+                gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x * chargeScale, gameObject.transform.localScale.y * chargeScale, gameObject.transform.localScale.z);
                 playerDamage = player.GetComponent<Player>().playerDamage;
                 duringAbility = player.GetComponent<Player>().duringAbility;
                 playerBlood = player.GetComponent<Player>().blood;
-                finalDamage = playerDamage * bulletDamage;
+                finalDamage = playerDamage * bulletDamage * chargeDMG;
                 attackSpeed = player.attackSpeedAbility;
                 playerViewId = pp;
 
