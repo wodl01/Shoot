@@ -5,6 +5,7 @@ ScriptsOnlyBuild:
     - Buff
     - BuffScript
     - BulletScript
+    - ChargeWeaponScript
     - DamageText
     - DamageTextManager
     - FindPlayerScript
@@ -57,10 +58,8 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.TestListCacheData
@@ -204,81 +203,83 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 9780}
     - Class: 114
-      Script: {instanceID: 9826}
+      Script: {instanceID: 9814}
     - Class: 114
-      Script: {instanceID: 9870}
+      Script: {instanceID: 9828}
     - Class: 114
-      Script: {instanceID: 9902}
+      Script: {instanceID: 9872}
     - Class: 114
-      Script: {instanceID: 9906}
+      Script: {instanceID: 9904}
     - Class: 114
-      Script: {instanceID: 9948}
+      Script: {instanceID: 9908}
     - Class: 114
-      Script: {instanceID: 10024}
+      Script: {instanceID: 9950}
     - Class: 114
-      Script: {instanceID: 10036}
+      Script: {instanceID: 10026}
     - Class: 114
-      Script: {instanceID: 10068}
+      Script: {instanceID: 10038}
     - Class: 114
-      Script: {instanceID: 10182}
+      Script: {instanceID: 10070}
     - Class: 114
-      Script: {instanceID: 10240}
+      Script: {instanceID: 10184}
     - Class: 114
-      Script: {instanceID: 10246}
+      Script: {instanceID: 10242}
     - Class: 114
-      Script: {instanceID: 10258}
+      Script: {instanceID: 10248}
     - Class: 114
-      Script: {instanceID: 10266}
+      Script: {instanceID: 10260}
     - Class: 114
-      Script: {instanceID: 10308}
+      Script: {instanceID: 10268}
     - Class: 114
-      Script: {instanceID: 10312}
+      Script: {instanceID: 10310}
     - Class: 114
-      Script: {instanceID: 10390}
+      Script: {instanceID: 10314}
     - Class: 114
-      Script: {instanceID: 10442}
+      Script: {instanceID: 10392}
     - Class: 114
       Script: {instanceID: 10444}
     - Class: 114
-      Script: {instanceID: 10504}
+      Script: {instanceID: 10446}
     - Class: 114
-      Script: {instanceID: 10514}
+      Script: {instanceID: 10506}
     - Class: 114
-      Script: {instanceID: 10544}
+      Script: {instanceID: 10516}
     - Class: 114
-      Script: {instanceID: 10566}
+      Script: {instanceID: 10546}
     - Class: 114
-      Script: {instanceID: 10630}
+      Script: {instanceID: 10568}
     - Class: 114
-      Script: {instanceID: 10664}
+      Script: {instanceID: 10632}
     - Class: 114
-      Script: {instanceID: 10678}
+      Script: {instanceID: 10666}
     - Class: 114
-      Script: {instanceID: 10696}
+      Script: {instanceID: 10680}
     - Class: 114
-      Script: {instanceID: 10714}
+      Script: {instanceID: 10698}
     - Class: 114
-      Script: {instanceID: 10722}
+      Script: {instanceID: 10716}
     - Class: 114
-      Script: {instanceID: 10734}
+      Script: {instanceID: 10724}
     - Class: 114
-      Script: {instanceID: 10932}
+      Script: {instanceID: 10736}
     - Class: 114
-      Script: {instanceID: 11126}
+      Script: {instanceID: 10934}
     - Class: 114
-      Script: {instanceID: 11170}
+      Script: {instanceID: 11128}
     - Class: 114
-      Script: {instanceID: 11174}
+      Script: {instanceID: 11172}
     - Class: 114
-      Script: {instanceID: 11182}
+      Script: {instanceID: 11176}
     - Class: 114
-      Script: {instanceID: 11214}
+      Script: {instanceID: 11184}
     - Class: 114
       Script: {instanceID: 11216}
     - Class: 114
-      Script: {instanceID: 11268}
+      Script: {instanceID: 11218}
     - Class: 114
-      Script: {instanceID: 11282}
+      Script: {instanceID: 11270}
+    - Class: 114
+      Script: {instanceID: 11284}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -1064,6 +1065,12 @@ ScriptsOnlyBuild:
     assemblyName: PhotonUnityNetworking.Demos.dll
     namespaceName: Photon.Pun.Demo.Cockpit
     className: SendRateOnSerializeField
+  - hash:
+      serializedVersion: 2
+      Hash: bb316c3db8f163aae6ad38605916c4ef
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: ChargeWeaponScript
   - hash:
       serializedVersion: 2
       Hash: 9d65954b754eaf4accff343c2e40aec1
@@ -2278,7 +2285,7 @@ ScriptsOnlyBuild:
     className: CountOfRoomsProperty
   - hash:
       serializedVersion: 2
-      Hash: 77d6269f8964dd5f0d20d487f9794ca9
+      Hash: 67344d5fde06c3cbf302940ebf89db38
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player

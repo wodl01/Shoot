@@ -4808,9 +4808,10 @@ MonoBehaviour:
   chargeImage: {fileID: 3786199356286707486}
   isCharging: 1
   isFullCharging: 0
+  isOnlyFullChargingShot: 0
   maxChargeDMG: 10
-  maxChargeScale: 1
-  maxChargeAmount: 20
+  maxChargeScale: 3
+  maxChargeAmount: 1
   fireCool: 0
   weaponNum: 1000
   particle: {fileID: 4011518554704616450}

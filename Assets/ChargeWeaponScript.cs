@@ -14,6 +14,7 @@ public class ChargeWeaponScript : MonoBehaviour
     [SerializeField] Image chargeImage;
     [SerializeField] bool isCharging;
     [SerializeField] bool isFullCharging;
+    [SerializeField] bool isOnlyFullChargingShot;
     float scale;
     float amount;
 
@@ -129,6 +130,7 @@ public class ChargeWeaponScript : MonoBehaviour
                 if (charge >= maxChargeTime * aaa)
                 {
                     charge = maxChargeTime * aaa;
+                    scale = maxChargeScale;
                     amount = maxChargeAmount;
                     isFullCharging = true;
                     particle.gameObject.SetActive(true);
@@ -165,13 +167,8 @@ public class ChargeWeaponScript : MonoBehaviour
                     Debug.Log(amount);
                     StartCoroutine(Fire());
 
-
-
-
                 }
-
             }
-
         }
         else
         {

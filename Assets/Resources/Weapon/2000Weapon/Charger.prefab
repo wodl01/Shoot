@@ -4808,6 +4808,7 @@ MonoBehaviour:
   chargeImage: {fileID: 3786199356286707486}
   isCharging: 1
   isFullCharging: 0
+  isOnlyFullChargingShot: 0
   maxChargeDMG: 10
   maxChargeScale: 2
   maxChargeAmount: 1
